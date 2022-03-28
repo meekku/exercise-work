@@ -1,3 +1,7 @@
+# File-name: Loan_class.py
+# Author: Nea Träskman and Melina Kamunen
+# Description: 
+
 
 class Loan():
 

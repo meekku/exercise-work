@@ -1,3 +1,8 @@
+# File-name: Book_class.py
+# Author: Nea Träskman and Melina Kamunen
+# Description:
+
+
 import Loan_class
 
 class Book(Loan_class.Loan):

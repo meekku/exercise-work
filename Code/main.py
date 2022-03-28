@@ -1,3 +1,8 @@
+# File-name: main.py
+# Author: Melina Kamunen and Nea Träskman
+# Description: 
+
+
 import User_class
 import Loan_class
 

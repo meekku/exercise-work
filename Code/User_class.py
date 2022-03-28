@@ -1,3 +1,6 @@
+# File-name: User_class.py
+# Author: Melina Kamunen and Nea Träskman
+# Description: 
 
 
 class User():
