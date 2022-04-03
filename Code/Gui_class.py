@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+import os
 
 class App(tk.Tk):
     def __init__(self):
@@ -11,7 +12,11 @@ class App(tk.Tk):
 
         #importing image
         #global image
-        #image = PhotoImage(file = "Code/library_photo.png")
+       
+        img = PhotoImage(file="C:/Users/Melina/Desktop/ATURKUOPINNOT/oop/ex_work/exercise-work/Code/library_photo.png")
+
+        label1 = Label( self, image = img)
+        label1.place(x = 0, y = 0)
 
         #creating a container
         container = tk.Frame(self)
@@ -40,8 +45,19 @@ class HomePage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label = tk.Label(self, text="E-Library", font=('Helvetica', '32', 'bold'))
-        label.pack(pady=10,padx=10)
+        # these lines help to find image
+        global img
+        base_folder = os.path.dirname(__file__)
+        image_path = os.path.join(base_folder, 'library_photo.png')
+        img = PhotoImage(file=image_path)
+
+        # image label
+        bg_label = tk.Label(self, image = img)
+        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # text label
+        text_label = tk.Label(self, text="E-Library", font=('Helvetica', '32', 'bold'))
+        text_label.pack(pady=10,padx=10)
 
         # creating the login button
         Button_Login = tk.Button(text="Login", height="2", width="20",
