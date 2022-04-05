@@ -15,12 +15,13 @@ class App(tk.Tk):
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
+        container.configure(bg="white")
 
         #Initialize frames
         self.frames = {}
 
         #Defining frames and packing it
-        for F in (HomePage, Page_Login, Page_Register):
+        for F in (HomePage, Page_Login, Page_Register, Library_Page):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -61,7 +62,8 @@ class HomePage(tk.Frame):
         Button_Register.pack(pady=10)
 
         # creating the exit button
-        Close_App = tk.Button(self, text= "Exit", height="2", width="20", command=self.quit)
+        Close_App = tk.Button(self, text= "Exit", height="2", width="20", 
+        command=self.quit)
         Close_App.pack(pady=20)
 
 class Page_Login(tk.Frame):
@@ -102,6 +104,7 @@ class Page_Login(tk.Frame):
         back_button.pack(pady=10)
 
 class Page_Register(tk.Frame):
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -150,6 +153,7 @@ class Page_Register(tk.Frame):
         get_username = self.username.get()
         get_password = self.password.get()
 
+        # open file where the data goes
         user_file = open("Code/user_information.txt", "a+")
         print("File opened.")
         user_file.write(get_username + "\n")
@@ -157,5 +161,24 @@ class Page_Register(tk.Frame):
         print("Closing file.")
         user_file.close()
 
+        # makes the entries empty
         self.username_entry.delete(0, END)
         self.password_entry.delete(0, END)
+    
+    def Reg_Confirmation(self): # Registration confirmation for the user
+
+        # Here some code that will tell the user the registration has completed
+        # and it returns them to the main page
+        pass
+
+class Library_Page(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        log_out_button = tk.Button(self, text='Log out', height="2", width="20",
+        command=lambda: controller.show_frame(HomePage))
+        log_out_button.pack(pady=10)
+
+
+
+        
