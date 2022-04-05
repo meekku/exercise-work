@@ -36,7 +36,7 @@ class HomePage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        # these lines help to find image
+        # these lines help to find the image within the files
         global img
         base_folder = os.path.dirname(__file__)
         image_path = os.path.join(base_folder, 'library_photo.png')
@@ -59,6 +59,10 @@ class HomePage(tk.Frame):
         Button_Register = tk.Button(self, text="Register", height="2", width="20",
         command=lambda: controller.show_frame(Page_Register))
         Button_Register.pack(pady=10)
+
+        # creating the exit button
+        Close_App = tk.Button(self, text= "Exit", height="2", width="20", command=self.quit)
+        Close_App.pack(pady=20)
 
 class Page_Login(tk.Frame):
     def __init__(self, parent, controller):
@@ -133,21 +137,21 @@ class Page_Register(tk.Frame):
         
         # Set register button
         register_button = tk.Button(self, text='Register', height="2", width="20",
-        command= self.User_Validation)
+        command= self.User_Registration)
         register_button.pack(pady=10)
 
         back_button = tk.Button(self, text='Go back', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=10)
     
-    def User_Validation(self):
+    def User_Registration(self):
 
         # get the username and password
         get_username = self.username.get()
         get_password = self.password.get()
 
         user_file = open("Code/user_information.txt", "a+")
-
+        print("File opened.")
         user_file.write(get_username + "\n")
         user_file.write(get_password)
         print("Closing file.")
