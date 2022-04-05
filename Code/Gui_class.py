@@ -106,8 +106,8 @@ class Page_Register(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        text3_label = tk.Label(self, text="E-Library Register", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
-        text3_label.pack(pady=10,padx=10)
+        self.text3_label = tk.Label(self, text="E-Library Register", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
+        self.text3_label.pack(pady=10,padx=10)
 
         self.username = StringVar()
         self.password = StringVar()
@@ -133,22 +133,20 @@ class Page_Register(tk.Frame):
         
         # Set register button
         register_button = tk.Button(self, text='Register', height="2", width="20",
-        command=User_Validation)
+        command= self.User_Validation)
         register_button.pack(pady=10)
 
         back_button = tk.Button(self, text='Go back', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=10)
-
-class User_Validation(Page_Register):
-    def __init__(self, parent="", controller=""):
-        Page_Register.__init__(self, parent="", controller="")
+    
+    def User_Validation(self):
 
         # get the username and password
         get_username = self.username.get()
         get_password = self.password.get()
 
-        user_file = open("Code/user_information.txt", "w")
+        user_file = open("Code/user_information.txt", "a+")
 
         user_file.write(get_username + "\n")
         user_file.write(get_password)
@@ -157,4 +155,3 @@ class User_Validation(Page_Register):
 
         self.username_entry.delete(0, END)
         self.password_entry.delete(0, END)
-
