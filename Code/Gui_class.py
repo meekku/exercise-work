@@ -10,14 +10,6 @@ class App(tk.Tk):
         self.title("E-Library") # title of the GUI window
         self.resizable(False, False)
 
-        #importing image
-        #global image
-       
-        #img = PhotoImage(file="C:/Users/Melina/Desktop/ATURKUOPINNOT/oop/ex_work/exercise-work/Code/library_photo.png")
-
-        #label1 = Label( self, image = img)
-        #label1.place(x = 0, y = 0)
-
         #creating a container
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -148,5 +140,8 @@ class Page_Register(tk.Frame):
         command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=10)
 
-
+class User_Validation(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
