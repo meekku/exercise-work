@@ -96,7 +96,7 @@ class Page_Login(tk.Frame):
 
         # Set login button
         login_button = tk.Button(self, text='Login', height="2", width="20",
-        command=lambda: controller.show_frame(HomePage))
+        command=lambda: controller.show_frame(Library_Page))
         login_button.pack(pady=10)
 
         back_button = tk.Button(self, text='Go back', height="2", width="20", 
@@ -174,6 +174,17 @@ class Page_Register(tk.Frame):
 class Library_Page(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
+        # image label
+        bg_label = tk.Label(self, image = img)
+        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # Importing image to be used as a button
+        self.Book_Image = tk.PhotoImage(file = r"Code/book_icon.png")
+        self.Book_Icon = self.Book_Image.subsample(3, 3) # Resizing the image to fit on the button
+
+        Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon)
+        Book_Button.pack(side= TOP)
 
         log_out_button = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
