@@ -179,16 +179,29 @@ class Library_Page(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+        text3_label = tk.Label(self, text="Choose what you want to loan", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
+        text3_label.pack(pady=10,padx=10)
+
         # Importing image to be used as a button
         self.Book_Image = tk.PhotoImage(file = r"Code/book_icon.png")
-        self.Book_Icon = self.Book_Image.subsample(3, 3) # Resizing the image to fit on the button
+        self.Book_Icon = self.Book_Image.subsample(6, 6) # Resizing the image to fit on the button
+        self.Movie_Image = tk.PhotoImage(file = r"Code/movie_icon.png")
+        self.Movie_Icon = self.Movie_Image.subsample(6, 6)
+        self.Magazine_Image = tk.PhotoImage(file = r"Code/magazine_icon.png")
+        self.Magazine_Icon = self.Magazine_Image.subsample(15, 15)
 
         Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon)
-        Book_Button.pack(side= TOP)
+        Book_Button.place(x=60, y=80)
+
+        Movie_Button = tk.Button(self, text = "Movies", image = self.Movie_Icon)
+        Movie_Button.place(x=235, y=80)
+
+        Magazine_Button = tk.Button(self, text = "Magazines", image = self.Magazine_Icon)
+        Magazine_Button.place(x=395, y=80)
 
         log_out_button = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
-        log_out_button.pack(pady=10)
+        log_out_button.place(x=200, y=330)
 
 
 
