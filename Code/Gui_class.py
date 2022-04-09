@@ -78,30 +78,66 @@ class Page_Login(tk.Frame):
         text2_label = tk.Label(self, text="E-Library Login", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
         text2_label.pack(pady=10,padx=10)
 
-        username_login = StringVar()
-        password_login = StringVar()
+        self.username_login = StringVar()
+        self.password_login = StringVar()
 
         login_label = tk.Label(self, text="Please enter details below to login", bg="white", fg="black", 
         font=('Helvetica', '16'))
         login_label.pack(pady=10)
 
         Label(self, text="Username * ", bg="white", fg="black").pack()
-        username_login_entry = tk.Entry(self, textvariable=username_login, bg="white", fg="black")
-        username_login_entry.pack()
+        self.username_login_entry = tk.Entry(self, textvariable=self.username_login, bg="white", fg="black")
+        self.username_login_entry.pack()
         Label(self, text="", bg="white", fg="black").pack()
         Label(self, text="Password * ", bg="white", fg="black").pack()
-        password__login_entry = tk.Entry(self, textvariable=password_login, show= '*', bg="white", fg="black")
-        password__login_entry.pack()
+        self.password_login_entry = tk.Entry(self, textvariable=self.password_login, show= '*', bg="white", fg="black")
+        self.password_login_entry.pack()
         Label(self, text="", bg="white", fg="black").pack()
 
         # Set login button
         login_button = tk.Button(self, text='Login', height="2", width="20",
-        command=lambda: controller.show_frame(Library_Page))
+        command=self.login_verify)
         login_button.pack(pady=10)
 
         back_button = tk.Button(self, text='Go back', height="2", width="20", 
         command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=10)
+    
+    def login_verify(self):
+
+        # get the username and the password
+        verify_username = self.username_login.get()
+        verify_password = self.password_login.get()
+
+        # deletes the entries after login button is pressed
+        self.username_login_entry.delete(0, END)
+        self.password_login_entry.delete(0, END)
+
+        list_of_files = os.listdir()
+
+        if verify_username in list_of_files:
+            file1 = open("user_information.txt", "r")   # open the file in read mode
+            verify = file1.read().splitlines()
+
+            if verify_password in verify:
+                self.login_success()
+            else:
+                self.password_not_correct()
+        else:
+            self.user_not_found()
+    
+
+    def login_success(self):
+        # user succesfully logins to the e-library and is moved to library page
+        pass
+    def password_not_correct(self):
+        # tells user the password was incorrect
+        # returns to login page
+        pass
+    def user_not_found(self):
+        #code if the user wasnt found in the file
+        #gets a pop up telling not found and returns back to login page
+        pass
 
 class Page_Register(tk.Frame):
 
@@ -182,7 +218,7 @@ class Library_Page(tk.Frame):
         text3_label = tk.Label(self, text="Choose what you want to loan", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
         text3_label.pack(pady=10,padx=10)
 
-        # Importing image to be used as a button
+        # Importing images to be used as a buttons
         self.Book_Image = tk.PhotoImage(file = r"Code/book_icon.png")
         self.Book_Icon = self.Book_Image.subsample(6, 6) # Resizing the image to fit on the button
         self.Movie_Image = tk.PhotoImage(file = r"Code/movie_icon.png")
