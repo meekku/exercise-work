@@ -103,33 +103,35 @@ class Page_Login(tk.Frame):
         command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=10)
     
-    def login_verify(self):
+    def login_verify(self): 
+        # EI TOIMI TÄL HETKEL VAIHDA LOGIN_BUTTON COMMAND:LAMBDA CONTROLLER.SHOW_FRAME(LIBRARY_PAGE)
 
         # get the username and the password
         verify_username = self.username_login.get()
         verify_password = self.password_login.get()
 
-        # deletes the entries after login button is pressed
-        self.username_login_entry.delete(0, END)
-        self.password_login_entry.delete(0, END)
-
-        list_of_files = os.listdir()
+        list_of_files = "Code/user_information.txt"
 
         if verify_username in list_of_files:
-            file1 = open("user_information.txt", "r")   # open the file in read mode
+            file1 = open("Code/user_information.txt", "r")   # open the file in read mode
             verify = file1.read().splitlines()
 
             if verify_password in verify:
                 self.login_success()
+                print("success!")
             else:
                 self.password_not_correct()
         else:
             self.user_not_found()
+
+        # deletes the entries after login button is pressed
+        self.username_login_entry.delete(0, END)
+        self.password_login_entry.delete(0, END)
     
 
     def login_success(self):
         # user succesfully logins to the e-library and is moved to library page
-        pass
+        Library_Page()
     def password_not_correct(self):
         # tells user the password was incorrect
         # returns to login page
