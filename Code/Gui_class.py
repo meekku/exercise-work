@@ -158,17 +158,20 @@ class Page_Register(tk.Frame):
 
         self.username = StringVar()
         self.password = StringVar()
+        
 
         # Set label for user's instruction
         register_label = tk.Label(self, text="Please enter details below", bg="white", fg="black", 
         font=('Helvetica', '16'))
         register_label.pack(pady=10)
+
         # Set username label
         username_lable = tk.Label(self, text="Username * ", bg="white", fg="black")
         username_lable.pack()
         # Set username entry
         self.username_entry = tk.Entry(self, textvariable=self.username, bg="white", fg="black")
         self.username_entry.pack()
+
         # Set password label
         password_lable = tk.Label(self, text="Password * ", bg="white", fg="black")
         password_lable.pack()
@@ -178,17 +181,26 @@ class Page_Register(tk.Frame):
         
         Label(self, text="", bg="white").pack()
         
-        # Set register button
-        register_button = tk.Button(self, text='Register', height="2", width="20",
-        command= lambda:[self.User_Registration(), controller.show_frame(HomePage)])
+        # Register button will run on_register() program that will check input
+        register_button = tk.Button(self, text='Submit', height="2", width="20",
+        command= lambda: self.on_register(controller))
         register_button.pack(pady=10)
 
+        # Back button returns to homepage
         back_button = tk.Button(self, text='Go back', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=10)
-    
-    def User_Registration(self):
 
+    def on_register(self,controller):
+        # This function checks that users input values are valid and if they are
+        # it will save them to txt file and return homepage
+        
+        if self.reg_validation()==True:
+            self.save_input()
+            controller.show_frame(HomePage)
+    
+
+    def save_input(self):
         tk = Tk()
         # get the username and password
         get_username = self.username.get()
@@ -207,16 +219,43 @@ class Page_Register(tk.Frame):
         self.username_entry.delete(0, END)
         self.password_entry.delete(0, END)
 
-
-        msg = Message(tk, text = "Registration confirmed") 
-        msg.pack() 
         
-    
-    def Reg_Confirmation(self): # Registration confirmation for the user
+    def reg_validation(self):
+            tk = Tk()
+            name = self.username.get()
+            pw = self.password.get()
+            msg = ''
+            its_valid = False  # this is false until username and password are valid
+            bg_color = "red"  # background on message is red until it's valid
+            
+            if len(name) == 0:
+                msg = 'Username can\'t be empty'
 
-        # Here some code that will tell the user the registration has completed
-        # and it returns them to the main page
-        pass
+            elif len(pw) == 0:
+                msg = 'Password can\'t be empty'
+
+            else:
+                try:
+                    if not any(ch.isdigit() for ch in pw):
+                        msg = 'Password must have numbers in it'
+                    elif len(name) <= 2:
+                        msg = 'Username is too short.'
+                    elif len(name) > 100:
+                        msg = 'Username is too long.'
+                    else:
+                        msg = 'Registration confirmed!'
+                        its_valid = True   # here it changes true and all the input is correct
+                        bg_color = "green"
+                        
+                except Exception as ep:
+                    msg = "Error: " +  ep
+
+            # Displays information message to user
+            show_msg = Message(tk, text = msg)
+            show_msg.config(bg=bg_color, font=("times",15))
+            show_msg.pack() 
+            return its_valid
+            
 
 class Library_Page(tk.Frame):
     def __init__(self, parent, controller):
