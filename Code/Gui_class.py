@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import *
 import os
 
+from setuptools import Command
+
 class App(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
@@ -178,7 +180,7 @@ class Page_Register(tk.Frame):
         
         # Set register button
         register_button = tk.Button(self, text='Register', height="2", width="20",
-        command= self.User_Registration)
+        command= lambda:[self.User_Registration(), controller.show_frame(HomePage)])
         register_button.pack(pady=10)
 
         back_button = tk.Button(self, text='Go back', height="2", width="20",
@@ -187,6 +189,7 @@ class Page_Register(tk.Frame):
     
     def User_Registration(self):
 
+        tk = Tk()
         # get the username and password
         get_username = self.username.get()
         get_password = self.password.get()
@@ -203,6 +206,11 @@ class Page_Register(tk.Frame):
         # makes the entries empty
         self.username_entry.delete(0, END)
         self.password_entry.delete(0, END)
+
+
+        msg = Message(tk, text = "Registration confirmed") 
+        msg.pack() 
+        
     
     def Reg_Confirmation(self): # Registration confirmation for the user
 
