@@ -192,10 +192,11 @@ class Page_Register(tk.Frame):
         get_password = self.password.get()
 
         # open file where the data goes
-        user_file = open("Code/user_information.txt", "a+")
+        base_folder = os.path.dirname(__file__)
+        information_file_path = os.path.join(base_folder, 'user_information.txt')
+        user_file = open(information_file_path, "a+")
         print("File opened.")
-        user_file.write(get_username + "\n")
-        user_file.write(get_password)
+        user_file.write(get_username + ":" + get_password + "\n")
         print("Closing file.")
         user_file.close()
 
@@ -220,12 +221,19 @@ class Library_Page(tk.Frame):
         text3_label = tk.Label(self, text="Choose what you want to loan", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
         text3_label.pack(pady=10,padx=10)
 
+        base_folder = os.path.dirname(__file__)
+        
         # Importing images to be used as a buttons
-        self.Book_Image = tk.PhotoImage(file = r"Code/book_icon.png")
+        book_image_path = os.path.join(base_folder, 'book_icon.png')
+        self.Book_Image = tk.PhotoImage(file = book_image_path)
         self.Book_Icon = self.Book_Image.subsample(6, 6) # Resizing the image to fit on the button
-        self.Movie_Image = tk.PhotoImage(file = r"Code/movie_icon.png")
+
+        movie_image_path = os.path.join(base_folder, 'movie_icon.png')
+        self.Movie_Image = tk.PhotoImage(file = movie_image_path)
         self.Movie_Icon = self.Movie_Image.subsample(6, 6)
-        self.Magazine_Image = tk.PhotoImage(file = r"Code/magazine_icon.png")
+
+        magazine_image_path = os.path.join(base_folder, 'magazine_icon.png')
+        self.Magazine_Image = tk.PhotoImage(file = magazine_image_path)
         self.Magazine_Icon = self.Magazine_Image.subsample(15, 15)
 
         Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon)
