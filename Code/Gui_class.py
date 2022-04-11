@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 import os
+import Book_class
 
 from setuptools import Command
 
@@ -287,7 +288,7 @@ class Library_Page(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        text3_label = tk.Label(self, text="Choose what you want to loan", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
+        text3_label = tk.Label(self, text="Do you wan't to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         text3_label.pack(pady=10,padx=10)
 
         base_folder = os.path.dirname(__file__)
@@ -295,17 +296,17 @@ class Library_Page(tk.Frame):
         # Importing images to be used as a buttons
         book_image_path = os.path.join(base_folder, 'book_icon.png')
         self.Book_Image = tk.PhotoImage(file = book_image_path)
-        self.Book_Icon = self.Book_Image.subsample(6, 6) # Resizing the image to fit on the button
+        self.Book_Icon = self.Book_Image.subsample(7, 5) # Resizing the image to fit on the button
 
         movie_image_path = os.path.join(base_folder, 'movie_icon.png')
         self.Movie_Image = tk.PhotoImage(file = movie_image_path)
-        self.Movie_Icon = self.Movie_Image.subsample(6, 6)
+        self.Movie_Icon = self.Movie_Image.subsample(7, 7)
 
         magazine_image_path = os.path.join(base_folder, 'magazine_icon.png')
         self.Magazine_Image = tk.PhotoImage(file = magazine_image_path)
-        self.Magazine_Icon = self.Magazine_Image.subsample(15, 15)
+        self.Magazine_Icon = self.Magazine_Image.subsample(16, 17)
 
-        Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon)
+        Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon, command=lambda: controller.show_frame(BookPage))
         Book_Button.place(x=60, y=80)
 
         Movie_Button = tk.Button(self, text = "Movies", image = self.Movie_Icon)
@@ -318,6 +319,41 @@ class Library_Page(tk.Frame):
         command=lambda: controller.show_frame(HomePage))
         log_out_button.place(x=200, y=330)
 
+class BookPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        # image label
+        bg_label = tk.Label(self, image = img)
+        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+        text3_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        text3_label.pack(pady=10,padx=10)
 
+        base_folder = os.path.dirname(__file__)
+        
+        # Importing images to be used as a buttons
+        book_image_path = os.path.join(base_folder, 'book_icon.png')
+        self.Book_Image = tk.PhotoImage(file = book_image_path)
+        self.Book_Icon = self.Book_Image.subsample(7, 5) # Resizing the image to fit on the button
+
+        movie_image_path = os.path.join(base_folder, 'movie_icon.png')
+        self.Movie_Image = tk.PhotoImage(file = movie_image_path)
+        self.Movie_Icon = self.Movie_Image.subsample(7, 7)
+
+        magazine_image_path = os.path.join(base_folder, 'magazine_icon.png')
+        self.Magazine_Image = tk.PhotoImage(file = magazine_image_path)
+        self.Magazine_Icon = self.Magazine_Image.subsample(16, 17)
+
+        Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon, command=lambda: controller.show_frame(BookPage))
+        Book_Button.place(x=60, y=80)
+
+        Movie_Button = tk.Button(self, text = "Movies", image = self.Movie_Icon)
+        Movie_Button.place(x=235, y=80)
+
+        Magazine_Button = tk.Button(self, text = "Magazines", image = self.Magazine_Icon)
+        Magazine_Button.place(x=395, y=80)
+
+        log_out_button = tk.Button(self, text='Log out', height="2", width="20",
+        command=lambda: controller.show_frame(HomePage))
+        log_out_button.place(x=200, y=330)
         
