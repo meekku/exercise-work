@@ -87,44 +87,66 @@ class Page_Login(tk.Frame):
         font=('Helvetica', '16'))
         login_label.pack(pady=10)
 
-        Label(self, text="Username * ", bg="white", fg="black").pack()
+        # Set username label
+        username_lable = tk.Label(self, text="Username * ", bg="white", fg="black")
+        username_lable.pack()
+        # Set username_login entry
         self.username_login_entry = tk.Entry(self, textvariable=self.username_login, bg="white", fg="black")
         self.username_login_entry.pack()
-        Label(self, text="", bg="white", fg="black").pack()
-        Label(self, text="Password * ", bg="white", fg="black").pack()
-        self.password_login_entry = tk.Entry(self, textvariable=self.password_login, show= '*', bg="white", fg="black")
+
+        # Set password label
+        password_lable = tk.Label(self, text="Password * ", bg="white", fg="black")
+        password_lable.pack()
+        # Set password_login entry
+        self.password_login_entry = tk.Entry(self, textvariable=self.password_login, show='*', bg="white", fg="black")
         self.password_login_entry.pack()
-        Label(self, text="", bg="white", fg="black").pack()
+
+        #Label(self, text="Username * ", bg="white", fg="black").pack()
+        #self.username_login_entry = tk.Entry(self, textvariable=self.username_login, bg="white", fg="black")
+        #self.username_login_entry.pack()
+        #Label(self, text="", bg="white", fg="black").pack()
+        #Label(self, text="Password * ", bg="white", fg="black").pack()
+       # self.password_login_entry = tk.Entry(self, textvariable=self.password_login, show= '*', bg="white", fg="black")
+        #self.password_login_entry.pack()
+        #Label(self, text="", bg="white", fg="black").pack()
 
         # Set login button
         login_button = tk.Button(self, text='Login', height="2", width="20",
-        command=self.login_verify)
+        command=lambda: self.login_verify(controller))
         login_button.pack(pady=10)
 
         back_button = tk.Button(self, text='Go back', height="2", width="20", 
         command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=10)
     
-    def login_verify(self): 
+    def login_verify(self,controller): 
         # EI TOIMI TÄL HETKEL VAIHDA LOGIN_BUTTON COMMAND:LAMBDA CONTROLLER.SHOW_FRAME(LIBRARY_PAGE)
 
         # get the username and the password
         verify_username = self.username_login.get()
         verify_password = self.password_login.get()
+        combination = verify_username + ":" + verify_password
+        found = False
 
-        list_of_files = "Code/user_information.txt"
+        # finding the file where user information is
+        base_folder = os.path.dirname(__file__)
+        list_of_files = os.path.join(base_folder, 'user_information.txt')
+        opened_file = open(list_of_files, "r")   # open the file in read mode
 
-        if verify_username in list_of_files:
-            file1 = open("Code/user_information.txt", "r")   # open the file in read mode
-            verify = file1.read().splitlines()
+        # reading lines from file and finding match for combination
+        for line in opened_file:
 
-            if verify_password in verify:
-                self.login_success()
-                print("success!")
-            else:
-                self.password_not_correct()
-        else:
-            self.user_not_found()
+            # match found so it enters to library page
+            if combination in line:
+                print("Username and password is: " + line)
+                found = True
+                controller.show_frame(Library_Page)
+
+        # if match not found it returns info to user
+        if found == False:
+            print("Username or password incorrect")
+
+        opened_file.close()
 
         # deletes the entries after login button is pressed
         self.username_login_entry.delete(0, END)
@@ -134,6 +156,7 @@ class Page_Login(tk.Frame):
     def login_success(self):
         # user succesfully logins to the e-library and is moved to library page
         Library_Page()
+
     def password_not_correct(self):
         # tells user the password was incorrect
         # returns to login page
@@ -194,6 +217,9 @@ class Page_Register(tk.Frame):
     def on_register(self,controller):
         # This function checks that users input values are valid and if they are
         # it will save them to txt file and return homepage
+
+        # TÄHÄN vois myös tallentaa emailit, puhnro, etu ja suku-nimet johonkin objektiin jonka tiedot nähtäisi sitten profiilissa?? 
+        # hankalaa
         
         if self.reg_validation()==True:
             self.save_input()
