@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import *
 import os
+
+from colorama import Back
 import Book_class
 import ast
 
@@ -357,27 +359,51 @@ class BookPage(tk.Frame):
 
         dict_length=len(book_info_dict)
 
+        some_list = []
+        laps = 0
+
         for key in range(dict_length):
             
+            laps = laps +1
             book_id = 'book' + str(key + 1)
-            Book_Button = tk.Button(self, text = book_info_dict[book_id]['name'], command=lambda: self.show_book(controller,book_info_dict,book_id))
+            book_photo_id=book_info_dict[book_id]['photo']
+            some_list.append(book_photo_id)
+
+            print(book_photo_id)
+            Book_Button = tk.Button(self, text = book_info_dict[book_id]['name'], command=lambda: self.show_book(controller,book_info_dict,book_id, book_photo_id, some_list, laps, dict_length))
             Book_Button.place(x=100, y=second_y)
             second_y= second_y + 20
+
+
 
         #book_info_file.close()
 
 
-    def show_book(self,controller, dict_obj, key):
+    def show_book(self,controller, dict_obj, book_ID, photo_Please, somelist, laps, lengtti):
+
+        print(book_ID)
+        print(photo_Please)
+        print(laps)
+        for y in range(lengtti):
+            if dict_obj['book' + str(laps)]['photo']:
+                print("jeesus")
+        for i in somelist:
+            print(i)
         # function that opens page for one spesific book that you click
 
-        base_folder = os.path.dirname(__file__)
-        print("Howdy")
-        book_cover_path = os.path.join(base_folder + '\\book_pics\\' + dict_obj[key]['photo'])
-        self.book_cover = tk.PhotoImage(file = book_cover_path)
-        self.book_cover_img = self.book_cover.subsample(16, 17)
+        #base_folder = os.path.dirname(__file__)
+        #print("Howdy")
+        #book_cover_path = os.path.join(base_folder + '\\book_pics\\' + dict_obj[book_ID]['photo'])
+        #self.book_cover = tk.PhotoImage(file = book_cover_path)
+        #self.book_cover_img = self.book_cover.subsample(16, 17)
 
-        opo_label = tk.Label(self, image = self.book_cover_img)
-        opo_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #opo_label = tk.Label(self, image = self.book_cover_img)
+        #opo_label.photo=self.book_cover_img
+        #opo_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+        # Back button returns to BookPage
+        #back_button = tk.Button(self, text='Go back', height="2", width="20",
+        #command=lambda: controller.show_frame(HomePage))
+        #back_button.pack(pady=10)
         
         
