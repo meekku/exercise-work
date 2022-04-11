@@ -101,27 +101,18 @@ class Page_Login(tk.Frame):
         self.password_login_entry = tk.Entry(self, textvariable=self.password_login, show='*', bg="white", fg="black")
         self.password_login_entry.pack()
 
-        #Label(self, text="Username * ", bg="white", fg="black").pack()
-        #self.username_login_entry = tk.Entry(self, textvariable=self.username_login, bg="white", fg="black")
-        #self.username_login_entry.pack()
-        #Label(self, text="", bg="white", fg="black").pack()
-        #Label(self, text="Password * ", bg="white", fg="black").pack()
-       # self.password_login_entry = tk.Entry(self, textvariable=self.password_login, show= '*', bg="white", fg="black")
-        #self.password_login_entry.pack()
-        #Label(self, text="", bg="white", fg="black").pack()
-
         # Set login button
         login_button = tk.Button(self, text='Login', height="2", width="20",
         command=lambda: self.login_verify(controller))
         login_button.pack(pady=10)
 
+        # Set return button
         back_button = tk.Button(self, text='Go back', height="2", width="20", 
         command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=10)
     
     def login_verify(self,controller): 
-        # EI TOIMI TÄL HETKEL VAIHDA LOGIN_BUTTON COMMAND:LAMBDA CONTROLLER.SHOW_FRAME(LIBRARY_PAGE)
-
+        
         # get the username and the password
         verify_username = self.username_login.get()
         verify_password = self.password_login.get()
@@ -142,11 +133,16 @@ class Page_Login(tk.Frame):
                 found = True
                 controller.show_frame(Library_Page)
 
+        opened_file.close()
         # if match not found it returns info to user
         if found == False:
-            print("Username or password incorrect")
+            tk = Tk()
+            tk.geometry("100x100")
+            show_msg = Message(tk, text = "Username or password incorrect")
+            show_msg.config(bg="lightblue", font=("times",15))
+            show_msg.pack() 
 
-        opened_file.close()
+        
 
         # deletes the entries after login button is pressed
         self.username_login_entry.delete(0, END)
