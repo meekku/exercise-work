@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 import os
 import Book_class
+import ast
 
 from setuptools import Command
 
@@ -24,7 +25,7 @@ class App(tk.Tk):
         self.frames = {}
 
         #Defining frames and packing it
-        for F in (HomePage, Page_Login, Page_Register, Library_Page):
+        for F in (HomePage, Page_Login, Page_Register, Library_Page, BookPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -135,6 +136,7 @@ class Page_Login(tk.Frame):
                 controller.show_frame(Library_Page)
 
         opened_file.close()
+
         # if match not found it returns info to user
         if found == False:
             tk = Tk()
@@ -328,20 +330,34 @@ class BookPage(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         
-        # importing the module
-        import ast
-  
-        # reading the data from the file
-        with open('dictionary.txt') as f:
-            data = f.read()
-  
-        print("Data type before reconstruction : ", type(data))
-      
-        # reconstructing the data as a dictionary
-        d = ast.literal_eval(data)
-  
-        print("Data type after reconstruction : ", type(d))
-        print(d)
+        # base_folder is path help for finding right files
+        base_folder = os.path.dirname(__file__)
+
+        # Let's get into book information text file and change its type from string 
+        # to dictionary with ast.literal_eval -tool
+        book_info_path = os.path.join(base_folder, 'book_information.txt')
+        book_info_file = open(book_info_path, "r")
+        book_info_data = book_info_file.read()
+        book_info_dict = ast.literal_eval(book_info_data)
+
+         # Register button will run on_register() program that will check input
+        test_button = tk.Button(self, text='test', height="2", width="20",
+        command= lambda: self.show_books(book_info_dict))
+        test_button.pack(pady=10)
+        
+        
+        for key in book_info_dict:
+            print(book_info_dict[key]['photo'])
+
+        #book_info_file.close()
+
+    def show_books(self,dict_obj):
+    
+        
+        for i in dict_obj:
+            # display
+            print(dict_obj[i].values())
+
         # image label
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -349,31 +365,6 @@ class BookPage(tk.Frame):
         text3_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         text3_label.pack(pady=10,padx=10)
 
-        base_folder = os.path.dirname(__file__)
         
-        # Importing images to be used as a buttons
-        book_image_path = os.path.join(base_folder, 'book_icon.png')
-        self.Book_Image = tk.PhotoImage(file = book_image_path)
-        self.Book_Icon = self.Book_Image.subsample(7, 5) # Resizing the image to fit on the button
-
-        movie_image_path = os.path.join(base_folder, 'movie_icon.png')
-        self.Movie_Image = tk.PhotoImage(file = movie_image_path)
-        self.Movie_Icon = self.Movie_Image.subsample(7, 7)
-
-        magazine_image_path = os.path.join(base_folder, 'magazine_icon.png')
-        self.Magazine_Image = tk.PhotoImage(file = magazine_image_path)
-        self.Magazine_Icon = self.Magazine_Image.subsample(16, 17)
-
-        Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon, command=lambda: controller.show_frame(BookPage))
-        Book_Button.place(x=60, y=80)
-
-        Movie_Button = tk.Button(self, text = "Movies", image = self.Movie_Icon)
-        Movie_Button.place(x=235, y=80)
-
-        Magazine_Button = tk.Button(self, text = "Magazines", image = self.Magazine_Icon)
-        Magazine_Button.place(x=395, y=80)
-
-        log_out_button = tk.Button(self, text='Log out', height="2", width="20",
-        command=lambda: controller.show_frame(HomePage))
-        log_out_button.place(x=200, y=330)
+        
         
