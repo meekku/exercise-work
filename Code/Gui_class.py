@@ -329,6 +329,13 @@ class BookPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
+        # image label
+        bg_label = tk.Label(self, image = img)
+        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        text3_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        text3_label.pack(pady=10,padx=10)
+
         
         # base_folder is path help for finding right files
         base_folder = os.path.dirname(__file__)
@@ -342,28 +349,52 @@ class BookPage(tk.Frame):
 
          # Register button will run on_register() program that will check input
         test_button = tk.Button(self, text='test', height="2", width="20",
-        command= lambda: self.show_books(book_info_dict))
+        command= lambda: self.show_books(controller, book_info_dict))
         test_button.pack(pady=10)
-        
-        
-        for key in book_info_dict:
-            print(book_info_dict[key]['photo'])
+
+
+        #print(book_info_dict['book2']['photo'])
+        #print(base_folder + '\\book_pics\\' + book_info_dict['book2']['photo'])
+        #book_cover_path = os.path.join(base_folder + '\\book_pics\\' + book_info_dict['book2']['photo'])
+        #self.book_cover = tk.PhotoImage(file = book_cover_path)
+        #self.book_cover_img = self.book_cover.subsample(16, 17)
+
+        #Book_Button = tk.Button(self, text = "Books", image = self.book_cover_img, command=lambda: controller.show_frame(Library_Page))
+        #Book_Button.place(x=60, y=80)
+
+
+            
+            
+
 
         #book_info_file.close()
 
-    def show_books(self,dict_obj):
+    def show_books(self,controller,dict_obj):
     
-        
+        base_folder = os.path.dirname(__file__)
         for i in dict_obj:
             # display
             print(dict_obj[i].values())
 
-        # image label
-        bg_label = tk.Label(self, image = img)
-        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        text3_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
-        text3_label.pack(pady=10,padx=10)
+
+        first_x = 60
+        second_y = 100
+        photo_paths = []
+        
+        for key in dict_obj:
+
+            photo_paths.append(dict_obj[key]['photo'])
+
+    
+            book_cover_path = os.path.join(base_folder + '\\book_pics\\' + dict_obj[key]['photo'])
+            self.book_cover = tk.PhotoImage(file = book_cover_path)
+            self.book_cover_img = self.book_cover.subsample(16, 17)
+
+
+            Book_Button = tk.Button(self, text = "Book", image = self.book_cover_img, command=lambda: controller.show_frame(Library_Page))
+            Book_Button.place(x=first_x, y=second_y)
+            first_x= first_x + 100
 
         
         
