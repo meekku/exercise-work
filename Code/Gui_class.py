@@ -226,7 +226,7 @@ class Page_Register(tk.Frame):
     
 
     def save_input(self):
-        tk = Tk()
+        
         # get the username and password
         get_username = self.username.get()
         get_password = self.password.get()
@@ -348,54 +348,36 @@ class BookPage(tk.Frame):
         book_info_dict = ast.literal_eval(book_info_data)
 
          # Register button will run on_register() program that will check input
-        test_button = tk.Button(self, text='test', height="2", width="20",
-        command= lambda: self.show_books(controller, book_info_dict))
-        test_button.pack(pady=10)
+        base_folder = os.path.dirname(__file__)
+        for i in book_info_dict:
+            # display
+            print(book_info_dict[i].values())
 
+        second_y = 100
 
-        #print(book_info_dict['book2']['photo'])
-        #print(base_folder + '\\book_pics\\' + book_info_dict['book2']['photo'])
-        #book_cover_path = os.path.join(base_folder + '\\book_pics\\' + book_info_dict['book2']['photo'])
-        #self.book_cover = tk.PhotoImage(file = book_cover_path)
-        #self.book_cover_img = self.book_cover.subsample(16, 17)
+        dict_length=len(book_info_dict)
 
-        #Book_Button = tk.Button(self, text = "Books", image = self.book_cover_img, command=lambda: controller.show_frame(Library_Page))
-        #Book_Button.place(x=60, y=80)
-
-
+        for key in range(dict_length):
             
-            
-
+            book_id = 'book' + str(key + 1)
+            Book_Button = tk.Button(self, text = book_info_dict[book_id]['name'], command=lambda: self.show_book(controller,book_info_dict,book_id))
+            Book_Button.place(x=100, y=second_y)
+            second_y= second_y + 20
 
         #book_info_file.close()
 
-    def show_books(self,controller,dict_obj):
-    
+
+    def show_book(self,controller, dict_obj, key):
+        # function that opens page for one spesific book that you click
+
         base_folder = os.path.dirname(__file__)
-        for i in dict_obj:
-            # display
-            print(dict_obj[i].values())
+        print("Howdy")
+        book_cover_path = os.path.join(base_folder + '\\book_pics\\' + dict_obj[key]['photo'])
+        self.book_cover = tk.PhotoImage(file = book_cover_path)
+        self.book_cover_img = self.book_cover.subsample(16, 17)
 
+        opo_label = tk.Label(self, image = self.book_cover_img)
+        opo_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-
-        first_x = 60
-        second_y = 100
-        photo_paths = []
-        
-        for key in dict_obj:
-
-            photo_paths.append(dict_obj[key]['photo'])
-
-    
-            book_cover_path = os.path.join(base_folder + '\\book_pics\\' + dict_obj[key]['photo'])
-            self.book_cover = tk.PhotoImage(file = book_cover_path)
-            self.book_cover_img = self.book_cover.subsample(16, 17)
-
-
-            Book_Button = tk.Button(self, text = "Book", image = self.book_cover_img, command=lambda: controller.show_frame(Library_Page))
-            Book_Button.place(x=first_x, y=second_y)
-            first_x= first_x + 100
-
-        
         
         
