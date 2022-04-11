@@ -320,8 +320,28 @@ class Library_Page(tk.Frame):
         log_out_button.place(x=200, y=330)
 
 class BookPage(tk.Frame):
+
+    # Idea teksti tiedosto jossa kirjat taulukossa ne lisätään jollain for loopilla
+    # kirjan kannesta kuvat book_pics kansiossa josta ne otetaan
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
+        
+        # importing the module
+        import ast
+  
+        # reading the data from the file
+        with open('dictionary.txt') as f:
+            data = f.read()
+  
+        print("Data type before reconstruction : ", type(data))
+      
+        # reconstructing the data as a dictionary
+        d = ast.literal_eval(data)
+  
+        print("Data type after reconstruction : ", type(d))
+        print(d)
         # image label
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
