@@ -29,7 +29,7 @@ class App(tk.Tk):
         self.frames = {}
 
         #Defining frames and packing it
-        for F in (HomePage, Page_Login, Page_Register, Library_Page, BookPage):
+        for F in (HomePage, Page_Login, Page_Register, Library_Page, BookPage, ProfilePage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -236,13 +236,12 @@ class Page_Register(tk.Frame):
         # This function checks that users input values are valid and if they are
         # it will save them to txt file and return homepage
 
-        # TÄHÄN vois myös tallentaa emailit, puhnro, etu ja suku-nimet johonkin objektiin jonka tiedot nähtäisi sitten profiilissa?? 
-        # hankalaa
-        
         if self.reg_validation()==True:
 
             # Create and add user object to list for profile and loan purposes
-            controller.all_users.append(User_class.User(self.username.get(),"Pirjo","Lammas","040003322","Pirjo@pirjonen.fi"))
+            controller.all_users.append(User_class.User(self.username.get(),self.first_name.get(),self.last_name.get(),self.phone.get(),self.email.get()))
+
+            # this for loop only for testing
             for i in controller.all_users:
                 print(i)
 
@@ -251,6 +250,13 @@ class Page_Register(tk.Frame):
 
             # Back to home page
             controller.show_frame(HomePage)
+
+            # makes the rest entries empty
+            self.first_name_entry.delete(0, END)
+            self.last_name_entry.delete(0, END)
+            self.phone_entry.delete(0, END)
+            self.email_entry.delete(0, END)
+
     
 
     def save_input(self):
@@ -345,9 +351,12 @@ class Library_Page(tk.Frame):
         Magazine_Button = tk.Button(self, text = "Magazines", image = self.Magazine_Icon)
         Magazine_Button.place(x=395, y=80)
 
+        Profile_Button = tk.Button(self, text = "Your profile", height="2", width="20", command=lambda: controller.show_frame(ProfilePage))
+        Profile_Button.place(x=220,y=240)
+
         log_out_button = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
-        log_out_button.place(x=200, y=330)
+        log_out_button.place(x=220, y=300)
 
 class BookPage(tk.Frame):
 
@@ -407,6 +416,29 @@ class BookPage(tk.Frame):
         self.book3_cover_img = self.book3_cover.subsample(2, 2)
         book3_img_label = tk.Label(self, image = self.book3_cover_img)
         book3_img_label.place(x=450, y=280)
+
+        
+        
+class ProfilePage(tk.Frame):
+
+    # Idea Profiili sivu, jossa näkee omat tiedot ja lainat sillä käyttäjällä
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        # image label
+        bg_label = tk.Label(self, image = img)
+        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label.pack(pady=10,padx=10)
+
+        log_out_button = tk.Button(self, text='Log out', height="2", width="20",
+        command=lambda: controller.show_frame(HomePage))
+        log_out_button.place(x=220, y=300)
+
+
+
 
         
         
