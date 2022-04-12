@@ -379,9 +379,6 @@ class Library_Page(tk.Frame):
 
 class BookPage(tk.Frame):
 
-    # Idea teksti tiedosto jossa kirjat taulukossa ne lisätään jollain for loopilla
-    # kirjan kannesta kuvat book_pics kansiossa josta ne otetaan
-
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
@@ -397,7 +394,7 @@ class BookPage(tk.Frame):
         book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book3.png")
         books = [book1, book2, book3]
 
-        # buttonf for loaning spesific book
+        # buttons for loaning spesific book
         loan1_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.loan(book1))
         loan1_button.place(x=100, y=90)
         loan2_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.loan(book2))
@@ -410,7 +407,7 @@ class BookPage(tk.Frame):
             text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
             text_label.pack(pady=10,padx=10)
 
-        # NOW let's add images for books
+        # Now let's add images for books
         # base_folder is path help for finding right files
         base_folder = os.path.dirname(__file__)
 
@@ -440,7 +437,7 @@ class BookPage(tk.Frame):
         return_button.place(x=2, y=2)
     
     def loan(self,book):
-        print("Let's try loaning books")
+        # ideaa ei ole jotenkin lainat pitäisi saada tehtyä , että ne näkyisi profiilissa
         print(book)
 
         
@@ -478,11 +475,6 @@ class ProfilePage(tk.Frame):
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 current_user = User_class.User(user_name, fname, lname, phone, email)
             
-        print(current_user)
-
-
-
-
 
         # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
