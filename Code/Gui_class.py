@@ -397,16 +397,15 @@ class BookPage(tk.Frame):
         book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book3.png")
         books = [book1, book2, book3]
 
-        changing_y = 100
+        # buttonf for loaning spesific book
+        loan1_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.loan(book1))
+        loan1_button.place(x=100, y=90)
+        loan2_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.loan(book2))
+        loan2_button.place(x=100, y=190)
+        loan3_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.loan(book3))
+        loan3_button.place(x=100, y=290)
 
         for book in books:
-            
-            # TÄHÄN COMMAND jossa lainaus luo jonkun lainaobjektin joka saadaan lisättyä käyttäjän lainoihin :D..... 
-            # loan button three times
-            loan_button = tk.Button(self, text = "Loan", command=lambda: controller.show_frame(HomePage))
-            loan_button.place(x=100, y=changing_y)
-            changing_y= changing_y + 100
-
             # information about spesific book three times
             text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
             text_label.pack(pady=10,padx=10)
@@ -439,8 +438,11 @@ class BookPage(tk.Frame):
         return_button = tk.Button(self, text='<<', height="1", width="10",
         command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
+    
+    def loan(self,book):
+        print("Let's try loaning books")
+        print(book)
 
-        
         
 class ProfilePage(tk.Frame):
 
