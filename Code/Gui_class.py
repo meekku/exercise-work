@@ -5,6 +5,7 @@ import os
 from colorama import Back
 import Book_class
 import ast
+import User_class
 
 from setuptools import Command
 
@@ -15,6 +16,7 @@ class App(tk.Tk):
         self.geometry("600x400") # setting the size of the GUI window
         self.title("E-Library") # title of the GUI window
         self.resizable(False, False)
+        self.all_users=[]
 
         #creating a container
         container = tk.Frame(self)
@@ -182,38 +184,53 @@ class Page_Register(tk.Frame):
 
         self.username = StringVar()
         self.password = StringVar()
-        
+        self.first_name = StringVar()
+        self.last_name = StringVar()
+        self.phone = StringVar()
+        self.email = StringVar()
 
         # Set label for user's instruction
         register_label = tk.Label(self, text="Please enter details below", bg="white", fg="black", 
         font=('Helvetica', '16'))
         register_label.pack(pady=10)
 
-        # Set username label
-        username_lable = tk.Label(self, text="Username * ", bg="white", fg="black")
-        username_lable.pack()
+        # Information text label
+        info_lable = tk.Label(self, text="Username: \n Password: \n First name: \n Last name: \n Phonenumber: \n E-mail: ", bg="white", fg="black")
+        info_lable.place(x=170, y=125)
+
         # Set username entry
         self.username_entry = tk.Entry(self, textvariable=self.username, bg="white", fg="black")
         self.username_entry.pack()
 
-        # Set password label
-        password_lable = tk.Label(self, text="Password * ", bg="white", fg="black")
-        password_lable.pack()
         # Set password entry
         self.password_entry = tk.Entry(self, textvariable=self.password, show='*', bg="white", fg="black")
         self.password_entry.pack()
-        
-        Label(self, text="", bg="white").pack()
+
+        # Set first name entry
+        self.first_name_entry = tk.Entry(self, textvariable=self.first_name, bg="white", fg="black")
+        self.first_name_entry.pack()
+
+        # Set last name entry
+        self.last_name_entry = tk.Entry(self, textvariable=self.last_name, bg="white", fg="black")
+        self.last_name_entry.pack()
+
+        # Set phonenumber entry
+        self.phone_entry = tk.Entry(self, textvariable=self.phone, bg="white", fg="black")
+        self.phone_entry.pack()
+
+        # Set email entry
+        self.email_entry = tk.Entry(self, textvariable=self.email, bg="white", fg="black")
+        self.email_entry.pack()
         
         # Register button will run on_register() program that will check input
-        register_button = tk.Button(self, text='Submit', height="2", width="20",
+        register_button = tk.Button(self, text='Submit', height="2", width="15",
         command= lambda: self.on_register(controller))
-        register_button.pack(pady=10)
+        register_button.pack(pady=5)
 
         # Back button returns to homepage
         back_button = tk.Button(self, text='Go back', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
-        back_button.pack(pady=10)
+        back_button.pack(pady=5)
 
     def on_register(self,controller):
         # This function checks that users input values are valid and if they are
@@ -223,7 +240,16 @@ class Page_Register(tk.Frame):
         # hankalaa
         
         if self.reg_validation()==True:
+
+            # Create and add user object to list for profile and loan purposes
+            controller.all_users.append(User_class.User(self.username.get(),"Pirjo","Lammas","040003322","Pirjo@pirjonen.fi"))
+            for i in controller.all_users:
+                print(i)
+
+            # save_input function saves password and username for login purposes
             self.save_input()
+
+            # Back to home page
             controller.show_frame(HomePage)
     
 
