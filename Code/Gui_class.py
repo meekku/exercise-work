@@ -448,13 +448,37 @@ class ProfilePage(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+        # we will find user's information
+        # from profile_info.txt file where it saved
+        # when registration
+        base_folder = os.path.dirname(__file__)
+        usernames_file_path = os.path.join(base_folder, 'profile_info.txt')
+        usernames_file = open(usernames_file_path).readlines()
+
+        # this for loop finds line for spesific 
+        # username
+        for line in usernames_file:
+            if 'melina' in line:
+                row = line.split(',')
+                user_name, fname, lname, phone, email = [i.strip() for i in row]
+                current_user = User_class.User(user_name, fname, lname, phone, email)
+            
+        print(current_user)
+        current_user.add_loan("12.3.2022","12.4.2022","Secret book")
+        # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
+ 
+        # profile text information
+        profile_text_label = tk.Label(self, text=current_user, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
+        profile_text_label.pack(pady=10,padx=10)
 
+        # button for returning
         return_button = tk.Button(self, text='<<', height="1", width="10",
         command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
 
+        # button for log out
         log_out = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
         log_out.place(x=220, y=300)
