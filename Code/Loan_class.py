@@ -13,6 +13,7 @@ class Loan():
         self.__start_date = start_date
         self.__end_date = end_date
         self.__invoice_amount = 0 # at the beginning
+        self.__loan_active = True
 
         Book_class.Book.__init__(self, name, genre, pages, producer, release_date, photo)
     
@@ -41,6 +42,8 @@ class Loan():
 # functions for adding and reducing invoice
     def add_invoice(self, more_invoice):
         self.__invoice_amount += more_invoice
+
     def pay_invoice(self, less_invoice):
         self.__invoice_amount -= less_invoice
+        self.__loan_active = False
 

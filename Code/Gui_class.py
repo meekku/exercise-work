@@ -16,7 +16,7 @@ class App(tk.Tk):
         self.geometry("600x400") # setting the size of the GUI window
         self.title("E-Library") # title of the GUI window
         self.resizable(False, False)
-        self.all_users=[]
+   
 
         #creating a container
         container = tk.Frame(self)
@@ -238,12 +238,6 @@ class Page_Register(tk.Frame):
 
         if self.reg_validation()==True:
 
-            # Create and add user object to list for profile and loan purposes
-            controller.all_users.append(User_class.User(self.username.get(),self.first_name.get(),self.last_name.get(),self.phone.get(),self.email.get()))
-
-            # this for loop only for testing
-            for i in controller.all_users:
-                print(i)
 
             # save_input function saves password and username for login purposes
             self.save_input()
@@ -251,16 +245,19 @@ class Page_Register(tk.Frame):
             # Back to home page
             controller.show_frame(HomePage)
 
-            # makes the rest entries empty
+            # makes the entries empty
             self.first_name_entry.delete(0, END)
             self.last_name_entry.delete(0, END)
             self.phone_entry.delete(0, END)
             self.email_entry.delete(0, END)
+            self.username_entry.delete(0, END)
+            self.password_entry.delete(0, END)
 
     
 
     def save_input(self):
         
+        # FIRST LET'S SAVE PASSWORD AND USERNAME FOR LOGIN
         # get the username and password
         get_username = self.username.get()
         get_password = self.password.get()
@@ -274,9 +271,12 @@ class Page_Register(tk.Frame):
         print("Closing file.")
         user_file.close()
 
-        # makes the entries empty
-        self.username_entry.delete(0, END)
-        self.password_entry.delete(0, END)
+        # LET'S SAVE ALL USER INFO FOR PROFILE
+        # open file where the data goes
+        users_file_path = os.path.join(base_folder, 'profile_info.txt')
+        users_file = open(users_file_path, "a+")
+        users_file.write(self.username.get() + "," + self.first_name.get()+ "," + self.last_name.get()+ "," + self.phone.get() + "," +self.email.get() + "\n")
+        users_file.close()
 
         
     def reg_validation(self):
@@ -286,28 +286,42 @@ class Page_Register(tk.Frame):
             msg = ''
             its_valid = False  # this is false until username and password are valid
             bg_color = "red"  # background on message is red until it's valid
-            
-            if len(name) == 0:
-                msg = 'Username can\'t be empty'
+            found = True
 
-            elif len(pw) == 0:
-                msg = 'Password can\'t be empty'
+            # These lines are for looking that username is not taken already
+            base_folder = os.path.dirname(__file__)
+            usernames_file_path = os.path.join(base_folder, 'user_information.txt')
+            usernames_file = open(usernames_file_path, "r")
+            for line in usernames_file:
+                if name in line:
+                    found = False
+                    msg = 'Username is already taken'
 
-            else:
-                try:
-                    if not any(ch.isdigit() for ch in pw):
-                        msg = 'Password must have numbers in it'
-                    elif len(name) <= 2:
-                        msg = 'Username is too short.'
-                    elif len(name) > 100:
-                        msg = 'Username is too long.'
-                    else:
-                        msg = 'Registration confirmed!'
-                        its_valid = True   # here it changes true and all the input is correct
-                        bg_color = "green"
+            # These lines will run if username is not taken
+            if found == True:
+                if len(name) == 0:
+                    msg = 'Username can\'t be empty'
+
+                elif len(pw) == 0:
+                    msg = 'Password can\'t be empty'
+
+                else:
+                    try:
+                        if not any(ch.isdigit() for ch in pw):
+                            msg = 'Password must have numbers in it'
+                        elif len(name) <= 2:
+                            msg = 'Username is too short.'
+                        elif len(name) > 100:
+                            msg = 'Username is too long.'
+                        else:
+                            msg = 'Registration confirmed!'
+                            its_valid = True   # here it changes true and all the input is correct
+                            bg_color = "green"
                         
-                except Exception as ep:
-                    msg = "Error: " +  ep
+                    except Exception as ep:
+                        msg = "Error: " +  ep
+            
+
 
             # Displays information message to user
             show_msg = Message(tk, text = msg)
@@ -417,6 +431,10 @@ class BookPage(tk.Frame):
         book3_img_label = tk.Label(self, image = self.book3_cover_img)
         book3_img_label.place(x=450, y=280)
 
+        return_button = tk.Button(self, text='<<', height="1", width="10",
+        command=lambda: controller.show_frame(Library_Page))
+        return_button.place(x=2, y=2)
+
         
         
 class ProfilePage(tk.Frame):
@@ -433,9 +451,9 @@ class ProfilePage(tk.Frame):
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
 
-        return_button = tk.Button(self, text='Return to library', height="2", width="20",
+        return_button = tk.Button(self, text='<<', height="1", width="10",
         command=lambda: controller.show_frame(Library_Page))
-        return_button.place(x=220, y=250)
+        return_button.place(x=2, y=2)
 
         log_out = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
