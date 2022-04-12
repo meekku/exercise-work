@@ -137,6 +137,7 @@ class Page_Login(tk.Frame):
             if combination in line:
                 print("Username and password is: " + line)
                 found = True
+                self.current_user(verify_username)
                 controller.show_frame(Library_Page)
 
         opened_file.close()
@@ -155,19 +156,16 @@ class Page_Login(tk.Frame):
         self.username_login_entry.delete(0, END)
         self.password_login_entry.delete(0, END)
     
+    def current_user(self, username):
+        # this is for profile to find which user information to show
+        print(username)
+        # open file where the data goes
+        base_folder = os.path.dirname(__file__)
+        f_path = os.path.join(base_folder, 'current_user.txt')
+        open_file = open(f_path, "a+")
+        open_file.write(username)
+        open_file.close()
 
-    def login_success(self):
-        # user succesfully logins to the e-library and is moved to library page
-        Library_Page()
-
-    def password_not_correct(self):
-        # tells user the password was incorrect
-        # returns to login page
-        pass
-    def user_not_found(self):
-        #code if the user wasnt found in the file
-        #gets a pop up telling not found and returns back to login page
-        pass
 
 class Page_Register(tk.Frame):
 
@@ -369,8 +367,15 @@ class Library_Page(tk.Frame):
         Profile_Button.place(x=220,y=240)
 
         log_out_button = tk.Button(self, text='Log out', height="2", width="20",
-        command=lambda: controller.show_frame(HomePage))
+        command=lambda: self.clear_current_user_file(controller))
         log_out_button.place(x=220, y=300)
+
+    def clear_current_user_file(self, controller):
+    
+        base_folder = os.path.dirname(__file__)
+        f_path = os.path.join(base_folder, 'current_user.txt')
+        open_file = open(f_path, "w").close()
+        controller.show_frame(HomePage)
 
 class BookPage(tk.Frame):
 
@@ -448,23 +453,35 @@ class ProfilePage(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+        current_user = ""
+
+
+        base_folder = os.path.dirname(__file__)
+        # this file shows what user is now login
+        f_path = os.path.join(base_folder, 'current_user.txt')
+        open_file = open(f_path, "r")
+        current_username = open_file.readline()
+
         # we will find user's information
         # from profile_info.txt file where it saved
         # when registration
-        base_folder = os.path.dirname(__file__)
         usernames_file_path = os.path.join(base_folder, 'profile_info.txt')
         usernames_file = open(usernames_file_path).readlines()
 
         # this for loop finds line for spesific 
         # username
         for line in usernames_file:
-            if 'melina' in line:
+            if current_username in line:
                 row = line.split(',')
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 current_user = User_class.User(user_name, fname, lname, phone, email)
             
         print(current_user)
-        current_user.add_loan("12.3.2022","12.4.2022","Secret book")
+
+
+
+
+
         # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
@@ -478,10 +495,7 @@ class ProfilePage(tk.Frame):
         command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
 
-        # button for log out
-        log_out = tk.Button(self, text='Log out', height="2", width="20",
-        command=lambda: controller.show_frame(HomePage))
-        log_out.place(x=220, y=300)
+
 
 
 

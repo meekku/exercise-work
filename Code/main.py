@@ -8,8 +8,7 @@ import Gui_class
 
 def main():
     
-    #testing
-    user2 = User_class.User("Meekku","Melina","Kamunen","0400299293","mee@gamil.com")
+    user2 = User_class.User("Meekku","Melina","Kamunen","0400299293","mee@")
     user2.add_loan("12.4.2022","22.4.2022","Book loser")
     user2.add_loan("12.3.2022","12.4.2022","Secret book")
     print(user2)
