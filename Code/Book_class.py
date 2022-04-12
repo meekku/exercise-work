@@ -2,7 +2,7 @@
 # Author: Nea Träskman and Melina Kamunen
 # Description: Book_class.py is for creating book objects
 
-class Book_page():
+class Book():
 
     def __init__(self, name, genre, pages, producer, release_date, photo):
         self.__name = name

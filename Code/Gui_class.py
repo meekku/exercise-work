@@ -335,60 +335,37 @@ class BookPage(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        text3_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
-        text3_label.pack(pady=10,padx=10)
+        header_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label.pack(pady=10,padx=10)
 
         
         # base_folder is path help for finding right files
         base_folder = os.path.dirname(__file__)
 
-        # Let's get into book information text file and change its type from string 
-        # to dictionary with ast.literal_eval -tool
-        book_info_path = os.path.join(base_folder, 'book_information.txt')
-        book_info_file = open(book_info_path, "r")
-        book_info_data = book_info_file.read()
-        book_info_dict = ast.literal_eval(book_info_data)
+        book1 = Book_class.Book("I hate my life 3", "Fantasy", "3002", "Myself", "12.4.2022", "book2.png")
+        book2 = Book_class.Book("Students lost motivation", "Horror", "301", "Bookkers", "23.3.2003", "student_book.png")
+        book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book2.png")
+        books = [book1, book2, book3]
 
-         # Register button will run on_register() program that will check input
-        base_folder = os.path.dirname(__file__)
-        for i in book_info_dict:
-            # display
-            print(book_info_dict[i].values())
+        changing_y = 100
 
-        second_y = 100
-
-        dict_length=len(book_info_dict)
-
-        some_list = []
-        laps = 0
-
-        for key in range(dict_length):
+        for book in books:
             
-            laps = laps +1
-            book_id = 'book' + str(key + 1)
-            book_photo_id=book_info_dict[book_id]['photo']
-            some_list.append(book_photo_id)
+            # loan button three times
+            loan_button = tk.Button(self, text = "Loan", command=lambda: self.show_book(controller.show_frame(HomePage)))
+            loan_button.place(x=100, y=changing_y)
+            changing= changing_y + 100
 
-            print(book_photo_id)
-            Book_Button = tk.Button(self, text = book_info_dict[book_id]['name'], command=lambda: self.show_book(controller,book_info_dict,book_id, book_photo_id, some_list, laps, dict_length))
-            Book_Button.place(x=100, y=second_y)
-            second_y= second_y + 20
-
+            # information about spesific book three times
+            text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
+            text_label.pack(pady=10,padx=10)
 
 
-        #book_info_file.close()
 
 
     def show_book(self,controller, dict_obj, book_ID, photo_Please, somelist, laps, lengtti):
 
-        print(book_ID)
-        print(photo_Please)
-        print(laps)
-        for y in range(lengtti):
-            if dict_obj['book' + str(laps)]['photo']:
-                print("jeesus")
-        for i in somelist:
-            print(i)
+        print("dkk")
         # function that opens page for one spesific book that you click
 
         #base_folder = os.path.dirname(__file__)
