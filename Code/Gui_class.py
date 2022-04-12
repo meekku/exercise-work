@@ -192,15 +192,15 @@ class Page_Register(tk.Frame):
         # Set label for user's instruction
         register_label = tk.Label(self, text="Please enter details below", bg="white", fg="black", 
         font=('Helvetica', '16'))
-        register_label.pack(pady=10)
+        register_label.pack(pady=8)
 
         # Information text label
-        info_lable = tk.Label(self, text="Username: \n Password: \n First name: \n Last name: \n Phonenumber: \n E-mail: ", bg="white", fg="black")
-        info_lable.place(x=160, y=125)
+        info_label = tk.Label(self, text="Username: \n\n Password: \n\n First name: \n\n Last name: \n\n Phonenumber: \n\n E-mail: ", bg="white", fg="black", font=('Helvetica', '8'))
+        info_label.place(x=158, y=131)
 
         # Set username entry
         self.username_entry = tk.Entry(self, textvariable=self.username, bg="white", fg="black")
-        self.username_entry.pack()
+        self.username_entry.pack(pady=9)
 
         # Set password entry
         self.password_entry = tk.Entry(self, textvariable=self.password, show='*', bg="white", fg="black")
@@ -208,7 +208,7 @@ class Page_Register(tk.Frame):
 
         # Set first name entry
         self.first_name_entry = tk.Entry(self, textvariable=self.first_name, bg="white", fg="black")
-        self.first_name_entry.pack()
+        self.first_name_entry.pack(pady=9)
 
         # Set last name entry
         self.last_name_entry = tk.Entry(self, textvariable=self.last_name, bg="white", fg="black")
@@ -216,7 +216,7 @@ class Page_Register(tk.Frame):
 
         # Set phonenumber entry
         self.phone_entry = tk.Entry(self, textvariable=self.phone, bg="white", fg="black")
-        self.phone_entry.pack()
+        self.phone_entry.pack(pady=9)
 
         # Set email entry
         self.email_entry = tk.Entry(self, textvariable=self.email, bg="white", fg="black")
