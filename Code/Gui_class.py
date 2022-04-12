@@ -347,6 +347,7 @@ class BookPage(tk.Frame):
 
         for book in books:
             
+            # TÄHÄN COMMAND jossa lainaus luo jonkun lainaobjektin joka saadaan lisättyä käyttäjän lainoihin :D..... 
             # loan button three times
             loan_button = tk.Button(self, text = "Loan", command=lambda: controller.show_frame(HomePage))
             loan_button.place(x=100, y=changing_y)
