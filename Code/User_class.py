@@ -1,7 +1,7 @@
 # File-name: User_class.py
 # Author: Melina Kamunen and Nea Träskman
 # Description: User_class.py is class for creating spesific users to library program
-
+import Loan_class
 
 class User():
 
@@ -14,7 +14,14 @@ class User():
         self.__loans = []
     
     def __str__(self):
-        return "Username: " + str(self.get_user_name()) + "\nName: " + str(self.get_first_name()) + " " + str(self.get_last_name()) + "\n Phone: " + str(self.get_phonenumber()) + "\n E-mail: " + str(self.get_email())
+        st= "Username: " + str(self.get_user_name()) + "\nName: " + str(self.get_first_name()) + " " + str(self.get_last_name()) + "\n Phone: " + str(self.get_phonenumber()) + "\n E-mail: " + str(self.get_email())
+
+        if (len(self.__loans)>0):
+            st += ", \n loans: "
+            for i in self.__loans:
+                st += str(i) + ", "
+                
+        return st
     
 # Setters for user's properties
     def set_user_name(self, new_user_name):
@@ -41,8 +48,8 @@ class User():
         return self.__email
 
 
-    #def add_loan(self):
-        self.__loans.append(ex7_pet.Pet(pet_species,pet_name, pet_weight))
+    def add_loan(self, start, end, name, genre="-", pages="-", producer="-",release_date="-", photo="-"):
+        self.__loans.append(Loan_class.Loan(start,end,name, genre, pages, producer, release_date, photo))
 
     def return_loan(self):
         self.__loans.pop()

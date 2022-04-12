@@ -8,17 +8,16 @@ import User_class
 class Loan():
 
     id_counter = itertools.count()
-    def __init__(self, start_date, end_date, name, user_name, first_name, last_name):
+    def __init__(self, start_date, end_date, name, genre, pages, producer, release_date, photo):
         self.__loan_id =  next(Loan.id_counter) +1
         self.__start_date = start_date
         self.__end_date = end_date
         self.__invoice_amount = 0 # at the beginning
 
-        Book_class.Book.__init__(self, name)
-        User_class.User.__init__(self,user_name, first_name, last_name)
+        Book_class.Book.__init__(self, name, genre, pages, producer, release_date, photo)
     
     def __str__(self):
-        st = "Loan" + str(self.get_loan_id()) + ", " + Book_class.Book.get_name() + " has been loaned  " + str(self.get_start_date()) + " \n by:  " + User_class.User.get_first_name() + " " +  User_class.User.get_last_name() + "\n Expiration date is: " + str(self.get_end_date()) + " and invoice amount: " + str(self.get_invoice_amount())
+        st = "Loan" + str(self.get_loan_id()) + ", Loan time:" + str(self.get_start_date()) + " -  " + str(self.get_end_date()) + " and invoice amount: " + str(self.get_invoice_amount())
 
         return st
 
@@ -30,7 +29,7 @@ class Loan():
 
 
 # Getters for loan's properties
-    def get_loand_id(self):
+    def get_loan_id(self):
         return self.__loan_id
     def get_start_date(self):
         return self.__start_date

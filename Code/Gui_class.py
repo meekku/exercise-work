@@ -433,9 +433,13 @@ class ProfilePage(tk.Frame):
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
 
-        log_out_button = tk.Button(self, text='Log out', height="2", width="20",
+        return_button = tk.Button(self, text='Return to library', height="2", width="20",
+        command=lambda: controller.show_frame(Library_Page))
+        return_button.place(x=220, y=250)
+
+        log_out = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: controller.show_frame(HomePage))
-        log_out_button.place(x=220, y=300)
+        log_out.place(x=220, y=300)
 
 
 
