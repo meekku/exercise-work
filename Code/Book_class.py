@@ -1,26 +1,44 @@
 # File-name: Book_class.py
 # Author: Nea Träskman and Melina Kamunen
-# Description:
-import os
-import tkinter as tk
-from tkinter import *
-import Gui_class
-import Loan_class
+# Description: Book_class.py is for creating book objects
 
 class Book_page():
-    def __init__(self):
-        tk.Frame.__init__(self)
 
-        # image label
-        #bg_label = tk.Label(self, image = Gui_class.img)
-        #bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+    def __init__(self, name, genre, pages, producer, release_date, photo):
+        self.__name = name
+        self.__genre = genre
+        self.__pages = pages
+        self.__producer = producer
+        self.__release_date = release_date
+        self.__photo = photo
+    
+    def __str__(self):
+        return "Book's name: " + str(self.get_name()) + "\n Genre: " + str(self.get_genre()) + "\n Pages: " + str(self.get_pages()) + "\n Producer: " + str(self.get_producer()) + "\n Release date: " + str(self.get_release_date())
+    
+# Setters for book's properties
+    def set_name(self, new_name):
+        self.__name = new_name
+    def set_genre(self, new_genre):
+        self.__genre = new_genre
+    def set_pages(self, new_pages):
+        self.__pages = new_pages
+    def set_producer(self, new_producer):
+        self.__producer = new_producer
+    def set_release_date(self, new_release_date):
+        self.__release_date = new_release_date
+    def set_photo(self, new_photo):
+        self.__photo = new_photo
 
-        text3_label = tk.Label(self, text="Do you wan't to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
-        text3_label.pack(pady=10,padx=10)
-
-        base_folder = os.path.dirname(__file__)
-        
-        # Importing images to be used as a buttons
-        book_image_path = os.path.join(base_folder, 'book_icon.png')
-        self.Book_Image = tk.PhotoImage(file = book_image_path)
-        self.Book_Icon = self.Book_Image.subsample(7, 5) # Resizing the image to fit on the button
+# Getters for book's properties
+    def get_name(self):
+        return self.__name
+    def get_genre(self):
+        return self.__genre
+    def get_pages(self):
+        return self.__pages
+    def get_producer(self):
+        return self.__producer
+    def get_release_date(self):
+        return self.__release_date
+    def get_photo(self):
+        return self.__photo
