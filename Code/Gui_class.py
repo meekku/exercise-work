@@ -196,7 +196,7 @@ class Page_Register(tk.Frame):
 
         # Information text label
         info_lable = tk.Label(self, text="Username: \n Password: \n First name: \n Last name: \n Phonenumber: \n E-mail: ", bg="white", fg="black")
-        info_lable.place(x=170, y=125)
+        info_lable.place(x=160, y=125)
 
         # Set username entry
         self.username_entry = tk.Entry(self, textvariable=self.username, bg="white", fg="black")
