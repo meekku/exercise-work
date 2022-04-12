@@ -11,6 +11,7 @@ class Book():
         self.__producer = producer
         self.__release_date = release_date
         self.__photo = photo
+
     
     def __str__(self):
         return "Book's name: " + str(self.get_name()) + "\n Genre: " + str(self.get_genre()) + "\n Pages: " + str(self.get_pages()) + "\n Producer: " + str(self.get_producer()) + "\n Release date: " + str(self.get_release_date())

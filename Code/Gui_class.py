@@ -338,13 +338,9 @@ class BookPage(tk.Frame):
         header_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
 
-        
-        # base_folder is path help for finding right files
-        base_folder = os.path.dirname(__file__)
-
-        book1 = Book_class.Book("I hate my life 3", "Fantasy", "3002", "Myself", "12.4.2022", "book2.png")
-        book2 = Book_class.Book("Students lost motivation", "Horror", "301", "Bookkers", "23.3.2003", "student_book.png")
-        book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book2.png")
+        book1 = Book_class.Book("I hate my life 3", "Fantasy", "3002", "Myself", "12.4.2022", "book1.png")
+        book2 = Book_class.Book("Students lost motivation", "Horror", "301", "Bookkers", "23.3.2003", "book2.png")
+        book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book3.png")
         books = [book1, book2, book3]
 
         changing_y = 100
@@ -352,35 +348,38 @@ class BookPage(tk.Frame):
         for book in books:
             
             # loan button three times
-            loan_button = tk.Button(self, text = "Loan", command=lambda: self.show_book(controller.show_frame(HomePage)))
+            loan_button = tk.Button(self, text = "Loan", command=lambda: controller.show_frame(HomePage))
             loan_button.place(x=100, y=changing_y)
-            changing= changing_y + 100
+            changing_y= changing_y + 100
 
             # information about spesific book three times
             text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
             text_label.pack(pady=10,padx=10)
 
+        # NOW let's add images for books
+        # base_folder is path help for finding right files
+        base_folder = os.path.dirname(__file__)
 
+        # book1 -object's image
+        book1_cover_path = os.path.join(base_folder + '\\book_pics\\' + book1.get_photo())
+        self.book1_cover = tk.PhotoImage(file = book1_cover_path)
+        self.book1_cover_img = self.book1_cover.subsample(2, 2)
+        book1_img_label = tk.Label(self, image = self.book1_cover_img)
+        book1_img_label.place(x=450, y=70)
 
+        # book2 -object's image
+        book2_cover_path = os.path.join(base_folder + '\\book_pics\\' + book2.get_photo())
+        self.book2_cover = tk.PhotoImage(file = book2_cover_path)
+        self.book2_cover_img = self.book2_cover.subsample(2, 2)
+        book2_img_label = tk.Label(self, image = self.book2_cover_img)
+        book2_img_label.place(x=455, y=175)
 
-    def show_book(self,controller, dict_obj, book_ID, photo_Please, somelist, laps, lengtti):
+        # book3 -object's image
+        book3_cover_path = os.path.join(base_folder + '\\book_pics\\' + book3.get_photo())
+        self.book3_cover = tk.PhotoImage(file = book3_cover_path)
+        self.book3_cover_img = self.book3_cover.subsample(2, 2)
+        book3_img_label = tk.Label(self, image = self.book3_cover_img)
+        book3_img_label.place(x=450, y=280)
 
-        print("dkk")
-        # function that opens page for one spesific book that you click
-
-        #base_folder = os.path.dirname(__file__)
-        #print("Howdy")
-        #book_cover_path = os.path.join(base_folder + '\\book_pics\\' + dict_obj[book_ID]['photo'])
-        #self.book_cover = tk.PhotoImage(file = book_cover_path)
-        #self.book_cover_img = self.book_cover.subsample(16, 17)
-
-        #opo_label = tk.Label(self, image = self.book_cover_img)
-        #opo_label.photo=self.book_cover_img
-        #opo_label.place(x=0, y=0, relwidth=1, relheight=1)
-
-        # Back button returns to BookPage
-        #back_button = tk.Button(self, text='Go back', height="2", width="20",
-        #command=lambda: controller.show_frame(HomePage))
-        #back_button.pack(pady=10)
         
         
