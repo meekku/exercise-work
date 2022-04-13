@@ -11,6 +11,7 @@ import random
 
 from setuptools import Command
 
+
 class App(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
@@ -25,6 +26,7 @@ class App(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         container.configure(bg="white")
+
 
         #Initialize frames
         self.frames = {}
@@ -459,6 +461,7 @@ class BookPage(tk.Frame):
         # basefolder file to help searching right files
         base_folder = os.path.dirname(__file__)
 
+      
 
         # we make loan object from that book which button user pressed
         new_loan = Loan_class.Loan("12.4.2022","12.5.2022",book.get_name(),book.get_genre(),book.get_pages(),book.get_producer(),book.get_release_date(),book.get_photo())
@@ -521,20 +524,60 @@ class ProfilePage(tk.Frame):
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 self.current_user = User_class.User(user_name, fname, lname, phone, email)
 
-        # we do this function so we get old loans also on shown
-        self.update_loans()
-            
-        print(self.current_user.show_loans_length())   
         
+     
+                    # first file is for finding username:loan_id pattern from file
+        username_as_string = self.current_user.get_user_name()
+        print(username_as_string)
+        username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
+        self.username_loan_file = open(username_loan_path).readlines()
 
+        # second file is for finding loans for that loan_id
+        loan_file_path = os.path.join(self.base_folder, 'loans.txt')
+        self.loan_file = open(loan_file_path).readlines()
 
-        
+        # first we are going through lines and trying to find current login username
+        for line3 in self.username_loan_file:
+
+            if " " + username_as_string + " : " in line3:
+
+                # if we find username we will split : from it and
+                # make it a list where we will use id variable at next for-loop
+                row3 = line3.split(':')
+                user, id = [t.strip() for t in row3]
+
+                # this for loop finds loans with that spesific id
+                for line2 in self.loan_file:
+
+                        # if we find we will split "," from it and strip it for 
+                        # making loan object which we will add for the users loans 
+                    if id in line2:
+                        row2 = line2.split(',')
+                        loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
+                        self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
+        laps = 0                
+        x_axel = 40
+        y_axel = 60
+ 
+        for one_loan in self.current_user.get_loans():
+            laps +=1
+            loan_text_label = tk.Label(self, text=one_loan, bg="white", fg="black", font=('Helvetica', '7'))
+            loan_text_label.place(x=x_axel,y=y_axel)
+            y_axel = y_axel + 110
+
+            if laps == 3:
+                y_axel = 170
+                x_axel += 180
+            elif laps == 5:
+                y_axel = 60
+                x_axel += 190
+
         # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
  
         # profile text information
-        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
+        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black", font=('Latha', '10', 'bold'))
         profile_text_label.pack(pady=10,padx=10)
 
         # this button is for getting loans that has been done in that login moment
@@ -542,44 +585,26 @@ class ProfilePage(tk.Frame):
         command=lambda: self.update_loans())
         update_button.place(x=100, y=2)
 
-        # button for returning
+        # this button is for returning loan
+        return_loan_button = tk.Button(self, text='Return loan', height="1", width="10",
+        command=lambda: self.return_loan(controller))
+        return_loan_button.place(x=410, y=2)
+
+        # button for returning back to library page
         return_button = tk.Button(self, text='<<', height="1", width="10",
         command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
 
-
-
     def update_loans(self):
-        # first file is for finding username:loan_id pattern from file
-        username_as_string = self.current_user.get_user_name()
-        print(username_as_string)
-        username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
-        username_loan_file = open(username_loan_path).readlines()
 
-        # second file is for finding loans for that loan_id
-        loan_file_path = os.path.join(self.base_folder, 'loans.txt')
-        loan_file = open(loan_file_path).readlines()
+        print("fk")
 
-        for line3 in username_loan_file:
+            
+    
 
-            if " " + username_as_string + " : " in line3:
-                print(line3)
-                row3 = line3.split(':')
-                print(row3)
-                user, id = [t.strip() for t in row3]
-        
-                for line2 in loan_file:
-                    if id in line2:
-                        print(line2)
-                        row2 = line2.split(',')
-                        loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
-                        self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
-        
-        y_axel = 40
-        for one_loan in self.current_user.get_loans():
-            loan_text_label = tk.Label(self, text=one_loan, bg="white", fg="black", font=('Helvetica', '7'))
-            loan_text_label.place(x=40,y=y_axel)
-            y_axel = y_axel + 90
+    def return_loan(self):
+        # Tässä pitäisi nyt koittaa pyyhkiä tietty laina id kahdesta teksti tiedostoista ja mahollisesti objektin lainalistastaki
+        print("Ohlord")
 
 
 
