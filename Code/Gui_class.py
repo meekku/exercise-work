@@ -500,34 +500,64 @@ class ProfilePage(tk.Frame):
         current_user = ""
 
         # basefolder file to help searching right files
-        base_folder = os.path.dirname(__file__)
+        self.base_folder = os.path.dirname(__file__)
 
         # this file shows what user is now login
-        f_path = os.path.join(base_folder, 'current_user.txt')
+        f_path = os.path.join(self.base_folder, 'current_user.txt')
         open_file = open(f_path, "r")
-        current_username = open_file.readline()
+        self.current_username = open_file.readline()
 
         # we will find user's information
         # from profile_info.txt file where is all users 
         # registrationg informations saved
-        usernames_file_path = os.path.join(base_folder, 'profile_info.txt')
+        usernames_file_path = os.path.join(self.base_folder, 'profile_info.txt')
         usernames_file = open(usernames_file_path).readlines()
 
         # this for loop finds line for username which
         # is login at the moment and creates object of that user info
         for line in usernames_file:
-            if current_username in line:
+            if self.current_username in line:
                 row = line.split(',')
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
-                current_user = User_class.User(user_name, fname, lname, phone, email)
-        #print(current_user)
+                self.current_user = User_class.User(user_name, fname, lname, phone, email)
 
+        # we do this function so we get old loans also on shown
+        self.update_loans()
+            
+        print(self.current_user.show_loans_length())   
+        
+
+
+        
+        # header
+        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label.pack(pady=10,padx=10)
+ 
+        # profile text information
+        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
+        profile_text_label.pack(pady=10,padx=10)
+
+        # this button is for getting loans that has been done in that login moment
+        update_button = tk.Button(self, text='Update loans', height="1", width="10",
+        command=lambda: self.update_loans())
+        update_button.place(x=100, y=2)
+
+        # button for returning
+        return_button = tk.Button(self, text='<<', height="1", width="10",
+        command=lambda: controller.show_frame(Library_Page))
+        return_button.place(x=2, y=2)
+
+
+
+    def update_loans(self):
         # first file is for finding username:loan_id pattern from file
-        username_as_string = current_user.get_user_name()
-        username_loan_path = os.path.join(base_folder, 'loan_and_user.txt')
+        username_as_string = self.current_user.get_user_name()
+        print(username_as_string)
+        username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
         username_loan_file = open(username_loan_path).readlines()
+
         # second file is for finding loans for that loan_id
-        loan_file_path = os.path.join(base_folder, 'loans.txt')
+        loan_file_path = os.path.join(self.base_folder, 'loans.txt')
         loan_file = open(loan_file_path).readlines()
 
         for line3 in username_loan_file:
@@ -543,22 +573,18 @@ class ProfilePage(tk.Frame):
                         print(line2)
                         row2 = line2.split(',')
                         loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
-                        current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
+                        self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
+        
+        y_axel = 40
+        for one_loan in self.current_user.get_loans():
+            loan_text_label = tk.Label(self, text=one_loan, bg="white", fg="black", font=('Helvetica', '7'))
+            loan_text_label.place(x=40,y=y_axel)
+            y_axel = y_axel + 90
 
 
-            
-        # header
-        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
-        header_label.pack(pady=10,padx=10)
- 
-        # profile text information
-        profile_text_label = tk.Label(self, text=current_user, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
-        profile_text_label.pack(pady=10,padx=10)
 
-        # button for returning
-        return_button = tk.Button(self, text='<<', height="1", width="10",
-        command=lambda: controller.show_frame(Library_Page))
-        return_button.place(x=2, y=2)
+
+
 
 
 

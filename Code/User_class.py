@@ -16,10 +16,7 @@ class User():
     def __str__(self):
         st= "Username: " + str(self.get_user_name()) + "\nName: " + str(self.get_first_name()) + " " + str(self.get_last_name()) + "\n Phone: " + str(self.get_phonenumber()) + "\n E-mail: " + str(self.get_email())
 
-        if (len(self.__loans)>0):
-            st += ", \n loans: "
-            for i in self.__loans:
-                st += str(i) + ", "
+
                 
         return st
     
@@ -46,6 +43,8 @@ class User():
         return self.__phonenumber
     def get_email(self):
         return self.__email
+    def get_loans(self):
+        return self.__loans
 
 
     def add_loan(self,loan_id, start, end, name, genre="-", pages="-", producer="-",release_date="-", photo="-"):
@@ -53,13 +52,18 @@ class User():
         new_loan.set_loan_id(loan_id)
         self.__loans.append(new_loan)
     
-
+    def print_loans(self):
+        st=""
+        if (len(self.__loans)>0):
+            st += ", \n loans: "
+            for i in self.__loans:
+                st += str(i) + ", "
+        return st
 
     def return_loan(self):
         self.__loans.pop()
      
-    def show_loans(self):
-        for i in self.__loans:
-            print(i)
+    def show_loans_length(self):
+        return len(self.__loans)
 
     
