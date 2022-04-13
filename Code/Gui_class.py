@@ -585,7 +585,7 @@ class ProfilePage(tk.Frame):
 
         # this button is for returning loan
         return_loan_button = tk.Button(self, text='Return loan', height="1", width="10",
-        command=lambda: self.return_loan(controller))
+        command=lambda: self.return_loan())
         return_loan_button.place(x=410, y=2)
 
         # button for returning back to library page
@@ -606,48 +606,35 @@ class ProfilePage(tk.Frame):
      
         # this file is for finding username:loan_id pattern from file
         username_as_string = self.current_user.get_user_name()
-        print(username_as_string)
+    
+
         username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
-        self.username_loan_file = open(username_loan_path).readlines()
+  
 
         # this file is for finding loans for that loan_id
         loan_file_path = os.path.join(self.base_folder, 'loans.txt')
-        self.loan_file = open(loan_file_path).readlines()
+  
 
         with open(username_loan_path, "r") as f:
             lines = f.readlines()
         with open(username_loan_path, "w") as f:
             for line in lines:
-                if line.strip("\n") != " " + username_as_string + " : " :
+                if line.strip("\n") == " " + username_as_string + " : " :
+                    row = line.split(':')
+                    user, id = [i.strip() for i in row]
                     f.write(line)
-                    
-                    # next file
-                    with open(loan_file_path, "r") as f2:
-                        lines2 = f2.readlines()
-                    with open(loan_file_path, "w") as f2:
-                        for line2 in lines2:
-                            if line2.strip("\n") != " " + username_as_string + " : " :
-                                f2.write(line2)
-        # first we are going through lines and trying to find current login username
-        for line3 in self.username_loan_file:
 
-            if " " + username_as_string + " : " in line3:
+                    # next file täs on issue
+                with open(loan_file_path, "r") as f2:
+                    lines2 = f2.readlines()
+                with open(loan_file_path, "w") as f2:
+                    for line2 in lines2:
+                        if id in line2:
+                            f2.write(line2)
 
-                # if we find username we will split : from it and
-                # make it a list where we will use id variable at next for-loop
-                row3 = line3.split(':')
-                user, id = [t.strip() for t in row3]
-
-                # this for loop finds loans with that spesific id
-                for line2 in self.loan_file:
-
-                        # if we find we will split "," from it and strip it for 
-                        # making loan object which we will add for the users loans 
-                    if id in line2:
-                        row2 = line2.split(',')
-                        loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
-                        self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
-
+        for loan in self.current_user.get_loans():
+            self.current_user.return_loan()
+        self.current_user.print_loans()
 
 
 
