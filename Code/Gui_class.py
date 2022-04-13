@@ -619,18 +619,24 @@ class ProfilePage(tk.Frame):
             lines = f.readlines()
         with open(username_loan_path, "w") as f:
             for line in lines:
-                if line.strip("\n") == " " + username_as_string + " : " :
+                if " " + username_as_string + " : " in line :
                     row = line.split(':')
                     user, id = [i.strip() for i in row]
-                    f.write(line)
 
                     # next file täs on issue
-                with open(loan_file_path, "r") as f2:
-                    lines2 = f2.readlines()
-                with open(loan_file_path, "w") as f2:
-                    for line2 in lines2:
-                        if id in line2:
-                            f2.write(line2)
+                    with open(loan_file_path, "r") as f2:
+                        lines2 = f2.readlines()
+                    with open(loan_file_path, "w") as f2:
+                        for line2 in lines2:
+                            if id in line2:
+                                f2.write(line2)
+
+        with open(username_loan_path, "r") as f3:
+            lines3 = f3.readlines()
+        with open(username_loan_path, "w") as f3:
+            for line3 in lines3:
+                if " " + username_as_string + " : " in line3 :
+                    f.write(line3)
 
         for loan in self.current_user.get_loans():
             self.current_user.return_loan()
