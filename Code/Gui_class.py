@@ -472,7 +472,7 @@ class BookPage(tk.Frame):
         # save username and loan id for profile purposes
         file2_path = os.path.join(base_folder, 'loan_and_user.txt')
         f2 = open(file2_path, "a+")
-        f2.write(current_user + ":" + new_loan.get_loan_id()+ "\n")
+        f2.write(" " + current_user + " : " + new_loan.get_loan_id()+ "\n")
         f2.close()
 
         # Save loan information
@@ -520,20 +520,32 @@ class ProfilePage(tk.Frame):
                 row = line.split(',')
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 current_user = User_class.User(user_name, fname, lname, phone, email)
-        print(current_user)
-        # this for loop finds line for loan id and username
-        # is login at the moment and creates object of that user info
+        #print(current_user)
+
+        # first file is for finding username:loan_id pattern from file
+        username_as_string = current_user.get_user_name()
+        username_loan_path = os.path.join(base_folder, 'loan_and_user.txt')
+        username_loan_file = open(username_loan_path).readlines()
+        # second file is for finding loans for that loan_id
         loan_file_path = os.path.join(base_folder, 'loans.txt')
         loan_file = open(loan_file_path).readlines()
-        for line2 in loan_file:
-            if '7854888000' in line2:
-                print(line2)
-                row2 = line2.split(',')
-                loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
-                current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
-                
-        print(current_user)
-        print(current_user.show_loans())
+
+        for line3 in username_loan_file:
+
+            if " " + username_as_string + " : " in line3:
+                print(line3)
+                row3 = line3.split(':')
+                print(row3)
+                user, id = [t.strip() for t in row3]
+        
+                for line2 in loan_file:
+                    if id in line2:
+                        print(line2)
+                        row2 = line2.split(',')
+                        loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
+                        current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
+
+
             
         # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))

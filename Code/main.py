@@ -9,8 +9,6 @@ import Gui_class
 def main():
     
 
-  
-
     app = Gui_class.App()
     app.mainloop()
 
