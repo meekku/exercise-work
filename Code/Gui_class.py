@@ -495,6 +495,7 @@ class ProfilePage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
+        labels = []
         # image label
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -523,7 +524,37 @@ class ProfilePage(tk.Frame):
                 row = line.split(',')
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 self.current_user = User_class.User(user_name, fname, lname, phone, email)
-     
+
+        self.update_loans(labels)
+        # header
+        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label.pack(pady=10,padx=10)
+ 
+        # profile text information
+        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black", font=('Latha', '10', 'bold'))
+        profile_text_label.pack(pady=10,padx=10)
+
+        # this button is for getting loans that has been done in that login moment
+        update_button = tk.Button(self, text='Update loans', height="1", width="10",
+        command=lambda:self.update_loans(labels))
+        update_button.place(x=100, y=2)
+
+
+        # button for returning back to library page
+        return_button = tk.Button(self, text='<<', height="1", width="10",
+        command=lambda: controller.show_frame(Library_Page))
+        return_button.place(x=2, y=2)
+    
+
+
+    def update_loans(self,labels):
+        
+        if len(labels)>0:
+            for label in labels:
+                print(label)
+                label.destroy()
+                print(label)
+        
         # this file is for finding username:loan_id pattern from file
         username_as_string = self.current_user.get_user_name()
         print(username_as_string)
@@ -536,9 +567,7 @@ class ProfilePage(tk.Frame):
 
         # first we are going through lines and trying to find current login username
         for line3 in self.username_loan_file:
-
             if " " + username_as_string + " : " in line3:
-
                 # if we find username we will split : from it and
                 # make it a list where we will use id variable at next for-loop
                 row3 = line3.split(':')
@@ -546,7 +575,6 @@ class ProfilePage(tk.Frame):
 
                 # this for loop finds loans with that spesific id
                 for line2 in self.loan_file:
-
                         # if we find we will split "," from it and strip it for 
                         # making loan object which we will add for the users loans 
                     if id in line2:
@@ -556,65 +584,52 @@ class ProfilePage(tk.Frame):
         laps = 0                
         x_axel = 40
         y_axel = 60
- 
+        # Here we are setting text labels for all loans
         for one_loan in self.current_user.get_loans():
             laps +=1
             loan_text_label = tk.Label(self, text=one_loan, bg="white", fg="black", font=('Helvetica', '7'))
             loan_text_label.place(x=x_axel,y=y_axel)
+            labels.append(loan_text_label)
             y_axel = y_axel + 110
 
-            if laps == 3:
+            if laps == 3: # when third label is added position will change
                 y_axel = 170
                 x_axel += 180
-            elif laps == 5:
+            elif laps == 5: # when fifth label is added position will change
                 y_axel = 60
                 x_axel += 190
 
-        # header
-        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
-        header_label.pack(pady=10,padx=10)
- 
-        # profile text information
-        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black", font=('Latha', '10', 'bold'))
-        profile_text_label.pack(pady=10,padx=10)
-
-        # this button is for getting loans that has been done in that login moment
-        update_button = tk.Button(self, text='Update loans', height="1", width="10",
-        command=lambda: self.update_loans())
-        update_button.place(x=100, y=2)
-
-        # this button is for returning loan
-        return_loan_button = tk.Button(self, text='Return loan', height="1", width="10",
-        command=lambda: self.return_loan())
-        return_loan_button.place(x=410, y=2)
-
-        # button for returning back to library page
-        return_button = tk.Button(self, text='<<', height="1", width="10",
-        command=lambda: controller.show_frame(Library_Page))
-        return_button.place(x=2, y=2)
-
-    def update_loans(self):
+            # returning buttons for loans   
+            return_loan_button = tk.Button(self, text='Return loan', height="1", width="10",
+            command=lambda: self.return_loan(one_loan, laps))
+            return_loan_button.place(x=x_axel -20, y=y_axel)
 
         print("fk")
+
         # EI TUUU VITTU MITÄÄÄÄÄÄÄÄN en saa noita uusimpia lainojaaaaaaaaaaaaaaajsc
+        # päivittämisen kanssa ongelmia aina pitää alottaa tavallaa uus erä että toi päivittyy mut jotenkin tän
+        # pitäis onnistuu laittaa noi tektilaatikot uudellee :(
+        # ideaa: kenttään mahtuu 8 lainaa, jos luo sen verran buttoneita mitä on lainoja
+        # mutta niissä buttoneissa ei kyllä ikinä etene mikää parametri 
+        # kun se ottaa aina sen viimeisimmän :)
+        # command=lambda:text_label.destroy(), self.update_loans() ????
+        # ^^ tuo hyötyyn 
             
-    
-
-    def return_loan(self):
+    def return_loan(self, loan, lap):
         # Tässä pitäisi nyt koittaa pyyhkiä tietty laina id kahdesta teksti tiedostoista ja mahollisesti objektin lainalistastaki
-
-     
+        # tällä hetkellä poistaa kaikki tietyn käyttäjän lainat
+        print(loan)
+        print(lap)
         # this file is for finding username:loan_id pattern from file
         username_as_string = self.current_user.get_user_name()
     
-
+        # this file is for finding loan and username pattern
         username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
-  
 
         # this file is for finding loans for that loan_id
         loan_file_path = os.path.join(self.base_folder, 'loans.txt')
   
-
+        # here we remove from loans.txt file
         with open(username_loan_path, "r") as f:
             lines = f.readlines()
         with open(username_loan_path, "w") as f:
@@ -631,6 +646,7 @@ class ProfilePage(tk.Frame):
                             if id in line2:
                                 f2.write(line2)
 
+        # here we remove from loan_and_user.txt file 
         with open(username_loan_path, "r") as f3:
             lines3 = f3.readlines()
         with open(username_loan_path, "w") as f3:
@@ -638,9 +654,10 @@ class ProfilePage(tk.Frame):
                 if " " + username_as_string + " : " in line3 :
                     f.write(line3)
 
+        # here we remove user objects loans
         for loan in self.current_user.get_loans():
             self.current_user.return_loan()
-        self.current_user.print_loans()
+
 
 
 
