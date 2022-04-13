@@ -598,7 +598,7 @@ class ProfilePage(tk.Frame):
     def update_loans(self):
 
         print("fk")
-
+        # EI TUUU VITTU MITÄÄÄÄÄÄÄÄN en saa noita uusimpia lainojaaaaaaaaaaaaaaajsc
             
     
 
