@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import *
 import os
-
 from colorama import Back
 import Book_class
 import ast
@@ -75,6 +74,7 @@ class HomePage(tk.Frame):
         Close_App.pack(pady=20)
 
 class Page_Login(tk.Frame):
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -118,11 +118,14 @@ class Page_Login(tk.Frame):
         back_button.pack(pady=10)
     
     def login_verify(self,controller): 
-        
+        # Here we see if user's input
+        # matches information ar user_information.txt
+        # if yes then user can log in and sees librarypage
+
         # get the username and the password
         verify_username = self.username_login.get()
         verify_password = self.password_login.get()
-        combination = verify_username + ":" + verify_password
+        combination = verify_username + ":" + verify_password # this is what we are looking for from the file
         found = False
 
         # finding the file where user information is
@@ -150,8 +153,6 @@ class Page_Login(tk.Frame):
             show_msg.config(bg="lightblue", font=("times",15))
             show_msg.pack() 
 
-        
-
         # deletes the entries after login button is pressed
         self.username_login_entry.delete(0, END)
         self.password_login_entry.delete(0, END)
@@ -168,7 +169,9 @@ class Page_Login(tk.Frame):
 
 
 class Page_Register(tk.Frame):
-
+    # in this class we ask user's information
+    # check that it is valid and save it for 
+    # further purposes
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -177,9 +180,11 @@ class Page_Register(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        self.text3_label = tk.Label(self, text="E-Library Register", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
-        self.text3_label.pack(pady=10,padx=10)
+        # header
+        self.header_label = tk.Label(self, text="E-Library Register", bg="white", fg="black", font=('Helvetica', '32', 'bold'))
+        self.header_label.pack(pady=10,padx=10)
 
+        # let's initialize all variables
         self.username = StringVar()
         self.password = StringVar()
         self.first_name = StringVar()
@@ -188,9 +193,9 @@ class Page_Register(tk.Frame):
         self.email = StringVar()
 
         # Set label for user's instruction
-        register_label = tk.Label(self, text="Please enter details below", bg="white", fg="black", 
+        instruction_label = tk.Label(self, text="Please enter details below", bg="white", fg="black", 
         font=('Helvetica', '16'))
-        register_label.pack(pady=8)
+        instruction_label.pack(pady=8)
 
         # Information text label
         info_label = tk.Label(self, text="Username: \n\n Password: \n\n First name: \n\n Last name: \n\n Phonenumber: \n\n E-mail: ", bg="white", fg="black", font=('Helvetica', '8'))
@@ -231,12 +236,12 @@ class Page_Register(tk.Frame):
         back_button.pack(pady=5)
 
     def on_register(self,controller):
-        # This function checks that users input values are valid and if they are
-        # it will save them to txt file and return homepage
+        # This function first runs reg_validation() which
+        # checks that users input values are valid, if they are
+        # it will run save_input() function that will save
+        # information. After that it will go to Homepage and clear entries
 
         if self.reg_validation()==True:
-
-
             # save_input function saves password and username for login purposes
             self.save_input()
 
@@ -251,35 +256,11 @@ class Page_Register(tk.Frame):
             self.username_entry.delete(0, END)
             self.password_entry.delete(0, END)
 
-    
-
-    def save_input(self):
-        
-        # FIRST LET'S SAVE PASSWORD AND USERNAME FOR LOGIN
-        # get the username and password
-        get_username = self.username.get()
-        get_password = self.password.get()
-
-        # open file where the data goes
-        base_folder = os.path.dirname(__file__)
-        information_file_path = os.path.join(base_folder, 'user_information.txt')
-        user_file = open(information_file_path, "a+")
-        print("File opened.")
-        user_file.write(get_username + ":" + get_password + "\n")
-        print("Closing file.")
-        user_file.close()
-
-        # LET'S SAVE ALL USER INFO FOR PROFILE
-        # open file where the data goes
-        users_file_path = os.path.join(base_folder, 'profile_info.txt')
-        users_file = open(users_file_path, "a+")
-        users_file.write(self.username.get() + "," + self.first_name.get()+ "," + self.last_name.get()+ "," + self.phone.get() + "," +self.email.get() + "\n")
-        users_file.close()
-
-        
     def reg_validation(self):
+        # this function checks that users input
+        # is valid for registration
             tk = Tk()
-            name = self.username.get()
+            name = self.username.get() 
             pw = self.password.get()
             msg = ''
             its_valid = False  # this is false until username and password are valid
@@ -318,17 +299,43 @@ class Page_Register(tk.Frame):
                         
                     except Exception as ep:
                         msg = "Error: " +  ep
-            
-
 
             # Displays information message to user
             show_msg = Message(tk, text = msg)
             show_msg.config(bg=bg_color, font=("times",15))
             show_msg.pack() 
-            return its_valid
-            
+            return its_valid      
+
+    def save_input(self):
+        # this functions saves users input to two files
+        # user_information.txt will contain username and password
+        # for login purposes and profile_info.txt contains 
+        # all asked information except password
+
+        # get the username and password
+        get_username = self.username.get()
+        get_password = self.password.get()
+
+        # Here we save password and username only
+        # open file where the data goes
+        base_folder = os.path.dirname(__file__)
+        information_file_path = os.path.join(base_folder, 'user_information.txt')
+        user_file = open(information_file_path, "a+")
+        print("File opened.")
+        user_file.write(get_username + ":" + get_password + "\n")
+        print("Closing file.")
+        user_file.close()
+
+        # Here we save all information except password
+        # open file where the data goes
+        users_file_path = os.path.join(base_folder, 'profile_info.txt')
+        users_file = open(users_file_path, "a+")
+        users_file.write(self.username.get() + "," + self.first_name.get()+ "," + self.last_name.get()+ "," + self.phone.get() + "," +self.email.get() + "\n")
+        users_file.close()
+
 
 class Library_Page(tk.Frame):
+    # This is first screen that we see after login
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
@@ -336,9 +343,11 @@ class Library_Page(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        text3_label = tk.Label(self, text="Do you wan't to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
-        text3_label.pack(pady=10,padx=10)
+        # header label
+        header_label = tk.Label(self, text="Do you wan't to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label.pack(pady=10,padx=10)
 
+        # base folder to help find right file
         base_folder = os.path.dirname(__file__)
         
         # Importing images to be used as a buttons
@@ -386,9 +395,12 @@ class BookPage(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+        # header
         header_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
 
+        # our books as an objects so we can use for loop to
+        # show their information
         book1 = Book_class.Book("I hate my life 3", "Fantasy", "3002", "Myself", "12.4.2022", "book1.png")
         book2 = Book_class.Book("Students lost motivation", "Horror", "301", "Bookkers", "23.3.2003", "book2.png")
         book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book3.png")
@@ -403,7 +415,7 @@ class BookPage(tk.Frame):
         loan3_button.place(x=100, y=290)
 
         for book in books:
-            # information about spesific book three times
+            # text labels which contains all three book's information
             text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
             text_label.pack(pady=10,padx=10)
 
@@ -432,6 +444,7 @@ class BookPage(tk.Frame):
         book3_img_label = tk.Label(self, image = self.book3_cover_img)
         book3_img_label.place(x=450, y=280)
 
+        # return button
         return_button = tk.Button(self, text='<<', height="1", width="10",
         command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
@@ -452,23 +465,25 @@ class ProfilePage(tk.Frame):
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+        # initializing current_user, this is not a must
         current_user = ""
 
-
+        # basefolder file to help searching right files
         base_folder = os.path.dirname(__file__)
+
         # this file shows what user is now login
         f_path = os.path.join(base_folder, 'current_user.txt')
         open_file = open(f_path, "r")
         current_username = open_file.readline()
 
         # we will find user's information
-        # from profile_info.txt file where it saved
-        # when registration
+        # from profile_info.txt file where is all users 
+        # registrationg informations saved
         usernames_file_path = os.path.join(base_folder, 'profile_info.txt')
         usernames_file = open(usernames_file_path).readlines()
 
-        # this for loop finds line for spesific 
-        # username
+        # this for loop finds line for username which
+        # is login at the moment and creates object of that user info
         for line in usernames_file:
             if current_username in line:
                 row = line.split(',')
