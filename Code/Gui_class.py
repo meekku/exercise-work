@@ -6,6 +6,7 @@ import Book_class
 import ast
 import User_class
 import Loan_class
+import random
 
 from setuptools import Command
 
@@ -457,12 +458,27 @@ class BookPage(tk.Frame):
         # basefolder file to help searching right files
         base_folder = os.path.dirname(__file__)
 
-        # we need to get user which is now login
-        f_path = os.path.join(base_folder, 'current_user.txt')
-        open_file = open(f_path, "r")
-        current_user = open_file.readline()
 
+        # we make loan object from that book which button user pressed
         new_loan = Loan_class.Loan("12.4.2022","12.5.2022",book.get_name(),book.get_genre(),book.get_pages(),book.get_producer(),book.get_release_date(),book.get_photo())
+
+        # we need to get user which is now login
+        file_path = os.path.join(base_folder, 'current_user.txt')
+        f = open(file_path, "r")
+        current_user = f.readline()
+        f.close()
+
+        # save username and loan id for profile purposes
+        file2_path = os.path.join(base_folder, 'loan_and_user.txt')
+        f2 = open(file2_path, "a+")
+        f2.write(current_user + ":" + new_loan.get_loan_id()+ "\n")
+        f2.close()
+
+        # Save loan information
+        file3_path = os.path.join(base_folder, 'loans.txt')
+        f3 = open(file3_path, "a+")
+        f3.write(new_loan.get_loan_id() + ", 12.4.2022, 12.5.2022," + book.get_name()+ "," + book.get_genre() + "," + book.get_pages() + "," + book.get_producer() + "," + book.get_release_date() + "," + book.get_photo() + "\n")
+        f3.close()
 
         print(new_loan)
         #print(book)
