@@ -27,6 +27,8 @@ class Loan(Book_class.Book):
         self.__start_date = new_start_date
     def set_end_date(self, new_end_date):
         self.__end_date = new_end_date
+    def set_loan_id(self, new_loan_id):
+        self.__loan_id= new_loan_id
 
 
 # Getters for loan's properties

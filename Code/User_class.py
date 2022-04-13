@@ -48,8 +48,12 @@ class User():
         return self.__email
 
 
-    def add_loan(self, start, end, name, genre="-", pages="-", producer="-",release_date="-", photo="-"):
-        self.__loans.append(Loan_class.Loan(start,end,name, genre, pages, producer, release_date, photo))
+    def add_loan(self,loan_id, start, end, name, genre="-", pages="-", producer="-",release_date="-", photo="-"):
+        new_loan = Loan_class.Loan(start,end,name, genre, pages, producer, release_date, photo)
+        new_loan.set_loan_id(loan_id)
+        self.__loans.append(new_loan)
+    
+
 
     def return_loan(self):
         self.__loans.pop()

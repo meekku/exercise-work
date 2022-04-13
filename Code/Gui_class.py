@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 import os
+from tracemalloc import start
 from colorama import Back
 import Book_class
 import ast
@@ -480,7 +481,7 @@ class BookPage(tk.Frame):
         f3.write(new_loan.get_loan_id() + ", 12.4.2022, 12.5.2022," + book.get_name()+ "," + book.get_genre() + "," + book.get_pages() + "," + book.get_producer() + "," + book.get_release_date() + "," + book.get_photo() + "\n")
         f3.close()
 
-        print(new_loan)
+        #print(new_loan)
         #print(book)
 
         
@@ -519,6 +520,20 @@ class ProfilePage(tk.Frame):
                 row = line.split(',')
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 current_user = User_class.User(user_name, fname, lname, phone, email)
+        print(current_user)
+        # this for loop finds line for loan id and username
+        # is login at the moment and creates object of that user info
+        loan_file_path = os.path.join(base_folder, 'loans.txt')
+        loan_file = open(loan_file_path).readlines()
+        for line2 in loan_file:
+            if '7854888000' in line2:
+                print(line2)
+                row2 = line2.split(',')
+                loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
+                current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
+                
+        print(current_user)
+        print(current_user.show_loans())
             
         # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
