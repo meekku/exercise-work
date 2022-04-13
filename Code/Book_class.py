@@ -14,7 +14,8 @@ class Book():
 
     
     def __str__(self):
-        return "Book's name: " + str(self.get_name()) + "\n Genre: " + str(self.get_genre()) + "\n Pages: " + str(self.get_pages()) + "\n Producer: " + str(self.get_producer()) + "\n Release date: " + str(self.get_release_date())
+        st= "Book's name: " + str(self.get_name()) + "\n Genre: " + str(self.get_genre()) + "\n Pages: " + str(self.get_pages()) + "\n Producer: " + str(self.get_producer()) + "\n Release date: " + str(self.get_release_date())
+        return st
     
 # Setters for book's properties
     def set_name(self, new_name):

@@ -5,6 +5,7 @@ from colorama import Back
 import Book_class
 import ast
 import User_class
+import Loan_class
 
 from setuptools import Command
 
@@ -15,7 +16,6 @@ class App(tk.Tk):
         self.geometry("600x400") # setting the size of the GUI window
         self.title("E-Library") # title of the GUI window
         self.resizable(False, False)
-   
 
         #creating a container
         container = tk.Frame(self)
@@ -72,6 +72,7 @@ class HomePage(tk.Frame):
         Close_App = tk.Button(self, text= "Exit", height="2", width="20", 
         command=self.quit)
         Close_App.pack(pady=20)
+
 
 class Page_Login(tk.Frame):
 
@@ -386,6 +387,7 @@ class Library_Page(tk.Frame):
         open_file = open(f_path, "w").close()
         controller.show_frame(HomePage)
 
+
 class BookPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -451,7 +453,19 @@ class BookPage(tk.Frame):
     
     def loan(self,book):
         # ideaa ei ole jotenkin lainat pitäisi saada tehtyä , että ne näkyisi profiilissa
-        print(book)
+
+        # basefolder file to help searching right files
+        base_folder = os.path.dirname(__file__)
+
+        # we need to get user which is now login
+        f_path = os.path.join(base_folder, 'current_user.txt')
+        open_file = open(f_path, "r")
+        current_user = open_file.readline()
+
+        new_loan = Loan_class.Loan("12.4.2022","12.5.2022",book.get_name(),book.get_genre(),book.get_pages(),book.get_producer(),book.get_release_date(),book.get_photo())
+
+        print(new_loan)
+        #print(book)
 
         
 class ProfilePage(tk.Frame):
@@ -490,7 +504,6 @@ class ProfilePage(tk.Frame):
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 current_user = User_class.User(user_name, fname, lname, phone, email)
             
-
         # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)

@@ -5,7 +5,7 @@ import itertools
 import Book_class
 import User_class
 
-class Loan():
+class Loan(Book_class.Book):
 
     id_counter = itertools.count()
     def __init__(self, start_date, end_date, name, genre, pages, producer, release_date, photo):
@@ -18,8 +18,8 @@ class Loan():
         Book_class.Book.__init__(self, name, genre, pages, producer, release_date, photo)
     
     def __str__(self):
-        st = "Loan" + str(self.get_loan_id()) + ", Loan time:" + str(self.get_start_date()) + " -  " + str(self.get_end_date()) + " and invoice amount: " + str(self.get_invoice_amount())
-
+        st = Book_class.Book.__str__(self)
+        st += "\nLoan " + str(self.get_loan_id()) + "\nLoan time:" + str(self.get_start_date()) + " -  " + str(self.get_end_date()) + "\nInvoice amount: " + str(self.get_invoice_amount())
         return st
 
 # Setters for loan's properties
