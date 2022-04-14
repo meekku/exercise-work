@@ -550,6 +550,7 @@ class ProfilePage(tk.Frame):
         if self.current_user.show_loans_length()<1:
             self.loan_text.set("No loans")
         else:
+
             self.loan_text.set(self.current_user.get_spesific_loan(self.l))
         
         loan_text_label=Label(self,textvariable=self.loan_text,bg="#ED6244",fg="black")
@@ -559,6 +560,12 @@ class ProfilePage(tk.Frame):
     def update_loans(self):
         # UUSI idea ei enää kaikkia lainoja näkyviin vaan nappia painamalla
         # pystyy selaamaan omia lainoja
+        new_loans=[]
+
+        for i in self.current_user.get_loans():
+            print("this")
+            print(i)
+            print("is loan")
       
         # this file is for finding username:loan_id pattern from file
         username_as_string = self.current_user.get_user_name()
@@ -585,6 +592,13 @@ class ProfilePage(tk.Frame):
                         row2 = line2.split(',')
                         loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
                         self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
+
+        new_loans = list(dict.fromkeys(self.current_user.get_loans()))
+        self.current_user.set_loans(new_loans)
+        for i in new_loans:
+            print("this new")
+            print(i)
+            print("is loan")
 
         print(self.current_user.show_loans_length())
         if self.current_user.show_loans_length()<1:
