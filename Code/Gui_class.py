@@ -400,7 +400,7 @@ class BookPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.count_loans = 0
+        self.count=0
 
         # image label
         bg_label = tk.Label(self, image = img)
@@ -462,7 +462,7 @@ class BookPage(tk.Frame):
     
     def check_load_limit(self, book):
         # This function will check that one user can loan only 10 loans at the time
-
+        
         # basefolder file to help searching right files
         self.base_folder = os.path.dirname(__file__)
 
@@ -477,19 +477,26 @@ class BookPage(tk.Frame):
         usernames_file_path = os.path.join(self.base_folder, 'profile_info.txt')
         usernames_file = open(usernames_file_path).readlines()
 
+        loans_and_user_file_path = os.path.join(self.base_folder, 'loan_and_user.txt')
+        #loans_and_users = open(loans_and_user_file_path).readlines()
         # this for loop finds line for username which
         # is login at the moment and creates object of that user info
-        for line in usernames_file:
-            if self.current_username in line:
-                self.count_loans += 1
 
-                if self.count_loans <= 5:
-                    self.loan(book)
-                else:
-                    tk = Tk()
-                    show_msg = Message(tk, text = "Your loan limit is maximum 10. \You have to return loan to loan more")
-                    show_msg.config(bg="lightgreen", font=("times",15))
-                    show_msg.pack() 
+        with open(loans_and_user_file_path, 'r') as fp:
+            for line in fp:
+                if self.current_username in line:
+                    self.count += 1
+        print("this is count_loans: " + str(self.count))
+
+        if self.count <= 4:
+            self.loan(book)
+            
+        else:
+            tk = Tk()
+            show_msg = Message(tk, text = "Your loan limit is maximum 5. \You have to return loan to loan more")
+            show_msg.config(bg="lightgreen", font=("times",15))
+            show_msg.pack() 
+        self.count =0 
             
     
     def loan(self,book):
@@ -570,12 +577,14 @@ class ProfilePage(tk.Frame):
 
         # button for returning back to library page
         return_button = tk.Button(self, text='<<', height="1", width="10",
-        command=lambda:[self.set_zero(), controller.show_frame(Library_Page)])
+        command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
 
+        self.button_text = StringVar()
+        self.button_text.set("Show loans")
         self.l = 0
         # this button is for getting loans that has been done in that login moment
-        update_button = tk.Button(self, text='Update loans', height="1", width="10",
+        update_button = tk.Button(self, textvariable=self.button_text, height="1", width="10",
         command=lambda:self.update_loans())
         update_button.place(x=100, y=2)
 
@@ -584,16 +593,15 @@ class ProfilePage(tk.Frame):
         print(self.current_user.show_loans_length())
         print("show loan length^\n")
         if self.current_user.show_loans_length()<1:
-            self.loan_text.set("Update loans")
+            self.loan_text.set("Press show loans -button to browse your loans")
         else:
 
             self.loan_text.set(self.current_user.get_spesific_loan(self.l))
         
-        loan_text_label=Label(self,textvariable=self.loan_text,bg="#ED6244",fg="black")
+        loan_text_label=Label(self,textvariable=self.loan_text,bg="#65A8E1",fg="black")
         loan_text_label.pack(pady=10,padx=10)
 
-    def set_zero(self):
-        self.count_user_loans = 0
+
 
     def update_loans(self):
         # UUSI idea ei enää kaikkia lainoja näkyviin vaan nappia painamalla
@@ -633,11 +641,9 @@ class ProfilePage(tk.Frame):
 
         self.count_user_loans = 0
 
-        #new_loans = list(dict.fromkeys(self.current_user.get_loans()))
-        #self.current_user.set_loans(new_loans)
 
         print("loangs length: ")
-        print(self.current_user.show_loans_length())  # tää onniiku kertooo itteään vitusti :D... 
+        print(self.current_user.show_loans_length()) 
 
         # these if -statements are showing next loan to text label from user's loans list
         if self.current_user.show_loans_length()<1:
@@ -646,9 +652,11 @@ class ProfilePage(tk.Frame):
         elif self.current_user.show_loans_length() == self.l:
             print("length 4 and self l 4")
             self.l = 0
-            self.loan_text.set("New round")
+            self.loan_text.set("No more loans to show\n Press show loans -button to browse your loans again")
+            self.button_text.set("Show loans")
 
         else:
+            self.button_text.set("Next")
             self.loan_text.set(self.current_user.get_spesific_loan(self.l))
             self.l +=1
             print("self l:")
