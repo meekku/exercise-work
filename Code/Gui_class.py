@@ -396,7 +396,7 @@ class Library_Page(tk.Frame):
 
 
 class BookPage(tk.Frame):
-
+    
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
@@ -461,8 +461,8 @@ class BookPage(tk.Frame):
         return_button.place(x=2, y=2)
     
     def check_load_limit(self, book):
+        # TÄHÄN VIELÄ LISÄTÄ CHEKKI ETTEI VOI LAINATA SAMAN NIMISTÄ KIRJAA UUDESTAAN
         # This function will check that one user can loan maximum of 5 loans
-        
 
         # here we set to current_username variable the user which is currently login 
         # which we will find from current_user.txt
@@ -521,7 +521,7 @@ class BookPage(tk.Frame):
 
         
 class ProfilePage(tk.Frame):
-    # TARKOITUS OIS vvv
+    # TARKOITUS OIS LOAN RETURN PUUTTUU
     # In this page user can 
     # 1. Browse its loans and can 
     # 2. See loan and profile information 
@@ -570,16 +570,16 @@ class ProfilePage(tk.Frame):
         header_label.pack(pady=10,padx=10)
  
         # profile text information
-        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black", font=('Latha', '10', 'bold'))
+        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black",font=('Latha', '10', 'bold'))
         profile_text_label.pack(pady=10,padx=10)
 
         # button for returning back to library page
-        return_button = tk.Button(self, text='<<', height="1", width="10",
+        return_button = tk.Button(self, text='<<', height="1",bg="#b7dcff", width="10",
         command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
 
         # this button is for browsing loans
-        show_button = tk.Button(self, textvariable=self.button_text, height="1", width="10",
+        show_button = tk.Button(self, textvariable=self.button_text,bg="#b7dcff", height="1", width="10",
         command=lambda:self.show_loans())
         show_button.place(x=100, y=2)
 
@@ -591,12 +591,12 @@ class ProfilePage(tk.Frame):
             self.loan_text.set(self.current_user.get_spesific_loan(self.l))
         
         # loan info text label
-        loan_text_label=Label(self,textvariable=self.loan_text,bg="#65A8E1",fg="black")
+        loan_text_label=Label(self,textvariable=self.loan_text,bg="#b7dcff",fg="black")
         loan_text_label.pack(pady=10,padx=10)
 
 
     def show_loans(self):
-        # this functions shows one loan's information
+        # this functions browse loans
       
         # this file is for finding "username:loan_id" pattern from file
         username_as_string = self.current_user.get_user_name()
@@ -645,9 +645,15 @@ class ProfilePage(tk.Frame):
             self.loan_text.set(self.current_user.get_spesific_loan(self.l))
             self.l +=1
 
-        #Button(self,text="Return", command=lambda: self.return_loan(one_loan, laps)).place(x=x_axel - 20,y=y_axel)
+            # if user has loan this button that returns loans display to screen
+            return_button = tk.Button(self, text="Return this loan", height="2", width="15", bg="#b7dcff",
+            command=lambda:self.testing())
+            return_button.place(x=245, y=300) 
 
-            
+    def testing(self):
+        print("testing")
+        print(self.l)
+
     def return_loan(self, loan, lap):
         # Tässä pitäisi nyt koittaa pyyhkiä tietty laina id kahdesta teksti tiedostoista ja mahollisesti objektin lainalistastaki
         # tällä hetkellä poistaa kaikki tietyn käyttäjän lainat
