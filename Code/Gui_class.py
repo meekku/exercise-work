@@ -525,7 +525,7 @@ class ProfilePage(tk.Frame):
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 self.current_user = User_class.User(user_name, fname, lname, phone, email)
 
-        self.update_loans(labels)
+        #self.update_loans(labels)
         # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
@@ -534,30 +534,34 @@ class ProfilePage(tk.Frame):
         profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black", font=('Latha', '10', 'bold'))
         profile_text_label.pack(pady=10,padx=10)
 
-        # this button is for getting loans that has been done in that login moment
-        update_button = tk.Button(self, text='Update loans', height="1", width="10",
-        command=lambda:self.update_loans(labels))
-        update_button.place(x=100, y=2)
-
-
         # button for returning back to library page
         return_button = tk.Button(self, text='<<', height="1", width="10",
         command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
-    
+
+        self.l = 0
+        # this button is for getting loans that has been done in that login moment
+        update_button = tk.Button(self, text='Update loans', height="1", width="10",
+        command=lambda:self.update_loans())
+        update_button.place(x=100, y=2)
+
+        self.loan_text=StringVar()
+        print(self.current_user.show_loans_length())
+        if self.current_user.show_loans_length()<1:
+            self.loan_text.set("No loans")
+        else:
+            self.loan_text.set(self.current_user.get_spesific_loan(self.l))
+        
+        loan_text_label=Label(self,textvariable=self.loan_text,bg="#ED6244",fg="black")
+        loan_text_label.pack(pady=10,padx=10)
 
 
-    def update_loans(self,labels):
-        
-        if len(labels)>0:
-            for label in labels:
-                print(label)
-                label.destroy()
-                print(label)
-        
+    def update_loans(self):
+        # UUSI idea ei enää kaikkia lainoja näkyviin vaan nappia painamalla
+        # pystyy selaamaan omia lainoja
+      
         # this file is for finding username:loan_id pattern from file
         username_as_string = self.current_user.get_user_name()
-        print(username_as_string)
         username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
         self.username_loan_file = open(username_loan_path).readlines()
 
@@ -581,39 +585,21 @@ class ProfilePage(tk.Frame):
                         row2 = line2.split(',')
                         loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
                         self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
-        laps = 0                
-        x_axel = 40
-        y_axel = 60
-        # Here we are setting text labels for all loans
-        for one_loan in self.current_user.get_loans():
-            laps +=1
-            loan_text_label = tk.Label(self, text=one_loan, bg="white", fg="black", font=('Helvetica', '7'))
-            loan_text_label.place(x=x_axel,y=y_axel)
-            labels.append(loan_text_label)
-            y_axel = y_axel + 110
 
-            if laps == 3: # when third label is added position will change
-                y_axel = 170
-                x_axel += 180
-            elif laps == 5: # when fifth label is added position will change
-                y_axel = 60
-                x_axel += 190
+        print(self.current_user.show_loans_length())
+        if self.current_user.show_loans_length()<1:
+            self.loan_text.set("No loans")
+            self.l = 0
+        elif self.current_user.show_loans_length() == self.l:
+            self.loan_text.set(self.current_user.get_spesific_loan(self.l))
+            self.l = 0
+        else:
+            self.loan_text.set(self.current_user.get_spesific_loan(self.l))
+            self.l +=1
+            print(self.l)
 
-            # returning buttons for loans   
-            return_loan_button = tk.Button(self, text='Return loan', height="1", width="10",
-            command=lambda: self.return_loan(one_loan, laps))
-            return_loan_button.place(x=x_axel -20, y=y_axel)
+        #Button(self,text="Return", command=lambda: self.return_loan(one_loan, laps)).place(x=x_axel - 20,y=y_axel)
 
-        print("fk")
-
-        # EI TUUU VITTU MITÄÄÄÄÄÄÄÄN en saa noita uusimpia lainojaaaaaaaaaaaaaaajsc
-        # päivittämisen kanssa ongelmia aina pitää alottaa tavallaa uus erä että toi päivittyy mut jotenkin tän
-        # pitäis onnistuu laittaa noi tektilaatikot uudellee :(
-        # ideaa: kenttään mahtuu 8 lainaa, jos luo sen verran buttoneita mitä on lainoja
-        # mutta niissä buttoneissa ei kyllä ikinä etene mikää parametri 
-        # kun se ottaa aina sen viimeisimmän :)
-        # command=lambda:text_label.destroy(), self.update_loans() ????
-        # ^^ tuo hyötyyn 
             
     def return_loan(self, loan, lap):
         # Tässä pitäisi nyt koittaa pyyhkiä tietty laina id kahdesta teksti tiedostoista ja mahollisesti objektin lainalistastaki

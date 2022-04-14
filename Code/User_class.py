@@ -65,5 +65,10 @@ class User():
      
     def show_loans_length(self):
         return len(self.__loans)
+    
+    def get_spesific_loan(self, place):
+        print(place)
+        print(self.__loans[0])
+        return self.__loans[place]
 
     
