@@ -4,11 +4,11 @@ import os
 from tracemalloc import start
 from colorama import Back
 import Book_class
-import ast
 import User_class
 import Loan_class
-import random
-
+import datetime
+from datetime import date
+import calendar
 from setuptools import Command
 
 
@@ -143,7 +143,6 @@ class Page_Login(tk.Frame):
 
             # match found so it enters to library page
             if combination in line:
-                print("Username and password is: " + line)
                 found = True
                 self.current_user(verify_username)
                 controller.show_frame(Library_Page)
@@ -164,7 +163,6 @@ class Page_Login(tk.Frame):
     
     def current_user(self, username):
         # this is for profile to find which user information to show
-        print(username)
         # open file where the data goes
         base_folder = os.path.dirname(__file__)
         f_path = os.path.join(base_folder, 'current_user.txt')
@@ -464,6 +462,7 @@ class BookPage(tk.Frame):
         # TÄHÄN VIELÄ LISÄTÄ CHEKKI ETTEI VOI LAINATA SAMAN NIMISTÄ KIRJAA UUDESTAAN
         # This function will check that one user can loan maximum of 5 loans
 
+        book_names = []
         # here we set to current_username variable the user which is currently login 
         # which we will find from current_user.txt
         f_path = os.path.join(self.base_folder, 'current_user.txt')
@@ -473,11 +472,33 @@ class BookPage(tk.Frame):
         # this file shows amount username:loan pattern where we will count user's loans
         loans_and_user_file_path = os.path.join(self.base_folder, 'loan_and_user.txt')
 
+        # this file has information about loans
+        loans_only = os.path.join(self.base_folder, 'loans.txt')
+
         # here we go through lines and count the lines where is current user
         with open(loans_and_user_file_path, 'r') as fp:
             for line in fp:
                 if self.current_username in line:
                     self.count += 1
+                    row = line.split(':')
+                    user, id = [i.strip() for i in row]
+
+                    # here we add to array user's loan's book's names
+                    with open(loans_only, 'r') as loans_file:
+                        for line2 in loans_file:
+                            row2 = line2.split(',')
+                            loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
+                            book_names.append(name)
+
+        # checks for name dublicates 
+        if len(book_names) > 0:
+            if len(book_names) == len(set(book_names)):
+                print("doesn't contain")
+                #return false
+            else:
+                print("contains")
+                #return True
+
 
         # if count is smaller or same as 4 we will run loan function
         # to spesific book which we got as a parameter
@@ -492,14 +513,19 @@ class BookPage(tk.Frame):
             show_msg.pack() 
 
         self.count =0 
-            
-    
-    def loan(self,book):
-        # TÄHÄN PITÄÄ VIELÄ ASETTAA DATE ASETUKSET ETTÄ SE OTTAA OIKEAN AJAN JA LAINA AIKA ON SE SAMA MUTTA VAIKKA 1KK PÄÄHÄN 
-        # Here we save user and loan information to txt files
 
+           
+    def loan(self,book):
+        # In this function we save user and loan information to txt files
+        
+        # let's take the loan date
+        today = datetime.date.today()
+
+        # then next month we use function
+        next_month = self.get_next_month(today)
+      
         # we make loan object from that book which button user pressed
-        new_loan = Loan_class.Loan("12.4.2022","12.5.2022",book.get_name(),book.get_genre(),book.get_pages(),book.get_producer(),book.get_release_date(),book.get_photo())
+        new_loan = Loan_class.Loan(str(today),str(next_month),book.get_name(),book.get_genre(),book.get_pages(),book.get_producer(),book.get_release_date(),book.get_photo())
 
         # we need to get user which is now login
         file_path = os.path.join(self.base_folder, 'current_user.txt')
@@ -516,15 +542,23 @@ class BookPage(tk.Frame):
         # Save loan information for printing in profile page
         file3_path = os.path.join(self.base_folder, 'loans.txt')
         f3 = open(file3_path, "a+")
-        f3.write(new_loan.get_loan_id() + ", 12.4.2022, 12.5.2022," + book.get_name()+ "," + book.get_genre() + "," + book.get_pages() + "," + book.get_producer() + "," + book.get_release_date() + "," + book.get_photo() + "\n")
+        f3.write(new_loan.get_loan_id() + "," + str(today) + "," +str(next_month) + "," + book.get_name()+ "," + book.get_genre() + "," + book.get_pages() + "," + book.get_producer() + "," + book.get_release_date() + "," + book.get_photo() + "\n")
         f3.close()
 
+    def get_next_month(self,sourcedate):
+        # this function returns date one month later
+        month = sourcedate.month
+        year = sourcedate.year + month // 12
+        month = month % 12 + 1
+        day = min(sourcedate.day, calendar.monthrange(year,month)[1])
+
+        return datetime.date(year, month, day)  
         
 class ProfilePage(tk.Frame):
     # In this page user can 
     # 1. Browse its loans and can 
     # 2. See loan and profile information 
-    # 3. Do returns (TÄÄ EI OO VIEL OIKEE TÄYDELLINE)
+    # 3. Do returns (TÄÄ EI OIKEE TOIMI)
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
