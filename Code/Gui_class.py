@@ -350,7 +350,10 @@ class Library_Page(tk.Frame):
 
         # header label
         header_label = tk.Label(self, text="Do you wan't to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
-        header_label.pack(pady=10,padx=10)
+        header_label.pack()
+
+        help_label = tk.Label(self, text="You can do 5 loans maximum", bg="white", fg="black", font=('Helvetica', '13', 'bold'))
+        help_label.pack(pady=10,padx=10)
 
         # base folder to help find right file
         base_folder = os.path.dirname(__file__)
@@ -397,6 +400,8 @@ class BookPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
+        self.count_loans = 0
+
         # image label
         bg_label = tk.Label(self, image = img)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -407,17 +412,17 @@ class BookPage(tk.Frame):
 
         # our books as an objects so we can use for loop to
         # show their information
-        book1 = Book_class.Book("I hate my life 3", "Fantasy", "3002", "Myself", "12.4.2022", "book1.png")
-        book2 = Book_class.Book("Students lost motivation", "Horror", "301", "Bookkers", "23.3.2003", "book2.png")
-        book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book3.png")
-        books = [book1, book2, book3]
+        self.book1 = Book_class.Book("I hate my life 3", "Fantasy", "3002", "Myself", "12.4.2022", "book1.png")
+        self.book2 = Book_class.Book("Students lost motivation", "Horror", "301", "Bookkers", "23.3.2003", "book2.png")
+        self.book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book3.png")
+        books = [self.book1, self.book2, self.book3]
 
         # buttons for loaning spesific book
-        loan1_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.loan(book1))
+        loan1_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda:self.check_load_limit(self.book1))
         loan1_button.place(x=100, y=90)
-        loan2_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.loan(book2))
+        loan2_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.check_load_limit(self.book2))
         loan2_button.place(x=100, y=190)
-        loan3_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.loan(book3))
+        loan3_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.check_load_limit(self.book3))
         loan3_button.place(x=100, y=290)
 
         for book in books:
@@ -430,21 +435,21 @@ class BookPage(tk.Frame):
         base_folder = os.path.dirname(__file__)
 
         # book1 -object's image
-        book1_cover_path = os.path.join(base_folder + '\\book_pics\\' + book1.get_photo())
+        book1_cover_path = os.path.join(base_folder + '\\book_pics\\' + self.book1.get_photo())
         self.book1_cover = tk.PhotoImage(file = book1_cover_path)
         self.book1_cover_img = self.book1_cover.subsample(2, 2)
         book1_img_label = tk.Label(self, image = self.book1_cover_img)
         book1_img_label.place(x=450, y=70)
 
         # book2 -object's image
-        book2_cover_path = os.path.join(base_folder + '\\book_pics\\' + book2.get_photo())
+        book2_cover_path = os.path.join(base_folder + '\\book_pics\\' + self.book2.get_photo())
         self.book2_cover = tk.PhotoImage(file = book2_cover_path)
         self.book2_cover_img = self.book2_cover.subsample(2, 2)
         book2_img_label = tk.Label(self, image = self.book2_cover_img)
         book2_img_label.place(x=455, y=175)
 
         # book3 -object's image
-        book3_cover_path = os.path.join(base_folder + '\\book_pics\\' + book3.get_photo())
+        book3_cover_path = os.path.join(base_folder + '\\book_pics\\' + self.book3.get_photo())
         self.book3_cover = tk.PhotoImage(file = book3_cover_path)
         self.book3_cover_img = self.book3_cover.subsample(2, 2)
         book3_img_label = tk.Label(self, image = self.book3_cover_img)
@@ -455,13 +460,43 @@ class BookPage(tk.Frame):
         command=lambda: controller.show_frame(Library_Page))
         return_button.place(x=2, y=2)
     
+    def check_load_limit(self, book):
+        # This function will check that one user can loan only 10 loans at the time
+
+        # basefolder file to help searching right files
+        self.base_folder = os.path.dirname(__file__)
+
+        # this file shows what user is now login
+        f_path = os.path.join(self.base_folder, 'current_user.txt')
+        open_file = open(f_path, "r")
+        self.current_username = open_file.readline()
+
+        # we will find user's information
+        # from profile_info.txt file where is all users 
+        # registrationg informations saved
+        usernames_file_path = os.path.join(self.base_folder, 'profile_info.txt')
+        usernames_file = open(usernames_file_path).readlines()
+
+        # this for loop finds line for username which
+        # is login at the moment and creates object of that user info
+        for line in usernames_file:
+            if self.current_username in line:
+                self.count_loans += 1
+
+                if self.count_loans <= 5:
+                    self.loan(book)
+                else:
+                    tk = Tk()
+                    show_msg = Message(tk, text = "Your loan limit is maximum 10. \You have to return loan to loan more")
+                    show_msg.config(bg="lightgreen", font=("times",15))
+                    show_msg.pack() 
+            
+    
     def loan(self,book):
         # ideaa ei ole jotenkin lainat pitäisi saada tehtyä , että ne näkyisi profiilissa
 
         # basefolder file to help searching right files
         base_folder = os.path.dirname(__file__)
-
-      
 
         # we make loan object from that book which button user pressed
         new_loan = Loan_class.Loan("12.4.2022","12.5.2022",book.get_name(),book.get_genre(),book.get_pages(),book.get_producer(),book.get_release_date(),book.get_photo())
@@ -484,9 +519,6 @@ class BookPage(tk.Frame):
         f3.write(new_loan.get_loan_id() + ", 12.4.2022, 12.5.2022," + book.get_name()+ "," + book.get_genre() + "," + book.get_pages() + "," + book.get_producer() + "," + book.get_release_date() + "," + book.get_photo() + "\n")
         f3.close()
 
-        #print(new_loan)
-        #print(book)
-
         
 class ProfilePage(tk.Frame):
 
@@ -502,6 +534,8 @@ class ProfilePage(tk.Frame):
 
         # initializing current_user, this is not a must
         current_user = ""
+        self.count_user_loans = 0
+      
 
         # basefolder file to help searching right files
         self.base_folder = os.path.dirname(__file__)
@@ -536,7 +570,7 @@ class ProfilePage(tk.Frame):
 
         # button for returning back to library page
         return_button = tk.Button(self, text='<<', height="1", width="10",
-        command=lambda: controller.show_frame(Library_Page))
+        command=lambda:[self.set_zero(), controller.show_frame(Library_Page)])
         return_button.place(x=2, y=2)
 
         self.l = 0
@@ -546,9 +580,11 @@ class ProfilePage(tk.Frame):
         update_button.place(x=100, y=2)
 
         self.loan_text=StringVar()
+        print("show length v")
         print(self.current_user.show_loans_length())
+        print("show loan length^\n")
         if self.current_user.show_loans_length()<1:
-            self.loan_text.set("No loans")
+            self.loan_text.set("Update loans")
         else:
 
             self.loan_text.set(self.current_user.get_spesific_loan(self.l))
@@ -556,16 +592,13 @@ class ProfilePage(tk.Frame):
         loan_text_label=Label(self,textvariable=self.loan_text,bg="#ED6244",fg="black")
         loan_text_label.pack(pady=10,padx=10)
 
+    def set_zero(self):
+        self.count_user_loans = 0
 
     def update_loans(self):
         # UUSI idea ei enää kaikkia lainoja näkyviin vaan nappia painamalla
         # pystyy selaamaan omia lainoja
-        new_loans=[]
-
-        for i in self.current_user.get_loans():
-            print("this")
-            print(i)
-            print("is loan")
+        #new_loans=[]
       
         # this file is for finding username:loan_id pattern from file
         username_as_string = self.current_user.get_user_name()
@@ -577,39 +610,48 @@ class ProfilePage(tk.Frame):
         self.loan_file = open(loan_file_path).readlines()
 
         # first we are going through lines and trying to find current login username
+
         for line3 in self.username_loan_file:
             if " " + username_as_string + " : " in line3:
                 # if we find username we will split : from it and
                 # make it a list where we will use id variable at next for-loop
+              
+                self.count_user_loans += 1
                 row3 = line3.split(':')
                 user, id = [t.strip() for t in row3]
-
+                print("selfcount user loans:")
+                print(self.count_user_loans)
                 # this for loop finds loans with that spesific id
                 for line2 in self.loan_file:
+
                         # if we find we will split "," from it and strip it for 
                         # making loan object which we will add for the users loans 
-                    if id in line2:
+                    if id in line2 and self.count_user_loans > self.current_user.show_loans_length(): 
                         row2 = line2.split(',')
                         loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
                         self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
 
-        new_loans = list(dict.fromkeys(self.current_user.get_loans()))
-        self.current_user.set_loans(new_loans)
-        for i in new_loans:
-            print("this new")
-            print(i)
-            print("is loan")
+        self.count_user_loans = 0
 
-        print(self.current_user.show_loans_length())
+        #new_loans = list(dict.fromkeys(self.current_user.get_loans()))
+        #self.current_user.set_loans(new_loans)
+
+        print("loangs length: ")
+        print(self.current_user.show_loans_length())  # tää onniiku kertooo itteään vitusti :D... 
+
+        # these if -statements are showing next loan to text label from user's loans list
         if self.current_user.show_loans_length()<1:
             self.loan_text.set("No loans")
             self.l = 0
         elif self.current_user.show_loans_length() == self.l:
-            self.loan_text.set(self.current_user.get_spesific_loan(self.l))
+            print("length 4 and self l 4")
             self.l = 0
+            self.loan_text.set("New round")
+
         else:
             self.loan_text.set(self.current_user.get_spesific_loan(self.l))
             self.l +=1
+            print("self l:")
             print(self.l)
 
         #Button(self,text="Return", command=lambda: self.return_loan(one_loan, laps)).place(x=x_axel - 20,y=y_axel)
