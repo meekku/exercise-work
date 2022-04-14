@@ -72,3 +72,6 @@ class User():
     def set_loans(self,new_loans):
         self.__loans=new_loans
     
+    def return_loan(self, place):
+        self.__loans.pop(place)
+    

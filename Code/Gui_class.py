@@ -647,18 +647,24 @@ class ProfilePage(tk.Frame):
 
             # if user has loan this button that returns loans display to screen
             return_button = tk.Button(self, text="Return this loan", height="2", width="15", bg="#b7dcff",
-            command=lambda:self.testing())
+            command=lambda:self.return_this_loan())
             return_button.place(x=245, y=300) 
 
     def testing(self):
-        print("testing")
+        #self.current_user.return_loan(self.l)
+        print(self.l)
+        loan = self.current_user.get_spesific_loan(self.l-1)
+        print(loan.get_loan_id())
         print(self.l)
 
-    def return_loan(self, loan, lap):
+    def return_this_loan(self):
         # Tässä pitäisi nyt koittaa pyyhkiä tietty laina id kahdesta teksti tiedostoista ja mahollisesti objektin lainalistastaki
         # tällä hetkellä poistaa kaikki tietyn käyttäjän lainat
-        print(loan)
-        print(lap)
+        
+        # this finds right loan id
+        loan = self.current_user.get_spesific_loan(self.l-1)
+        print(loan.get_loan_id())
+
         # this file is for finding username:loan_id pattern from file
         username_as_string = self.current_user.get_user_name()
     
@@ -669,33 +675,35 @@ class ProfilePage(tk.Frame):
         loan_file_path = os.path.join(self.base_folder, 'loans.txt')
   
         # here we remove from loans.txt file
-        with open(username_loan_path, "r") as f:
-            lines = f.readlines()
-        with open(username_loan_path, "w") as f:
-            for line in lines:
-                if " " + username_as_string + " : " in line :
-                    row = line.split(':')
-                    user, id = [i.strip() for i in row]
-
-                    # next file täs on issue
-                    with open(loan_file_path, "r") as f2:
-                        lines2 = f2.readlines()
-                    with open(loan_file_path, "w") as f2:
-                        for line2 in lines2:
-                            if id in line2:
-                                f2.write(line2)
+        #with open(username_loan_path, "r") as f:
+         #   lines = f.readlines()
+       # with open(username_loan_path, "w") as f:
+        #    for line in lines:
+         #       if " " + username_as_string + " : " + loan.get_loan_id() in line :
+          #          row = line.split(':')
+           #         user, id = [i.strip() for i in row]
+        with open(loan_file_path, "r") as f2:
+            lines2 = f2.readlines()
+            with open(loan_file_path, "w") as f2:
+                for line2 in lines2:
+                    if loan.get_loan_id() not in line2:
+                        f2.write(line2)
 
         # here we remove from loan_and_user.txt file 
         with open(username_loan_path, "r") as f3:
             lines3 = f3.readlines()
         with open(username_loan_path, "w") as f3:
             for line3 in lines3:
-                if " " + username_as_string + " : " in line3 :
-                    f.write(line3)
+                if " " + username_as_string + " : " + loan.get_loan_id() not in line3 :
+                    f3.write(line3)
 
+        print(loan.get_loan_id())
         # here we remove user objects loans
-        for loan in self.current_user.get_loans():
-            self.current_user.return_loan()
+        try:
+            self.current_user.return_loan(self.l-1)
+        except:
+            self.current_user.return_loan(0)
+        
 
 
 
