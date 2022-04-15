@@ -459,9 +459,8 @@ class BookPage(tk.Frame):
         return_button.place(x=2, y=2)
     
     def check_load_limit(self, book):
-        # TÄHÄN VIELÄ LISÄTÄ CHEKKI ETTEI VOI LAINATA SAMAN NIMISTÄ KIRJAA UUDESTAAN
+        # Tää ei välttis aina mee ihan yks yhtee returnin kanssa
         # This function will check that one user can loan maximum of 5 loans
-        print("STARTTI")
         can_continue = True
         book_names = []
         # here we set to current_username variable the user which is currently login 
@@ -492,7 +491,6 @@ class BookPage(tk.Frame):
                                 loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
                                 book_names.append(name)
                            
-       
         # checks for name dublicates 
         if len(book_names) > 0:
             for x in book_names:
@@ -689,6 +687,7 @@ class ProfilePage(tk.Frame):
             print("You broke this :))")
 
     def return_this_loan(self):
+        # tää return system ei vaa toimi
         # This fuction removes loan from two saving file's and from user's loans[]
         try:
             # this finds right loan id
@@ -726,6 +725,7 @@ class ProfilePage(tk.Frame):
                 self.current_user.return_loan(0)
 
         except:
+            # tä tulee kans aika usein jote jotai selkeesti vialla pitää vielä säätää tätä
             print("you broke this tooo :)")
 
 
