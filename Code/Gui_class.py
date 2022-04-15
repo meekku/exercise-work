@@ -9,6 +9,7 @@ from colorama import Back
 import Book_class
 import User_class
 import Loan_class
+import Movie_class
 import datetime
 import calendar
 
@@ -32,7 +33,7 @@ class App(tk.Tk):
         self.frames = {}
 
         #Defining frames and packing it
-        for F in (HomePage, Page_Login, Page_Register, Library_Page, BookPage, ProfilePage):
+        for F in (HomePage, Page_Login, Page_Register, Library_Page, BookPage, MoviePage, ProfilePage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -76,7 +77,6 @@ class HomePage(tk.Frame):
         Close_App = tk.Button(self, text= "Exit", height="2", width="20", 
         command=self.quit)
         Close_App.pack(pady=20)
-
 
 class Page_Login(tk.Frame):
 
@@ -169,7 +169,6 @@ class Page_Login(tk.Frame):
         open_file = open(f_path, "a+")
         open_file.write(username)
         open_file.close()
-
 
 class Page_Register(tk.Frame):
     # in this class we ask user's information
@@ -334,7 +333,6 @@ class Page_Register(tk.Frame):
         users_file.write(self.username.get() + "," + self.first_name.get()+ "," + self.last_name.get()+ "," + self.phone.get() + "," +self.email.get() + "\n")
         users_file.close()
 
-
 class Library_Page(tk.Frame):
     # This is first screen that we see after login
     def __init__(self, parent, controller):
@@ -370,10 +368,10 @@ class Library_Page(tk.Frame):
         Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon, command=lambda: controller.show_frame(BookPage))
         Book_Button.place(x=60, y=80)
 
-        Movie_Button = tk.Button(self, text = "Movies", image = self.Movie_Icon)
+        Movie_Button = tk.Button(self, text = "Movies", image = self.Movie_Icon, command=lambda: controller.show_frame(MoviePage))
         Movie_Button.place(x=235, y=80)
 
-        Magazine_Button = tk.Button(self, text = "Magazines", image = self.Magazine_Icon)
+        Magazine_Button = tk.Button(self, text = "Magazines", image = self.Magazine_Icon, command=lambda: controller.show_frame(MagazinePage))
         Magazine_Button.place(x=395, y=80)
 
         Profile_Button = tk.Button(self, text = "Your profile", height="2", width="20", command=lambda: controller.show_frame(ProfilePage))
@@ -389,7 +387,6 @@ class Library_Page(tk.Frame):
         f_path = os.path.join(base_folder, 'current_user.txt')
         open_file = open(f_path, "w").close()
         controller.show_frame(HomePage)
-
 
 class BookPage(tk.Frame):
     
@@ -553,8 +550,9 @@ class BookPage(tk.Frame):
         day = min(sourcedate.day, calendar.monthrange(year,month)[1])
 
         return datetime.date(year, month, day)  
-        
+
 class ProfilePage(tk.Frame):
+
     # In this page user can 
     # 1. Browse its loans and can 
     # 2. See loan and profile information 
@@ -753,10 +751,177 @@ class ProfilePage(tk.Frame):
                 else:
                     self.current_user.return_loan(self.l-1)
 
+class MoviePage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        # initializing the variable which will count user's loans
+        self.count=0
+
+        # image label
+        bg_label = tk.Label(self, image = img)
+        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # header
+        header_label = tk.Label(self, text="A selection of Movies", bg="white", fg="black", font=('Helvetica', '18', 'bold'))
+        header_label.pack(pady=10,padx=10)
+
+        # our movies as an objects so we can use for loop to
+        # show their information
+        self.movie1 = Movie_class.Movie("Dumbo", "Children's Movie", "Myself", "12.4.2022", "movie1.png")
+        self.movie2 = Movie_class.Movie("Apocalypse Now", "Horror", "Bookkers", "23.3.2003", "movie2.png")
+        self.movie3 = Movie_class.Movie("Dunkirk", "Nonfiction", "God", "30.2.1999", "movie3.png")
+        movies = [self.movie1, self.movie2, self.movie3]
+
+        # buttons for loaning specific movie
+        loan1_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda:self.check_load_limit(self.movie1))
+        loan1_button.place(x=100, y=90)
+        loan2_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.check_load_limit(self.movie2))
+        loan2_button.place(x=100, y=190)
+        loan3_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.check_load_limit(self.movie3))
+        loan3_button.place(x=100, y=290)
+
+        # text labels which contains all three movie's information
+        for movie in movies:
+            text_label = tk.Label(self, text=movie, bg="white", fg="black", font=('Helvetica', '15'))
+            text_label.pack(pady=10,padx=10)
+
+        # base_folder is path help for finding right files
+        self.base_folder = os.path.dirname(__file__)
+
+        # movie1 -object's image
+        movie1_cover_path = os.path.join(self.base_folder + '/movie_pics/' + self.movie1.get_photo())
+        self.movie1_cover = tk.PhotoImage(file = movie1_cover_path)
+        self.movie1_cover_img = self.movie1_cover.subsample(2, 2)
+        book1_img_label = tk.Label(self, image = self.movie1_cover_img)
+        book1_img_label.place(x=430, y=10)
+
+        # movie2 -object's image
+        movie2_cover_path = os.path.join(self.base_folder + '/movie_pics/' + self.movie2.get_photo())
+        self.movie2_cover = tk.PhotoImage(file = movie2_cover_path)
+        self.movie2_cover_img = self.movie2_cover.subsample(2, 2)
+        movie2_img_label = tk.Label(self, image = self.movie2_cover_img)
+        movie2_img_label.place(x=430, y=150)
+
+        # movie3 -object's image
+        movie3_cover_path = os.path.join(self.base_folder + '/movie_pics/' + self.movie3.get_photo())
+        self.movie3_cover = tk.PhotoImage(file = movie3_cover_path)
+        self.movie3_cover_img = self.movie3_cover.subsample(2, 2)
+        movie3_img_label = tk.Label(self, image = self.movie3_cover_img)
+        movie3_img_label.place(x=430, y=280)
+
+        # return button
+        return_button = tk.Button(self, text='<<', height="1", width="10",
+        command=lambda: controller.show_frame(Library_Page))
+        return_button.place(x=2, y=2)
+    
+    def check_load_limit(self, movie):
+        # Tää ei välttis aina mee ihan yks yhtee returnin kanssa
+        # This function will check that one user can loan maximum of 5 loans
+        can_continue = True
+        movie_names = []
+        # here we set to current_username variable the user which is currently login 
+        # which we will find from current_user.txt
+        f_path = os.path.join(self.base_folder, 'current_user.txt')
+        open_file = open(f_path, "r")
+        self.current_username = open_file.readline()
+
+        # this file shows amount username:loan pattern where we will count user's loans
+        loans_and_user_file_path = os.path.join(self.base_folder, 'loan_and_user.txt')
+
+        # this file has information about loans
+        loans_only = os.path.join(self.base_folder, 'loans.txt')
+
+        # here we go through lines and count the lines where is current user
+        with open(loans_and_user_file_path, 'r') as fp:
+            for line in fp:
+                if self.current_username in line:
+                    self.count += 1
+                    row = line.split(':')
+                    user, id = [i.strip() for i in row]
+
+                    # here we add to array user's loan's book's names
+                    with open(loans_only, 'r') as loans_file:
+                        for line2 in loans_file:
+                            if id in line2:
+                                row2 = line2.split(',')
+                                loan_id, start_date, end_date, name, genre, producer, release_date, photo = [y.strip() for y in row2]
+                                movie_names.append(name)
+                           
+        # checks for name dublicates 
+        if len(movie_names) > 0:
+            for x in movie_names:
+                if movie.get_name() == x: # if it is on movie_names already
+                    movie_names.pop()
+                    can_continue = False
+
+            if self.count <= 4 and can_continue == True: # can be loaned
+                self.loan(movie)
+
+            else: # can't be loaned
+                if self.count>4:
+                    msg = "Your loan limit is maximum 5. \You have to return loan to loan more"
+                else:
+                    msg = "You have loaned this already"
+                tk = Tk()
+                show_msg = Message(tk, text = msg)
+                show_msg.config(bg="lightgreen", font=("times",13))
+                show_msg.pack() 
+
+        else: # it is the first loan
+            self.loan(movie)
+
+        self.count =0 
+
+           
+    def loan(self, movie):
+        # In this function we save user and loan information to txt files
+        
+        # let's take the loan date
+        today = datetime.date.today()
+
+        # then next month we use function
+        next_month = self.get_next_month(today)
+      
+        # we make loan object from that book which button user pressed
+        new_loan = Loan_class.Loan(str(today),str(next_month),movie.get_name(),movie.get_genre(),movie.get_producer(),movie.get_release_date(),movie.get_photo())
+
+        # we need to get user which is now login
+        file_path = os.path.join(self.base_folder, 'current_user.txt')
+        f = open(file_path, "r")
+        current_user = f.readline()
+        f.close()
+
+        # save username and loan id for profile purposes
+        file2_path = os.path.join(self.base_folder, 'loan_and_user.txt')
+        f2 = open(file2_path, "a+")
+        f2.write(" " + current_user + " : " + new_loan.get_loan_id()+ "\n")
+        f2.close()
+
+        # Save loan information for printing in profile page
+        file3_path = os.path.join(self.base_folder, 'loans.txt')
+        f3 = open(file3_path, "a+")
+        f3.write(new_loan.get_loan_id() + "," + str(today) + "," +str(next_month) + "," + movie.get_name()+ "," + movie.get_genre() + "," + movie.get_producer() + "," + movie.get_release_date() + "," + movie.get_photo() + "\n")
+        f3.close()
+
+    def get_next_month(self,sourcedate):
+        # this function returns date one month later
+        month = sourcedate.month
+        year = sourcedate.year + month // 12
+        month = month % 12 + 1
+        day = min(sourcedate.day, calendar.monthrange(year,month)[1])
+
+        return datetime.date(year, month, day)  
+
+class MagazinePage(tk.Frame):
+    pass
+
+
 
 
 
 
 
         
-        
+      
