@@ -345,7 +345,7 @@ class Library_Page(tk.Frame):
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # header label
-        header_label = tk.Label(self, text="Do you wan't to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label = tk.Label(self, text="Do you want to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack()
 
         help_label = tk.Label(self, text="You can do 5 loans maximum", bg="white", fg="black", font=('Helvetica', '13', 'bold'))
@@ -431,21 +431,21 @@ class BookPage(tk.Frame):
         self.base_folder = os.path.dirname(__file__)
 
         # book1 -object's image
-        book1_cover_path = os.path.join(self.base_folder + '\\book_pics\\' + self.book1.get_photo())
+        book1_cover_path = os.path.join(self.base_folder + '/book_pics/' + self.book1.get_photo())
         self.book1_cover = tk.PhotoImage(file = book1_cover_path)
         self.book1_cover_img = self.book1_cover.subsample(2, 2)
         book1_img_label = tk.Label(self, image = self.book1_cover_img)
         book1_img_label.place(x=450, y=70)
 
         # book2 -object's image
-        book2_cover_path = os.path.join(self.base_folder + '\\book_pics\\' + self.book2.get_photo())
+        book2_cover_path = os.path.join(self.base_folder + '/book_pics/' + self.book2.get_photo())
         self.book2_cover = tk.PhotoImage(file = book2_cover_path)
         self.book2_cover_img = self.book2_cover.subsample(2, 2)
         book2_img_label = tk.Label(self, image = self.book2_cover_img)
         book2_img_label.place(x=455, y=175)
 
         # book3 -object's image
-        book3_cover_path = os.path.join(self.base_folder + '\\book_pics\\' + self.book3.get_photo())
+        book3_cover_path = os.path.join(self.base_folder + '/book_pics/' + self.book3.get_photo())
         self.book3_cover = tk.PhotoImage(file = book3_cover_path)
         self.book3_cover_img = self.book3_cover.subsample(2, 2)
         book3_img_label = tk.Label(self, image = self.book3_cover_img)
