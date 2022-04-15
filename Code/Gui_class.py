@@ -461,7 +461,8 @@ class BookPage(tk.Frame):
     def check_load_limit(self, book):
         # TÄHÄN VIELÄ LISÄTÄ CHEKKI ETTEI VOI LAINATA SAMAN NIMISTÄ KIRJAA UUDESTAAN
         # This function will check that one user can loan maximum of 5 loans
-
+        print("STARTTI")
+        can_continue = True
         book_names = []
         # here we set to current_username variable the user which is currently login 
         # which we will find from current_user.txt
@@ -489,28 +490,32 @@ class BookPage(tk.Frame):
                             row2 = line2.split(',')
                             loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
                             book_names.append(name)
-
+                           
+        seen = set()
         # checks for name dublicates 
         if len(book_names) > 0:
-            if len(book_names) == len(set(book_names)):
-                print("doesn't contain")
-                #return false
+            for x in book_names:
+                if book.get_name() in seen:
+                    book_names.pop()
+                    can_continue = False
+                else:
+                    seen.add(x)
+            if self.count <= 4 and can_continue == True:
+                self.loan(book)
             else:
-                print("contains")
-                #return True
-
-
-        # if count is smaller or same as 4 we will run loan function
-        # to spesific book which we got as a parameter
-        if self.count <= 4:
-            self.loan(book)
-        
-        # else we will create and send an info message for user
+                if self.count>4:
+                    msg = "Your loan limit is maximum 5. \You have to return loan to loan more"
+                else:
+                    msg = "You have loaned this already"
+                tk = Tk()
+                show_msg = Message(tk, text = msg)
+                show_msg.config(bg="lightgreen", font=("times",13))
+                show_msg.pack() 
         else:
-            tk = Tk()
-            show_msg = Message(tk, text = "Your loan limit is maximum 5. \You have to return loan to loan more")
-            show_msg.config(bg="lightgreen", font=("times",15))
-            show_msg.pack() 
+            seen.add(book.get_name())
+            book_names.append(book.get_name())
+            self.loan(book)
+
 
         self.count =0 
 
