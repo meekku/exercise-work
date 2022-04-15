@@ -1,3 +1,7 @@
+# File-name: Gui_class.py
+# Author: Melina Kamunen and Nea Träskman
+# Description: 
+
 import tkinter as tk
 from tkinter import *
 import os

@@ -1,6 +1,7 @@
 # File-name: User_class.py
 # Author: Melina Kamunen and Nea Träskman
 # Description: User_class.py is class for creating spesific users to library program
+
 import Loan_class
 
 class User():
@@ -15,8 +16,6 @@ class User():
     
     def __str__(self):
         st= "Username: " + str(self.get_user_name()) + "\nName: " + str(self.get_first_name()) + " " + str(self.get_last_name()) + "\n Phone: " + str(self.get_phonenumber()) + "\n E-mail: " + str(self.get_email())
-
-
                 
         return st
     
