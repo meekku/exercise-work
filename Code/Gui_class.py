@@ -1,7 +1,6 @@
 # File-name: Gui_class.py
 # Author: Melina Kamunen and Nea Träskman
 # Description: 
-
 import tkinter as tk
 from tkinter import *
 import os
@@ -11,9 +10,7 @@ import Book_class
 import User_class
 import Loan_class
 import datetime
-from datetime import date
 import calendar
-from setuptools import Command
 
 
 class App(tk.Tk):
@@ -30,7 +27,6 @@ class App(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         container.configure(bg="white")
-
 
         #Initialize frames
         self.frames = {}
@@ -498,12 +494,14 @@ class BookPage(tk.Frame):
         # checks for name dublicates 
         if len(book_names) > 0:
             for x in book_names:
-                if book.get_name() == x:
+                if book.get_name() == x: # if it is on book_names already
                     book_names.pop()
                     can_continue = False
-            if self.count <= 4 and can_continue == True:
+
+            if self.count <= 4 and can_continue == True: # can be loaned
                 self.loan(book)
-            else:
+
+            else: # can't be loaned
                 if self.count>4:
                     msg = "Your loan limit is maximum 5. \You have to return loan to loan more"
                 else:
@@ -512,9 +510,9 @@ class BookPage(tk.Frame):
                 show_msg = Message(tk, text = msg)
                 show_msg.config(bg="lightgreen", font=("times",13))
                 show_msg.pack() 
-        else:
-            self.loan(book)
 
+        else: # it is the first loan
+            self.loan(book)
 
         self.count =0 
 
@@ -562,7 +560,7 @@ class ProfilePage(tk.Frame):
     # In this page user can 
     # 1. Browse its loans and can 
     # 2. See loan and profile information 
-    # 3. Do returns (TÄÄ EI OIKEE TOIMI)
+    # 3. Do returns 
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -585,11 +583,9 @@ class ProfilePage(tk.Frame):
         # basefolder file to help searching right files
         self.base_folder = os.path.dirname(__file__)
 
-
         # header
         header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack(pady=10,padx=10)
- 
 
         # button for returning back to library page
         return_button = tk.Button(self, text='<<', height="1",bg="#b7dcff", width="10",
@@ -622,11 +618,6 @@ class ProfilePage(tk.Frame):
         f_path = os.path.join(self.base_folder, 'current_user.txt')
         open_file = open(f_path, "r")
         self.current_username = open_file.readline()
-        print(self.current_username)
-        #with open(f_path) as f:
-         #   self.current_username = f.readline().rstrip()
-        #print(self.current_username)
-
         
         # in this file is user's registration information
         usernames_file_path = os.path.join(self.base_folder, 'profile_info.txt')
@@ -649,7 +640,6 @@ class ProfilePage(tk.Frame):
 
         # this file shows what user is now login
         f_path = os.path.join(self.base_folder, 'current_user.txt')
-
         open_file = open(f_path, "r")
         self.current_username = open_file.readline()
         print(self.current_username)
@@ -664,7 +654,8 @@ class ProfilePage(tk.Frame):
             if self.current_username in line:
                 row = line.split(',')
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
-                self.current_user = User_class.User(user_name, fname, lname, phone, email)     
+                self.current_user = User_class.User(user_name, fname, lname, phone, email) 
+
         # this file is for finding "username:loan_id" pattern from file
         username_as_string = self.current_user.get_user_name()
         username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
@@ -751,7 +742,6 @@ class ProfilePage(tk.Frame):
                             f2.write(line2)
                             print(line2)
             
-
             # here we remove from loan_and_user.txt file 
                 with open(username_loan_path, "r") as f3:
                     lines3 = f3.readlines()
@@ -761,6 +751,7 @@ class ProfilePage(tk.Frame):
                             print("line3")
                             f3.write(line3)
 
+                # here we remove from user objects loans[]
                 if self.l == 0 or self.l > self.current_user.show_loans_length():
                     self.current_user.return_loan(0)
                 else:

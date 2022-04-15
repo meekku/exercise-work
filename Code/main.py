@@ -9,8 +9,8 @@ def main():
     
     # PUUTTUU:
 
-    # 1. Ei ole vielä magazine tai movie sivuja tai lainoja yhdistetty luokkiin :_:
-    # 2. Ohjelman suoritukseen tarvitsee luoda tyhjiä tekstitiedostoja:
+    # 1. Ei ole vielä magazine tai movie sivuja tai lainoja yhdistetty luokkiin mihinkään
+    # 2. GITHUBISSA EI OLE: Ohjelman suoritukseen tarvitsee luoda tyhjiä tekstitiedostoja:
     #  - current_user.txt
     #  - loan_and_user.txt
     #  - loans.txt
