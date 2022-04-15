@@ -585,7 +585,12 @@ class ProfilePage(tk.Frame):
         f_path = os.path.join(self.base_folder, 'current_user.txt')
         open_file = open(f_path, "r")
         self.current_username = open_file.readline()
+        print(self.current_username)
+        with open(f_path) as f:
+            self.current_username = f.readline().rstrip()
+        print(self.current_username)
 
+        
         # in this file is user's registration information
         usernames_file_path = os.path.join(self.base_folder, 'profile_info.txt')
         usernames_file = open(usernames_file_path).readlines()
@@ -630,64 +635,61 @@ class ProfilePage(tk.Frame):
 
     def show_loans(self):
         # this functions browse loans
-        try:
-            # this file is for finding "username:loan_id" pattern from file
-            username_as_string = self.current_user.get_user_name()
-            username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
-            self.username_loan_file = open(username_loan_path).readlines()
+     
+        # this file is for finding "username:loan_id" pattern from file
+        username_as_string = self.current_user.get_user_name()
+        username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
+        self.username_loan_file = open(username_loan_path).readlines()
 
-            # this file is for finding loans for that loan_id
-            loan_file_path = os.path.join(self.base_folder, 'loans.txt')
-            self.loan_file = open(loan_file_path).readlines()
+        # this file is for finding loans for that loan_id
+        loan_file_path = os.path.join(self.base_folder, 'loans.txt')
+        self.loan_file = open(loan_file_path).readlines()
 
-            # first we are going through lines and trying to find current login username
-            for line3 in self.username_loan_file:
+        # first we are going through lines and trying to find current login username
+        for line3 in self.username_loan_file:
 
-                # if we find username we will split : from it and
-                # make it a list where we will use id variable at next for-loop
-                # and add 1 "finding" to count_user_loans variable
-                if " " + username_as_string + " : " in line3:
-                    self.count_user_loans += 1
-                    row3 = line3.split(':')
-                    user, id = [t.strip() for t in row3]
+            # if we find username we will split : from it and
+            # make it a list where we will use id variable at next for-loop
+            # and add 1 "finding" to count_user_loans variable
+            if " " + username_as_string + " : " in line3:
+                self.count_user_loans += 1
+                row3 = line3.split(':')
+                user, id = [t.strip() for t in row3]
 
-                    # this for loop finds loans with that spesific id
-                    for line2 in self.loan_file:
+                # this for loop finds loans with that spesific id
+                for line2 in self.loan_file:
 
-                        # if we find it and lines in loan file is bigger
-                        # than user's loans[] length
-                        # we will split "," from it and strip it for 
-                        # making loan object which we will add for the users loans[] 
-                        if id in line2 and self.count_user_loans > self.current_user.show_loans_length(): 
-                            row2 = line2.split(',')
-                            loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
-                            self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
+                    # if we find it and lines in loan file is bigger
+                    # than user's loans[] length
+                    # we will split "," from it and strip it for 
+                    # making loan object which we will add for the users loans[] 
+                    if id in line2 and self.count_user_loans > self.current_user.show_loans_length(): 
+                        row2 = line2.split(',')
+                        loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
+                        self.current_user.add_loan(loan_id,start_date,end_date,name,genre,pages,producer,release_date,photo)
 
-            self.count_user_loans = 0
+        self.count_user_loans = 0
 
-            # these if -statements are showing next loan to text label from user's loans list
-            if self.current_user.show_loans_length()<1:
-                self.loan_text.set("No loans")
-                self.l = 0
-            elif self.current_user.show_loans_length() == self.l:
-                self.l = 0
-                self.loan_text.set("No more loans to show\n Press show loans -button to browse your loans again")
-                self.button_text.set("Show loans")
-            else:
-                self.button_text.set("Next")
-                self.loan_text.set(self.current_user.get_spesific_loan(self.l))
-                self.l +=1
+        # these if -statements are showing next loan to text label from user's loans list
+        if self.current_user.show_loans_length()<1:
+            self.loan_text.set("No loans")
+            self.l = 0
+        elif self.current_user.show_loans_length() == self.l:
+            self.l = 0
+            self.loan_text.set("No more loans to show\n Press show loans -button to browse your loans again")
+            self.button_text.set("Show loans")
+        else:
+            self.button_text.set("Next")
+            self.loan_text.set(self.current_user.get_spesific_loan(self.l))
+            self.l +=1
 
-                # if user has loan this button that returns loans display to screen
-                return_button = tk.Button(self, text="Return this loan", height="2", width="15", bg="#b7dcff",
-                command=lambda:self.return_this_loan())
-                return_button.place(x=245, y=300) 
-        except:
-            # entiiä miten tän sais kunnolla valittaa index out of rangea jossain tilanteis
-            print("You broke this :))")
+            # if user has loan this button that returns loans display to screen
+            return_button = tk.Button(self, text="Return this loan", height="2", width="15", bg="#b7dcff",
+            command=lambda:self.return_this_loan())
+            return_button.place(x=245, y=300) 
 
     def return_this_loan(self):
-        # tää return system ei vaa toimi
+
         # This fuction removes loan from two saving file's and from user's loans[]
         #try:
             # this finds right loan id
@@ -735,15 +737,7 @@ class ProfilePage(tk.Frame):
                 else:
                     self.current_user.return_loan(self.l-1)
 
-            # here we remove loan from user's loans[]u
-            #try:
-             #   self.current_user.return_loan(self.l-1)
-           # except:
-            #    self.current_user.return_loan(0)
 
-        #except:
-            # tä tulee kans aika usein jote jotai selkeesti vialla pitää vielä säätää tätä
-           # print("you broke this tooo :)")
 
 
 
