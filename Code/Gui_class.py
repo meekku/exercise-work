@@ -581,14 +581,47 @@ class ProfilePage(tk.Frame):
         # basefolder file to help searching right files
         self.base_folder = os.path.dirname(__file__)
 
+
+        # header
+        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label.pack(pady=10,padx=10)
+ 
+
+        # button for returning back to library page
+        return_button = tk.Button(self, text='<<', height="1",bg="#b7dcff", width="10",
+        command=lambda: controller.show_frame(Library_Page))
+        return_button.place(x=2, y=2)
+
+        # this button is for showing profile
+        show_profile_button = tk.Button(self, text="Show profile",bg="#b7dcff", height="1", width="15",
+        command=lambda:self.show_profile_info())
+        show_profile_button.place(x=440, y=2)
+
+        # this button is for browsing loans
+        show_loan_button = tk.Button(self, textvariable=self.button_text,bg="#b7dcff", height="1", width="10",
+        command=lambda:self.show_loans())
+        show_loan_button.place(x=100, y=2)
+
+        # here we initialize show button's text variables value
+        self.loan_text=StringVar()
+        self.loan_text.set("Press Show loans\nto browse your loans")
+      
+        # loan info text label
+        loan_text_label=Label(self,textvariable=self.loan_text,bg="#b7dcff",fg="black")
+        loan_text_label.pack(pady=10,padx=10)
+
+    def show_profile_info(self):
+        # basefolder file to help searching right files
+        self.base_folder = os.path.dirname(__file__)
+
         # this file shows what user is now login
         f_path = os.path.join(self.base_folder, 'current_user.txt')
         open_file = open(f_path, "r")
         self.current_username = open_file.readline()
         print(self.current_username)
-        with open(f_path) as f:
-            self.current_username = f.readline().rstrip()
-        print(self.current_username)
+        #with open(f_path) as f:
+         #   self.current_username = f.readline().rstrip()
+        #print(self.current_username)
 
         
         # in this file is user's registration information
@@ -603,39 +636,31 @@ class ProfilePage(tk.Frame):
                 user_name, fname, lname, phone, email = [i.strip() for i in row]
                 self.current_user = User_class.User(user_name, fname, lname, phone, email)
 
-        # header
-        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
-        header_label.pack(pady=10,padx=10)
- 
         # profile text information
-        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black",font=('Latha', '10', 'bold'))
-        profile_text_label.pack(pady=10,padx=10)
-
-        # button for returning back to library page
-        return_button = tk.Button(self, text='<<', height="1",bg="#b7dcff", width="10",
-        command=lambda: controller.show_frame(Library_Page))
-        return_button.place(x=2, y=2)
-
-        # this button is for browsing loans
-        show_button = tk.Button(self, textvariable=self.button_text,bg="#b7dcff", height="1", width="10",
-        command=lambda:self.show_loans())
-        show_button.place(x=100, y=2)
-
-        # here we initialize show button's text variables value
-        self.loan_text=StringVar()
-        if self.current_user.show_loans_length()<1:
-            self.loan_text.set("Press show loans -button to browse your loans")
-        else:
-            self.loan_text.set(self.current_user.get_spesific_loan(self.l))
-        
-        # loan info text label
-        loan_text_label=Label(self,textvariable=self.loan_text,bg="#b7dcff",fg="black")
-        loan_text_label.pack(pady=10,padx=10)
-
+        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black",font=('Latha', '9', 'bold'))
+        profile_text_label.place(x=400, y=50)
 
     def show_loans(self):
         # this functions browse loans
-     
+
+        # this file shows what user is now login
+        f_path = os.path.join(self.base_folder, 'current_user.txt')
+
+        open_file = open(f_path, "r")
+        self.current_username = open_file.readline()
+        print(self.current_username)
+        
+        # in this file is user's registration information
+        usernames_file_path = os.path.join(self.base_folder, 'profile_info.txt')
+        usernames_file = open(usernames_file_path).readlines()
+
+        # this for loop finds line for username which
+        # is login at the moment and creates object of that user info
+        for line in usernames_file:
+            if self.current_username in line:
+                row = line.split(',')
+                user_name, fname, lname, phone, email = [i.strip() for i in row]
+                self.current_user = User_class.User(user_name, fname, lname, phone, email)     
         # this file is for finding "username:loan_id" pattern from file
         username_as_string = self.current_user.get_user_name()
         username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
@@ -676,7 +701,7 @@ class ProfilePage(tk.Frame):
             self.l = 0
         elif self.current_user.show_loans_length() == self.l:
             self.l = 0
-            self.loan_text.set("No more loans to show\n Press show loans -button to browse your loans again")
+            self.loan_text.set("No more loans to show\n Press Show loans \nto browse your loans again")
             self.button_text.set("Show loans")
         else:
             self.button_text.set("Next")
