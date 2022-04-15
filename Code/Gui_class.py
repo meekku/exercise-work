@@ -406,9 +406,9 @@ class BookPage(tk.Frame):
 
         # our books as an objects so we can use for loop to
         # show their information
-        self.book1 = Book_class.Book("I hate my life 3", "Fantasy", "3002", "Myself", "12.4.2022", "book1.png")
-        self.book2 = Book_class.Book("Students lost motivation", "Horror", "301", "Bookkers", "23.3.2003", "book2.png")
-        self.book3 = Book_class.Book("Best bible", "Nonfiction", "20", "God", "30.2.1999", "book3.png")
+        self.book1 = Book_class.Book("Pippi Långstrump ", "Children's book", "267", "Astrid Lindgren", "1945", "book1.png")
+        self.book2 = Book_class.Book("Dawn", "Horror", "256", "Octavia E. Butler", "1997", "book2.png")
+        self.book3 = Book_class.Book("The Bible", "Nonfiction", "420", "God", "0", "book3.png")
         books = [self.book1, self.book2, self.book3]
 
         # buttons for loaning spesific book
@@ -422,7 +422,7 @@ class BookPage(tk.Frame):
         # text labels which contains all three book's information
         for book in books:
             text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '15'))
-            text_label.pack(pady=10,padx=10)
+            text_label.pack(pady=15,padx=10)
 
         # base_folder is path help for finding right files
         self.base_folder = os.path.dirname(__file__)
@@ -769,9 +769,9 @@ class MoviePage(tk.Frame):
 
         # our movies as an objects so we can use for loop to
         # show their information
-        self.movie1 = Movie_class.Movie("Dumbo", "Children's Movie", "Myself", "12.4.2022", "movie1.png")
-        self.movie2 = Movie_class.Movie("Apocalypse Now", "Horror", "Bookkers", "23.3.2003", "movie2.png")
-        self.movie3 = Movie_class.Movie("Dunkirk", "Nonfiction", "God", "30.2.1999", "movie3.png")
+        self.movie1 = Movie_class.Movie("Dumbo", "Children's Movie", "Walt Disney", "1941", "movie1.png")
+        self.movie2 = Movie_class.Movie("Apocalypse Now", "Drama", "Francis Ford Coppola", "1979", "movie2.png")
+        self.movie3 = Movie_class.Movie("Dunkirk", "Action", "Christopher Nolan", "2017", "movie3.png")
         movies = [self.movie1, self.movie2, self.movie3]
 
         # buttons for loaning specific movie
