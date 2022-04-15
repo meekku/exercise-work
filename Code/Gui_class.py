@@ -689,44 +689,61 @@ class ProfilePage(tk.Frame):
     def return_this_loan(self):
         # tää return system ei vaa toimi
         # This fuction removes loan from two saving file's and from user's loans[]
-        try:
+        #try:
             # this finds right loan id
-            loan = self.current_user.get_spesific_loan(self.l-1)
-
+            if self.current_user.show_loans_length()<1:
+                self.loan_text.set("No loans")
+                
+            else:
+                if self.l == 0 or self.l > self.current_user.show_loans_length():
+                    loan = self.current_user.get_spesific_loan(0)
+                else:
+                    loan = self.current_user.get_spesific_loan(self.l-1)
+            
+                print(loan)
             # this file is for finding username:loan_id pattern from file
-            username_as_string = self.current_user.get_user_name()
+                username_as_string = self.current_user.get_user_name()
     
             # this file is for finding loan and username pattern
-            username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
+                username_loan_path = os.path.join(self.base_folder, 'loan_and_user.txt')
 
-            # this file is for finding loans for that loan_id
-            loan_file_path = os.path.join(self.base_folder, 'loans.txt')
+                # this file is for finding loans for that loan_id
+                loan_file_path = os.path.join(self.base_folder, 'loans.txt')
   
-            #here we remove loan from loans.txt 
-            with open(loan_file_path, "r") as f2:
-                lines2 = f2.readlines()
+                #here we remove loan from loans.txt 
+                with open(loan_file_path, "r") as f2:
+                    lines2 = f2.readlines()
                 with open(loan_file_path, "w") as f2:
                     for line2 in lines2:
                         if loan.get_loan_id() not in line2:
+                            print("line2")
                             f2.write(line2)
+                            print(line2)
+            
 
             # here we remove from loan_and_user.txt file 
-            with open(username_loan_path, "r") as f3:
-                lines3 = f3.readlines()
-            with open(username_loan_path, "w") as f3:
-                for line3 in lines3:
-                    if " " + username_as_string + " : " + loan.get_loan_id() not in line3 :
-                        f3.write(line3)
+                with open(username_loan_path, "r") as f3:
+                    lines3 = f3.readlines()
+                with open(username_loan_path, "w") as f3:
+                    for line3 in lines3:
+                        if " " + username_as_string + " : " + loan.get_loan_id() not in line3 :
+                            print("line3")
+                            f3.write(line3)
+
+                if self.l == 0 or self.l > self.current_user.show_loans_length():
+                    self.current_user.return_loan(0)
+                else:
+                    self.current_user.return_loan(self.l-1)
 
             # here we remove loan from user's loans[]u
-            try:
-                self.current_user.return_loan(self.l-1)
-            except:
-                self.current_user.return_loan(0)
+            #try:
+             #   self.current_user.return_loan(self.l-1)
+           # except:
+            #    self.current_user.return_loan(0)
 
-        except:
+        #except:
             # tä tulee kans aika usein jote jotai selkeesti vialla pitää vielä säätää tätä
-            print("you broke this tooo :)")
+           # print("you broke this tooo :)")
 
 
 
