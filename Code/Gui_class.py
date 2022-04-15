@@ -200,8 +200,8 @@ class Page_Register(tk.Frame):
         instruction_label.pack(pady=8)
 
         # Information text label
-        info_label = tk.Label(self, text="Username: \n\n Password: \n\n First name: \n\n Last name: \n\n Phonenumber: \n\n E-mail: ", bg="white", fg="black", font=('Helvetica', '8'))
-        info_label.place(x=158, y=131)
+        info_label = tk.Label(self, text="Username: \n\n Password: \n\n First name: \n\n Last name: \n\n Phonenumber: \n\n E-mail: ", bg="white", fg="black", font=('Helvetica', '15'))
+        info_label.place(x=90, y=125)
 
         # Set username entry
         self.username_entry = tk.Entry(self, textvariable=self.username, bg="white", fg="black")
@@ -228,14 +228,14 @@ class Page_Register(tk.Frame):
         self.email_entry.pack()
         
         # Register button will run on_register() program that will check input
-        register_button = tk.Button(self, text='Submit', height="2", width="15",
+        register_button = tk.Button(self, text='Submit', height="2", width="10",
         command= lambda: self.on_register(controller))
-        register_button.pack(pady=5)
+        register_button.place(x=170, y=340)
 
         # Back button returns to homepage
-        back_button = tk.Button(self, text='Go back', height="2", width="20",
+        back_button = tk.Button(self, text='Go back', height="2", width="10",
         command=lambda: controller.show_frame(HomePage))
-        back_button.pack(pady=5)
+        back_button.place(x=300, y=340)
 
     def on_register(self,controller):
         # This function first runs reg_validation() which
@@ -401,7 +401,7 @@ class BookPage(tk.Frame):
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # header
-        header_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label = tk.Label(self, text="A selection of books", bg="white", fg="black", font=('Helvetica', '18', 'bold'))
         header_label.pack(pady=10,padx=10)
 
         # our books as an objects so we can use for loop to
@@ -421,7 +421,7 @@ class BookPage(tk.Frame):
 
         # text labels which contains all three book's information
         for book in books:
-            text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '10', 'bold'))
+            text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '15'))
             text_label.pack(pady=10,padx=10)
 
         # base_folder is path help for finding right files
@@ -580,7 +580,7 @@ class ProfilePage(tk.Frame):
         self.base_folder = os.path.dirname(__file__)
 
         # header
-        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label = tk.Label(self, text="Your profile", bg="white", fg="black", font=('Helvetica', '18', 'bold'))
         header_label.pack(pady=10,padx=10)
 
         # button for returning back to library page
