@@ -66,8 +66,10 @@ class User():
         return len(self.__loans)
     
     def get_spesific_loan(self, place):
-        return self.__loans[place]
-
+        try:
+            return self.__loans[place]
+        except:
+            return self.__loans[0]
     def set_loans(self,new_loans):
         self.__loans=new_loans
     

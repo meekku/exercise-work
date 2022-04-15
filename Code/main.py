@@ -19,6 +19,8 @@ def main():
     #  Nää teksti tiedostot toimivat vähän kuin tietokantana, että tallentaa käyttäjien juttuja
     # 3. Testausta pitäis myös jaksaa, koska ongelmia uskottavasti löytyyy
     # 4. lopuksi jos on aikaa niin koristellaan 
+    # muutetaan book_class -> loaned_object -class, että loput sivut tehdään sillä
+    # niin ei riko kaikkea :D.... 
 
     app = Gui_class.App()
     app.mainloop()
