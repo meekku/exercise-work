@@ -377,11 +377,11 @@ class Library_Page(tk.Frame):
         Magazine_Button.place(x=395, y=80)
 
         Profile_Button = tk.Button(self, text = "Your profile", height="2", width="20", command=lambda: controller.show_frame(ProfilePage))
-        Profile_Button.place(x=220,y=240)
+        Profile_Button.place(x=195,y=240)
 
         log_out_button = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: self.clear_current_user_file(controller))
-        log_out_button.place(x=220, y=300)
+        log_out_button.place(x=195, y=300)
 
     def clear_current_user_file(self, controller):
     
