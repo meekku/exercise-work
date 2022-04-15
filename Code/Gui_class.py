@@ -324,9 +324,7 @@ class Page_Register(tk.Frame):
         base_folder = os.path.dirname(__file__)
         information_file_path = os.path.join(base_folder, 'user_information.txt')
         user_file = open(information_file_path, "a+")
-        print("File opened.")
         user_file.write(get_username + ":" + get_password + "\n")
-        print("Closing file.")
         user_file.close()
 
         # Here we save all information except password
@@ -642,7 +640,7 @@ class ProfilePage(tk.Frame):
         f_path = os.path.join(self.base_folder, 'current_user.txt')
         open_file = open(f_path, "r")
         self.current_username = open_file.readline()
-        print(self.current_username)
+       
         
         # in this file is user's registration information
         usernames_file_path = os.path.join(self.base_folder, 'profile_info.txt')
@@ -722,7 +720,7 @@ class ProfilePage(tk.Frame):
                 else:
                     loan = self.current_user.get_spesific_loan(self.l-1)
             
-                print(loan)
+                
             # this file is for finding username:loan_id pattern from file
                 username_as_string = self.current_user.get_user_name()
     
@@ -738,9 +736,8 @@ class ProfilePage(tk.Frame):
                 with open(loan_file_path, "w") as f2:
                     for line2 in lines2:
                         if loan.get_loan_id() not in line2:
-                            print("line2")
                             f2.write(line2)
-                            print(line2)
+                        
             
             # here we remove from loan_and_user.txt file 
                 with open(username_loan_path, "r") as f3:
@@ -748,7 +745,6 @@ class ProfilePage(tk.Frame):
                 with open(username_loan_path, "w") as f3:
                     for line3 in lines3:
                         if " " + username_as_string + " : " + loan.get_loan_id() not in line3 :
-                            print("line3")
                             f3.write(line3)
 
                 # here we remove from user objects loans[]

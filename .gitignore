@@ -1,6 +1,6 @@
-*.txt
 *.jpg
 *.jpeg
 *.docx
 *.pyc
-*~
+Code/__pycache__/*
+Code/__pycache__/Gui_class.cpython-39.pyc
