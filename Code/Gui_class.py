@@ -487,19 +487,18 @@ class BookPage(tk.Frame):
                     # here we add to array user's loan's book's names
                     with open(loans_only, 'r') as loans_file:
                         for line2 in loans_file:
-                            row2 = line2.split(',')
-                            loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
-                            book_names.append(name)
+                            if id in line2:
+                                row2 = line2.split(',')
+                                loan_id, start_date, end_date, name, genre, pages, producer, release_date, photo = [y.strip() for y in row2]
+                                book_names.append(name)
                            
-        seen = set()
+       
         # checks for name dublicates 
         if len(book_names) > 0:
             for x in book_names:
-                if book.get_name() in seen:
+                if book.get_name() == x:
                     book_names.pop()
                     can_continue = False
-                else:
-                    seen.add(x)
             if self.count <= 4 and can_continue == True:
                 self.loan(book)
             else:
@@ -512,8 +511,6 @@ class BookPage(tk.Frame):
                 show_msg.config(bg="lightgreen", font=("times",13))
                 show_msg.pack() 
         else:
-            seen.add(book.get_name())
-            book_names.append(book.get_name())
             self.loan(book)
 
 
