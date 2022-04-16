@@ -504,7 +504,7 @@ class BookPage(tk.Frame):
                     msg = "You have loaned this already"
                 tk = Tk()
                 show_msg = Message(tk, text = msg)
-                show_msg.config(bg="lightgreen", font=("times",13))
+                show_msg.config(bg="lightgreen", fg="black", font=("times",13))
                 show_msg.pack() 
 
         else: # it is the first loan
@@ -1010,7 +1010,7 @@ class MagazinePage(tk.Frame):
                         for line2 in loans_file:
                             if id in line2:
                                 row2 = line2.split(',')
-                                loan_id, start_date, end_date, name, genre, producer, release_date, photo = [y.strip() for y in row2]
+                                loan_id, start_date, end_date, name, producer, release_date, photo = [y.strip() for y in row2]
                                 magazine_names.append(name)
                            
         # checks for name dublicates 
