@@ -3,6 +3,8 @@
 # Description: 
 
 import Book_class
+import Movie_class
+import Magazine_class
 import random
 class Loan(Book_class.Book):
 
@@ -15,6 +17,8 @@ class Loan(Book_class.Book):
 
 
         Book_class.Book.__init__(self, name, genre, pages, producer, release_date, photo)
+        Movie_class.Movie.__init__(self, name, genre, producer, release_date, photo)
+        Magazine_class.Magazine.__init__(self, name, pages, release_date, photo)
     
     def __str__(self):
         st = Book_class.Book.__str__(self)

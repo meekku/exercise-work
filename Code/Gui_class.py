@@ -867,7 +867,7 @@ class MoviePage(tk.Frame):
                     msg = "You have loaned this already"
                 tk = Tk()
                 show_msg = Message(tk, text = msg)
-                show_msg.config(bg="lightgreen", font=("times",13))
+                show_msg.config(bg="lightgreen",fg="black", font=("times",13))
                 show_msg.pack() 
 
         else: # it is the first loan
