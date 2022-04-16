@@ -376,11 +376,11 @@ class Library_Page(tk.Frame):
         Magazine_Button.place(x=395, y=80)
 
         Profile_Button = tk.Button(self, text = "Your profile", height="2", width="20", command=lambda: controller.show_frame(ProfilePage))
-        Profile_Button.place(x=195,y=240)
+        Profile_Button.place(x=220,y=240)
 
         log_out_button = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: self.clear_current_user_file(controller))
-        log_out_button.place(x=195, y=300)
+        log_out_button.place(x=220, y=300)
 
     def clear_current_user_file(self, controller):
     
@@ -422,8 +422,8 @@ class BookPage(tk.Frame):
 
         # text labels which contains all three book's information
         for book in books:
-            text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '15'))
-            text_label.pack(pady=15,padx=10)
+            text_label = tk.Label(self, text=book, bg="white", fg="black", font=('Helvetica', '10'))
+            text_label.pack(pady=13,padx=10)
 
         # base_folder is path help for finding right files
         self.base_folder = os.path.dirname(__file__)
@@ -785,8 +785,8 @@ class MoviePage(tk.Frame):
 
         # text labels which contains all three movie's information
         for movie in movies:
-            text_label = tk.Label(self, text=movie, bg="white", fg="black", font=('Helvetica', '15'))
-            text_label.pack(pady=10,padx=10)
+            text_label = tk.Label(self, text=movie, bg="white", fg="black", font=('Helvetica', '10'))
+            text_label.pack(pady=15,padx=10)
 
         # base_folder is path help for finding right files
         self.base_folder = os.path.dirname(__file__)
@@ -794,23 +794,23 @@ class MoviePage(tk.Frame):
         # movie1 -object's image
         movie1_cover_path = os.path.join(self.base_folder + '/movie_pics/' + self.movie1.get_photo())
         self.movie1_cover = tk.PhotoImage(file = movie1_cover_path)
-        self.movie1_cover_img = self.movie1_cover.subsample(2, 2)
+        self.movie1_cover_img = self.movie1_cover.subsample(3, 3)
         movie1_img_label = tk.Label(self, image = self.movie1_cover_img)
-        movie1_img_label.place(x=430, y=10)
+        movie1_img_label.place(x=430, y=67)
 
         # movie2 -object's image
         movie2_cover_path = os.path.join(self.base_folder + '/movie_pics/' + self.movie2.get_photo())
         self.movie2_cover = tk.PhotoImage(file = movie2_cover_path)
-        self.movie2_cover_img = self.movie2_cover.subsample(2, 2)
+        self.movie2_cover_img = self.movie2_cover.subsample(3, 3)
         movie2_img_label = tk.Label(self, image = self.movie2_cover_img)
-        movie2_img_label.place(x=430, y=150)
+        movie2_img_label.place(x=430, y=165)
 
         # movie3 -object's image
         movie3_cover_path = os.path.join(self.base_folder + '/movie_pics/' + self.movie3.get_photo())
         self.movie3_cover = tk.PhotoImage(file = movie3_cover_path)
-        self.movie3_cover_img = self.movie3_cover.subsample(2, 2)
+        self.movie3_cover_img = self.movie3_cover.subsample(3, 3)
         movie3_img_label = tk.Label(self, image = self.movie3_cover_img)
-        movie3_img_label.place(x=430, y=280)
+        movie3_img_label.place(x=430, y=268)
 
         # return button
         return_button = tk.Button(self, text='<<', height="1", width="10",
@@ -948,8 +948,8 @@ class MagazinePage(tk.Frame):
 
         # text labels which contains all three movie's information
         for magazine in magazines:
-            text_label = tk.Label(self, text=magazine, bg="white", fg="black", font=('Helvetica', '15'))
-            text_label.pack(pady=10,padx=10)
+            text_label = tk.Label(self, text=magazine, bg="white", fg="black", font=('Helvetica', '10'))
+            text_label.pack(pady=25,padx=10)
 
         # base_folder is path help for finding right files
         self.base_folder = os.path.dirname(__file__)
@@ -957,21 +957,21 @@ class MagazinePage(tk.Frame):
         # magazine1 -object's image
         magazine1_cover_path = os.path.join(self.base_folder + '/magazine_pics/' + self.magazine1.get_photo())
         self.magazine1_cover = tk.PhotoImage(file = magazine1_cover_path)
-        self.magazine1_cover_img = self.magazine1_cover.subsample(2, 2)
+        self.magazine1_cover_img = self.magazine1_cover.subsample(3, 3)
         magazine1_img_label = tk.Label(self, image = self.magazine1_cover_img)
-        magazine1_img_label.place(x=430, y=10)
+        magazine1_img_label.place(x=430, y=85)
 
         # magazine2 -object's image
         magazine2_cover_path = os.path.join(self.base_folder + '/magazine_pics/' + self.magazine2.get_photo())
         self.magazine2_cover = tk.PhotoImage(file = magazine2_cover_path)
-        self.magazine2_cover_img = self.magazine2_cover.subsample(2, 2)
+        self.magazine2_cover_img = self.magazine2_cover.subsample(3, 3)
         magazine2_img_label = tk.Label(self, image = self.magazine2_cover_img)
-        magazine2_img_label.place(x=430, y=150)
+        magazine2_img_label.place(x=430, y=175)
 
         # magazine3 -object's image
         magazine3_cover_path = os.path.join(self.base_folder + '/magazine_pics/' + self.magazine3.get_photo())
         self.magazine3_cover = tk.PhotoImage(file = magazine3_cover_path)
-        self.magazine3_cover_img = self.magazine3_cover.subsample(2, 2)
+        self.magazine3_cover_img = self.magazine3_cover.subsample(3, 3)
         magazine3_img_label = tk.Label(self, image = self.magazine3_cover_img)
         magazine3_img_label.place(x=430, y=280)
 

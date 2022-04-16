@@ -1,3 +1,3 @@
-11404494912,2022-04-15,2022-05-15,Best bible,Nonfiction,20,God,30.2.1999,book3.png
-4874660160,2022-04-15,2022-05-15,I hate my life 3,Fantasy,3002,Myself,12.4.2022,book1.png
-3926271168,2022-04-15,2022-05-15,Students lost motivation,Horror,301,Bookkers,23.3.2003,book2.png
+2542576320,2022-04-16,2022-05-16,Pippi Långstrump ,Children's book,267,Astrid Lindgren,1945,book1.png
+12198687360,2022-04-16,2022-05-16,Dawn,Horror,256,Octavia E. Butler,1997,book2.png
+8568710592,2022-04-16,2022-05-16,The Bible,Nonfiction,420,God,0,book3.png
