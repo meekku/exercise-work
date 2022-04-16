@@ -15,7 +15,7 @@ class User():
         self.__loans = []
     
     def __str__(self):
-        st= "Username: " + str(self.get_user_name()) + "\nName: " + str(self.get_first_name()) + " " + str(self.get_last_name()) + "\n Phone: " + str(self.get_phonenumber()) + "\n E-mail: " + str(self.get_email())
+        st= "Your username: " + str(self.get_user_name()) + "\n\nName: " + str(self.get_first_name()) + " " + str(self.get_last_name()) + "\n\n Phone: " + str(self.get_phonenumber()) + "\n\n E-mail: " + str(self.get_email())
                 
         return st
     

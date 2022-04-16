@@ -347,7 +347,7 @@ class Library_Page(tk.Frame):
         header_label = tk.Label(self, text="Do you want to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack()
 
-        help_label = tk.Label(self, text="You can do 5 loans maximum", bg="white", fg="black", font=('Helvetica', '13', 'bold'))
+        help_label = tk.Label(self, text="You can do max 5 loans", bg="white", fg="black", font=('Helvetica', '13', 'bold'))
         help_label.pack(pady=10,padx=10)
 
         # base folder to help find right file
@@ -376,11 +376,11 @@ class Library_Page(tk.Frame):
         Magazine_Button.place(x=395, y=80)
 
         Profile_Button = tk.Button(self, text = "Your profile", height="2", width="20", command=lambda: controller.show_frame(ProfilePage))
-        Profile_Button.place(x=220,y=240)
+        Profile_Button.place(x=200,y=240)
 
         log_out_button = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: self.clear_current_user_file(controller))
-        log_out_button.place(x=220, y=300)
+        log_out_button.place(x=200, y=300)
 
     def clear_current_user_file(self, controller):
     
@@ -629,8 +629,8 @@ class ProfilePage(tk.Frame):
                 self.current_user = User_class.User(user_name, fname, lname, phone, email)
 
         # profile text information
-        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black",font=('Latha', '9', 'bold'))
-        profile_text_label.place(x=400, y=50)
+        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black",font=('Latha', '14', 'bold'))
+        profile_text_label.place(x=20, y=200)
 
     def show_loans(self):
         # this functions browse loans
