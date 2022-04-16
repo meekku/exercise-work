@@ -10,6 +10,7 @@ import Book_class
 import User_class
 import Loan_class
 import Movie_class
+import Magazine_class
 import datetime
 import calendar
 
@@ -33,7 +34,7 @@ class App(tk.Tk):
         self.frames = {}
 
         #Defining frames and packing it
-        for F in (HomePage, Page_Login, Page_Register, Library_Page, BookPage, MoviePage, ProfilePage):
+        for F in (HomePage, Page_Login, Page_Register, Library_Page, BookPage, MoviePage, MagazinePage, ProfilePage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -794,8 +795,8 @@ class MoviePage(tk.Frame):
         movie1_cover_path = os.path.join(self.base_folder + '/movie_pics/' + self.movie1.get_photo())
         self.movie1_cover = tk.PhotoImage(file = movie1_cover_path)
         self.movie1_cover_img = self.movie1_cover.subsample(2, 2)
-        book1_img_label = tk.Label(self, image = self.movie1_cover_img)
-        book1_img_label.place(x=430, y=10)
+        movie1_img_label = tk.Label(self, image = self.movie1_cover_img)
+        movie1_img_label.place(x=430, y=10)
 
         # movie2 -object's image
         movie2_cover_path = os.path.join(self.base_folder + '/movie_pics/' + self.movie2.get_photo())
@@ -915,7 +916,167 @@ class MoviePage(tk.Frame):
         return datetime.date(year, month, day)  
 
 class MagazinePage(tk.Frame):
-    pass
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        # initializing the variable which will count user's loans
+        self.count=0
+
+        # image label
+        bg_label = tk.Label(self, image = img)
+        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # header
+        header_label = tk.Label(self, text="A selection of Magazines", bg="white", fg="black", font=('Helvetica', '18', 'bold'))
+        header_label.pack(pady=10,padx=10)
+
+        # our Magazines as an objects so we can use for loop to
+        # show their information
+        self.magazine1 = Magazine_class.Magazine("Dumbo", "Walt Disney", "1941", "magazine1.png")
+        self.magazine2 = Magazine_class.Magazine("Apocalypse Now", "Francis Ford Coppola", "1979", "magazine2.png")
+        self.magazine3 = Magazine_class.Magazine("Dunkirk", "Christopher Nolan", "2017", "magazine3.png")
+        magazines = [self.magazine1, self.magazine2, self.magazine3]
+
+        # buttons for loaning specific movie
+        loan1_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda:self.check_load_limit(self.magazine1))
+        loan1_button.place(x=100, y=90)
+        loan2_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.check_load_limit(self.magazine2))
+        loan2_button.place(x=100, y=190)
+        loan3_button = tk.Button(self, text = "Loan", height = 2, width= 5, command=lambda: self.check_load_limit(self.magazine3))
+        loan3_button.place(x=100, y=290)
+
+        # text labels which contains all three movie's information
+        for magazine in magazines:
+            text_label = tk.Label(self, text=magazine, bg="white", fg="black", font=('Helvetica', '15'))
+            text_label.pack(pady=10,padx=10)
+
+        # base_folder is path help for finding right files
+        self.base_folder = os.path.dirname(__file__)
+
+        # magazine1 -object's image
+        magazine1_cover_path = os.path.join(self.base_folder + '/magazine_pics/' + self.magazine1.get_photo())
+        self.magazine1_cover = tk.PhotoImage(file = magazine1_cover_path)
+        self.magazine1_cover_img = self.magazine1_cover.subsample(2, 2)
+        magazine1_img_label = tk.Label(self, image = self.magazine1_cover_img)
+        magazine1_img_label.place(x=430, y=10)
+
+        # magazine2 -object's image
+        magazine2_cover_path = os.path.join(self.base_folder + '/magazine_pics/' + self.magazine2.get_photo())
+        self.magazine2_cover = tk.PhotoImage(file = magazine2_cover_path)
+        self.magazine2_cover_img = self.magazine2_cover.subsample(2, 2)
+        magazine2_img_label = tk.Label(self, image = self.magazine2_cover_img)
+        magazine2_img_label.place(x=430, y=150)
+
+        # magazine3 -object's image
+        magazine3_cover_path = os.path.join(self.base_folder + '/magazine_pics/' + self.magazine3.get_photo())
+        self.magazine3_cover = tk.PhotoImage(file = magazine3_cover_path)
+        self.magazine3_cover_img = self.magazine3_cover.subsample(2, 2)
+        magazine3_img_label = tk.Label(self, image = self.magazine3_cover_img)
+        magazine3_img_label.place(x=430, y=280)
+
+        # return button
+        return_button = tk.Button(self, text='<<', height="1", width="10",
+        command=lambda: controller.show_frame(Library_Page))
+        return_button.place(x=2, y=2)
+    
+    def check_load_limit(self, magazine):
+        # Tää ei välttis aina mee ihan yks yhtee returnin kanssa
+        # This function will check that one user can loan maximum of 5 loans
+        can_continue = True
+        magazine_names = []
+        # here we set to current_username variable the user which is currently login 
+        # which we will find from current_user.txt
+        f_path = os.path.join(self.base_folder, 'current_user.txt')
+        open_file = open(f_path, "r")
+        self.current_username = open_file.readline()
+
+        # this file shows amount username:loan pattern where we will count user's loans
+        loans_and_user_file_path = os.path.join(self.base_folder, 'loan_and_user.txt')
+
+        # this file has information about loans
+        loans_only = os.path.join(self.base_folder, 'loans.txt')
+
+        # here we go through lines and count the lines where is current user
+        with open(loans_and_user_file_path, 'r') as fp:
+            for line in fp:
+                if self.current_username in line:
+                    self.count += 1
+                    row = line.split(':')
+                    user, id = [i.strip() for i in row]
+
+                    # here we add to array user's loan's book's names
+                    with open(loans_only, 'r') as loans_file:
+                        for line2 in loans_file:
+                            if id in line2:
+                                row2 = line2.split(',')
+                                loan_id, start_date, end_date, name, genre, producer, release_date, photo = [y.strip() for y in row2]
+                                magazine_names.append(name)
+                           
+        # checks for name dublicates 
+        if len(magazine_names) > 0:
+            for x in magazine_names:
+                if magazine.get_name() == x: # if it is on movie_names already
+                    magazine_names.pop()
+                    can_continue = False
+
+            if self.count <= 4 and can_continue == True: # can be loaned
+                self.loan(magazine)
+
+            else: # can't be loaned
+                if self.count>4:
+                    msg = "Your loan limit is maximum 5. \You have to return loan to loan more"
+                else:
+                    msg = "You have loaned this already"
+                tk = Tk()
+                show_msg = Message(tk, text = msg)
+                show_msg.config(bg="lightgreen", font=("times",13))
+                show_msg.pack() 
+
+        else: # it is the first loan
+            self.loan(magazine)
+
+        self.count =0 
+
+           
+    def loan(self, magazine):
+        # In this function we save user and loan information to txt files
+        
+        # let's take the loan date
+        today = datetime.date.today()
+
+        # then next month we use function
+        next_month = self.get_next_month(today)
+      
+        # we make loan object from that magazine which button user pressed
+        new_loan = Loan_class.Loan(str(today),str(next_month),magazine.get_name(),magazine.get_genre(),magazine.get_producer(),magazine.get_release_date(),magazine.get_photo())
+
+        # we need to get user which is now logged in
+        file_path = os.path.join(self.base_folder, 'current_user.txt')
+        f = open(file_path, "r")
+        current_user = f.readline()
+        f.close()
+
+        # save username and loan id for profile purposes
+        file2_path = os.path.join(self.base_folder, 'loan_and_user.txt')
+        f2 = open(file2_path, "a+")
+        f2.write(" " + current_user + " : " + new_loan.get_loan_id()+ "\n")
+        f2.close()
+
+        # Save loan information for printing in profile page
+        file3_path = os.path.join(self.base_folder, 'loans.txt')
+        f3 = open(file3_path, "a+")
+        f3.write(new_loan.get_loan_id() + "," + str(today) + "," +str(next_month) + "," + magazine.get_name()+ "," + magazine.get_genre() + "," + magazine.get_producer() + "," + magazine.get_release_date() + "," + magazine.get_photo() + "\n")
+        f3.close()
+
+    def get_next_month(self,sourcedate):
+        # this function returns date one month later
+        month = sourcedate.month
+        year = sourcedate.year + month // 12
+        month = month % 12 + 1
+        day = min(sourcedate.day, calendar.monthrange(year,month)[1])
+
+        return datetime.date(year, month, day) 
 
 
 
