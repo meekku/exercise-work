@@ -125,7 +125,7 @@ class Page_Login(tk.Frame):
     
     def login_verify(self,controller): 
         # Here we see if user's input
-        # matches information ar user_information.txt
+        # matches information at user_information.txt
         # if yes then user can log in and sees librarypage
 
         # get the username and the password
@@ -155,7 +155,7 @@ class Page_Login(tk.Frame):
             tk = Tk()
             tk.geometry("100x100")
             show_msg = Message(tk, text = "Username or password incorrect")
-            show_msg.config(bg="lightblue", font=("times",15))
+            show_msg.config(bg="red",fg="black", font=("times",15))
             show_msg.pack() 
 
         # deletes the entries after login button is pressed
