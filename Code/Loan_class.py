@@ -6,7 +6,7 @@ import Book_class
 import Movie_class
 import Magazine_class
 import random
-class Loan(Book_class.Book):
+class Loan(Book_class.Book, Movie_class.Movie, Magazine_class.Magazine):
 
     
     def __init__(self, start_date, end_date, name, genre, pages, producer, release_date, photo):

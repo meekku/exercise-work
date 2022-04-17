@@ -842,7 +842,7 @@ class MoviePage(tk.Frame):
                     row = line.split(':')
                     user, id = [i.strip() for i in row]
 
-                    # here we add to array user's loan's book's names
+                    # here we add to array user's loan's movie's names
                     with open(loans_only, 'r') as loans_file:
                         for line2 in loans_file:
                             if id in line2:
@@ -886,7 +886,7 @@ class MoviePage(tk.Frame):
         next_month = self.get_next_month(today)
       
         # we make loan object from that book which button user pressed
-        new_loan = Loan_class.Loan(str(today),str(next_month),movie.get_name(),movie.get_genre(),movie.get_producer(),movie.get_release_date(),movie.get_photo())
+        new_loan = Loan_class.Loan(str(today),str(next_month),movie.get_name(),movie.get_genre(),"", movie.get_producer(),movie.get_release_date(),movie.get_photo())
 
         # we need to get user which is now login
         file_path = os.path.join(self.base_folder, 'current_user.txt')
