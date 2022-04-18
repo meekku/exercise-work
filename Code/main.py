@@ -14,7 +14,8 @@ def main():
     # 4. lopuksi jos on aikaa niin koristellaan 
     # muutetaan book_class -> loaned_object -class, että loput sivut tehdään sillä
     # niin ei riko kaikkea :D.... 
-    # 5. Sit pitää muokata noi kirjojen sisällöt normaaleiksi, jota kehtaa esittää 
+    # 5. Sit pitää muokata noi kirjojen sisällöt normaaleiksi, jota kehtaa esittää
+    #afadfadf
 
     app = Gui_class.App()
     app.mainloop()
