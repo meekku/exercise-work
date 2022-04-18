@@ -629,8 +629,8 @@ class ProfilePage(tk.Frame):
                 self.current_user = User_class.User(user_name, fname, lname, phone, email)
 
         # profile text information
-        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black",font=('Latha', '14', 'bold'))
-        profile_text_label.place(x=20, y=200)
+        profile_text_label = tk.Label(self, text=self.current_user, bg="white", fg="black",font=('Latha', '10', 'bold'))
+        profile_text_label.place(x=400, y=100)
 
     def show_loans(self):
         # this functions browse loans
