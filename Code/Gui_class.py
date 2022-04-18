@@ -1,6 +1,8 @@
 # File-name: Gui_class.py
-# Author: Melina Kamunen and Nea Träskman
-# Description: Here is App, HomePage, Page_Login, Page_Register, Library_Page, BookPage, ProfilePage classes. Here is all the magic that makes the library visible and functioning properly.
+# Authors: Melina Kamunen and Nea Träskman
+# Description: Here is App, HomePage, Page_Login, Page_Register, 
+# Library_Page, BookPage, ProfilePage classes. 
+# Here is all the magic that makes the library visible and functioning properly.
 
 import tkinter as tk
 from tkinter import *
