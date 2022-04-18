@@ -1,3 +1,2 @@
 2542576320,2022-04-16,2022-05-16,Pippi Långstrump ,Children's book,267,Astrid Lindgren,1945,book1.png
-12198687360,2022-04-16,2022-05-16,Dawn,Horror,256,Octavia E. Butler,1997,book2.png
 8568710592,2022-04-16,2022-05-16,The Bible,Nonfiction,420,God,0,book3.png

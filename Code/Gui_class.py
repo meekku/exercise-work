@@ -200,7 +200,7 @@ class Page_Register(tk.Frame):
         instruction_label.pack(pady=8)
 
         # Information text label
-        info_label = tk.Label(self, text="Username: \n\n Password: \n\n First name: \n\n Last name: \n\n Phonenumber: \n\n E-mail: ", bg="white", fg="black", font=('Helvetica', '15'))
+        info_label = tk.Label(self, text="Username: \n\n Password: \n\n First name: \n\n Last name: \n\n Phonenumber: \n\n E-mail: ", bg="white", fg="black", font=('Helvetica', '10'))
         info_label.place(x=90, y=125)
 
         # Set username entry
