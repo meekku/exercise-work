@@ -1,11 +1,10 @@
 # File-name: Gui_class.py
 # Author: Melina Kamunen and Nea Träskman
-# Description: 
+# Description: Here is App, HomePage, Page_Login, Page_Register, Library_Page, BookPage, ProfilePage classes. Here is all the magic that makes the library visible and functioning properly.
+
 import tkinter as tk
 from tkinter import *
 import os
-from tracemalloc import start
-from colorama import Back
 import Book_class
 import User_class
 import Loan_class
@@ -356,23 +355,15 @@ class Library_Page(tk.Frame):
         self.Book_Image = tk.PhotoImage(file = book_image_path)
         self.Book_Icon = self.Book_Image.subsample(7, 5) # Resizing the image to fit on the button
 
-        movie_image_path = os.path.join(base_folder, 'movie_icon.png')
-        self.Movie_Image = tk.PhotoImage(file = movie_image_path)
-        self.Movie_Icon = self.Movie_Image.subsample(7, 7)
-
-        magazine_image_path = os.path.join(base_folder, 'magazine_icon.png')
-        self.Magazine_Image = tk.PhotoImage(file = magazine_image_path)
-        self.Magazine_Icon = self.Magazine_Image.subsample(16, 17)
-
         Book_Button = tk.Button(self, text = "Books", image = self.Book_Icon, command=lambda: controller.show_frame(BookPage))
-        Book_Button.place(x=60, y=80)
+        Book_Button.place(x=235, y=100)
 
         Profile_Button = tk.Button(self, text = "Your profile", height="2", width="20", command=lambda: controller.show_frame(ProfilePage))
-        Profile_Button.place(x=200,y=240)
+        Profile_Button.place(x=225,y=240)
 
         log_out_button = tk.Button(self, text='Log out', height="2", width="20",
         command=lambda: self.clear_current_user_file(controller))
-        log_out_button.place(x=200, y=300)
+        log_out_button.place(x=225, y=300)
 
     def clear_current_user_file(self, controller):
     
@@ -742,9 +733,4 @@ class ProfilePage(tk.Frame):
                     self.current_user.return_loan(0)
                 else:
                     self.current_user.return_loan(self.l-1)
-
-
-
-
-        
       
