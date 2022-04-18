@@ -343,7 +343,7 @@ class Library_Page(tk.Frame):
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # header label
-        header_label = tk.Label(self, text="Do you want to loan books movies or magazines?", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
+        header_label = tk.Label(self, text="Press book image to browse book's", bg="white", fg="black", font=('Helvetica', '15', 'bold'))
         header_label.pack()
 
         help_label = tk.Label(self, text="You can do max 5 loans", bg="white", fg="black", font=('Helvetica', '13', 'bold'))
