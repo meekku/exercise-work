@@ -1,6 +1,6 @@
 # File-name: Loan_class.py
 # Author: Nea Träskman and Melina Kamunen
-# Description: 
+# Description: Loan class is for creating loans about book class
 
 import Book_class
 import random
@@ -11,14 +11,12 @@ class Loan(Book_class.Book):
         self.__loan_id =  random.randint(0,99999)*123456
         self.__start_date = start_date
         self.__end_date = end_date
-        self.__invoice_amount = 0 # at the beginning
-
 
         Book_class.Book.__init__(self, name, genre, pages, producer, release_date, photo)
     
     def __str__(self):
         st = Book_class.Book.__str__(self)
-        st += "\nLoan ID: " + str(self.get_loan_id()) + "\nLoan time:" + str(self.get_start_date()) + " -  " + str(self.get_end_date()) + "\nInvoice amount: " + str(self.get_invoice_amount())
+        st += "\nLoan ID: " + str(self.get_loan_id()) + "\nLoan time:" + str(self.get_start_date()) + " -  " + str(self.get_end_date()) + "\n"
         return st
 
 # Setters for loan's properties
@@ -37,8 +35,7 @@ class Loan(Book_class.Book):
         return self.__start_date
     def get_end_date(self):
         return self.__end_date
-    def get_invoice_amount(self):
-        return str(self.__invoice_amount)
+
 
 
 
