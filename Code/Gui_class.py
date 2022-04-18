@@ -9,8 +9,6 @@ from colorama import Back
 import Book_class
 import User_class
 import Loan_class
-import Movie_class
-import Magazine_class
 import datetime
 import calendar
 
@@ -449,7 +447,6 @@ class BookPage(tk.Frame):
         return_button.place(x=2, y=2)
     
     def check_load_limit(self, book):
-        # Tää ei välttis aina mee ihan yks yhtee returnin kanssa
         # This function will check that one user can loan maximum of 5 loans
         can_continue = True
         book_names = []
